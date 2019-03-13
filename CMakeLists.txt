@@ -7,13 +7,6 @@ cmake_minimum_required(VERSION 3.11)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Enable warnings/errors
-if(MSVC)
-  target_compile_options(${TARGET_NAME} PRIVATE /W4 /WX)
-else(MSVC)
-  target_compile_options(${TARGET_NAME} PRIVATE -Wall -Wextra -pedantic -Werror)
-endif(MSVC)
-
 # Project name
 project(SUNKEN)
 
@@ -43,8 +36,7 @@ add_custom_target(
 	copy_resources ALL
 	COMMAND ${CMAKE_COMMAND} -E
 		copy_directory
-    		"${PROJECT_SOURCE_DIR}/res"
-#    		"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<Configuration>/res"
+    		"${CMAKE_SOURCE_DIR}/res"
     		"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CONFIG}/res"
 )
 
@@ -64,9 +56,8 @@ target_include_directories(lib_maths
 
 # Renderer library
 file(GLOB_RECURSE sources
-	RELATIVE "${CMAKE_SOURCE_DIR}/lib/renderer/"
-	*.cc
-	*.hh
+	lib/renderer/*.cc
+	lib/renderer/*.hh
 )
 add_library(lib_renderer STATIC ${sources})
 target_include_directories(lib_renderer
@@ -79,9 +70,8 @@ target_link_libraries(lib_renderer
 
 # Tile loader library
 file(GLOB_RECURSE sources
-	RELATIVE "${CMAKE_SOURCE_DIR}/lib/tile_level_loader/"
-	*.cc
-	*.hh
+	lib/tile_level_loader/*.cc
+	lib/tile_level_loader/*.hh
 )
 add_library(lib_tile_level_loader STATIC ${sources})
 target_include_directories(lib_tile_level_loader
@@ -95,9 +85,8 @@ target_link_libraries(lib_tile_level_loader
 
 # Entity-Component
 file(GLOB_RECURSE sources
-	RELATIVE "${CMAKE_SOURCE_DIR}/lib/ecm/"
-	*.cc
-	*.hh
+	lib/ecm/*.cc
+	lib/ecm/*.hh
 )
 add_library(lib_ecm STATIC ${sources})
 target_include_directories(lib_ecm
@@ -106,14 +95,13 @@ target_include_directories(lib_ecm
 target_link_libraries(lib_ecm
 	PRIVATE
 		lib_renderer
-		lib_math
+		lib_maths
 )
 
 # Scene
 file(GLOB_RECURSE sources
-	RELATIVE "${CMAKE_SOURCE_DIR}/lib/scene/"
-	*.cc
-	*.hh
+	lib/scene/*.cc
+	lib/scene/*.hh
 )
 add_library(lib_scene STATIC ${sources})
 target_include_directories(lib_scene
@@ -132,9 +120,8 @@ target_link_libraries(lib_scene
 #### Sunken
 
 file(GLOB_RECURSE sources
-	RELATIVE "${CMAKE_SOURCE_DIR}/src"
-	*.cc
-	*.hh
+	src/*.cc
+	src/*.hh
 )
 add_executable(Sunken ${sources})
 target_include_directories(Sunken
@@ -151,7 +138,6 @@ target_link_libraries(Sunken
 set_target_properties(Sunken
 	PROPERTIES
 		VS_DEBUGGER_WORKING_DIRECTORY
-#		${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$(Configuration)
 		"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CONFIG}"
 )
 add_dependencies(Sunken copy_resources)
