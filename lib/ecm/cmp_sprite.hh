@@ -4,7 +4,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <ecm.hh>
+#include "ecm.hh"
 
 struct CmpSprite : Component {
 	CmpSprite() = delete;

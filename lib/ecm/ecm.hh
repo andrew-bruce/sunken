@@ -45,13 +45,15 @@ struct Entity {
 
 	// Components
 	template <typename T, typename... Targs>
-	T& add_component(Targs... params)
+	T* const add_component(Targs... params)
 	{
 		static_assert(
 			std::is_base_of<Component, T>::value,
 			"T != Component");
-		components_.emplace_back(this, params...);
-		return *components_.back();
+
+		std::unique_ptr<T> component(std::make_unique<T>(this, params...));
+		components_.push_back(std::move(component));
+		return (T*)components_.back().get();
 	}
 
 protected:
