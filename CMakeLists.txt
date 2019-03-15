@@ -93,9 +93,9 @@ target_include_directories(lib_ecm
 	INTERFACE "${CMAKE_SOURCE_DIR}/lib/ecm"
 )
 target_link_libraries(lib_ecm
-	PRIVATE
-		lib_renderer
-		lib_maths
+	lib_tile_level_loader
+	lib_renderer
+	lib_maths
 )
 
 # Scene

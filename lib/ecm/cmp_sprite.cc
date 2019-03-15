@@ -12,10 +12,10 @@ void CmpSprite::update(const float& delta_time)
 
 void CmpSprite::render()
 {
-	Renderer::queue(sprite_.get());
+	renderer::queue(sprite_.get());
 }
 
-const sf::Sprite& CmpSprite::sprite() const
+sf::Sprite& CmpSprite::sprite() const
 {
 	return *sprite_;
 }

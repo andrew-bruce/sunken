@@ -12,10 +12,10 @@ void CmpShape::update(const float& delta_time)
 
 void CmpShape::render()
 {
-	Renderer::queue(shape_.get());
+	renderer::queue(shape_.get());
 }
 
-const sf::Shape& CmpShape::shape() const
+sf::Shape& CmpShape::shape() const
 {
 	return *shape_;
 }

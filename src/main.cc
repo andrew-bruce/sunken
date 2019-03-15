@@ -1,5 +1,6 @@
 // STD
 #include <array>
+#include <cstddef>
 
 // SFML
 #include <SFML/Graphics.hpp>
@@ -10,6 +11,7 @@
 #include <cmp_shape.hh>
 
 // GAME
+#include "cmp_movement_player.hh"
 #include "sunken.hh"
 
 
@@ -21,7 +23,9 @@ std::size_t game_height;
 // Keyboard
 std::array<bool, sf::Keyboard::KeyCount> keyboard;
 
-// TEST
+/*
+TEST
+*/
 Entity entity;
 
 
@@ -30,12 +34,17 @@ void reset() {}
 
 void load(sf::RenderWindow& window)
 {
-	Renderer::initialise(window);
+	renderer::initialise(window);
 
 	font.loadFromFile("res/fonts/FiraCode-Regular.ttf");
 
+/*
+TEST
+*/
 	CmpShape* shape = entity.add_component<CmpShape>();
 	shape->use_shape<sf::CircleShape>(12.0f);
+	shape->shape().setOrigin(12.0f, 12.0f);
+	entity.add_component<CmpMovementPlayer>();
 
 	reset();
 }
@@ -63,28 +72,43 @@ void input(sf::RenderWindow& window)
 
 void update()
 {
+	// Time
+	static const float delta_time = 1.0f / 100.0f;
+
 	static sf::Clock clock;
-	const float delta_time(clock.restart().asSeconds());
+	static float accumulator = 0.0f;
+	accumulator += clock.restart().asSeconds();
 
-	entity.update(delta_time);
+	while (accumulator >= delta_time) {
+		accumulator -= delta_time;
+		
+/*
+TEST
+*/
+		entity.update(delta_time);
 
-	Renderer::update(delta_time);
+		renderer::update(delta_time);
+	}
 }
 
 void render()
 {
+/*
+TEST
+*/
 	entity.render();
 
-	Renderer::render();
+	renderer::render();
 }
 
 void unload(sf::RenderWindow& window)
 {
-	Renderer::shutdown();
+	renderer::shutdown();
 }
 
 int main(void)
 {
+	// Window
 	game_width = sf::VideoMode::getDesktopMode().width;
 	game_height = sf::VideoMode::getDesktopMode().height;
 
@@ -93,12 +117,12 @@ int main(void)
 		game_height),
 		"Sunken");
 
+	// Game loop
 	load(window);
 	while (window.isOpen()) {
 		input(window);
 		update();
 		render();
 	}
-
 	unload(window);
 }

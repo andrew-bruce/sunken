@@ -197,7 +197,7 @@ void Level::load_level_file(
 void Level::render()
 {
 	for (std::size_t i(0); i < width_ * height_; ++i)
-		Renderer::queue(sprites_[i].get());
+		renderer::queue(sprites_[i].get());
 }
 
 

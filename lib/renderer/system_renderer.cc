@@ -5,7 +5,7 @@
 #include <queue>
 
 
-namespace Renderer
+namespace renderer
 {
 	// Target rendered to
 	static sf::RenderWindow* render_target;

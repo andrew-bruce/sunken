@@ -14,7 +14,7 @@ struct CmpSprite : Component {
 	void update(const float& delta_time) override;
 	void render() override;
 
-	const sf::Sprite& sprite() const;
+	sf::Sprite& sprite() const;
 
 	template <typename T, typename... Targs>
 	void use_sprite(Targs... params) {

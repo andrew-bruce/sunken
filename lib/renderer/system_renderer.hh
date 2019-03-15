@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-namespace Renderer
+namespace renderer
 {
 	// Initialise renderer with window
 	void initialise(sf::RenderWindow&);

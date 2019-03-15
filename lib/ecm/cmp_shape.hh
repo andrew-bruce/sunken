@@ -14,7 +14,7 @@ struct CmpShape : Component {
 	void update(const float& delta_time) override;
 	void render() override;
 
-	const sf::Shape& shape() const;
+	sf::Shape& shape() const;
 
 	template <typename T, typename... Targs>
 	void use_shape(Targs... params) {
