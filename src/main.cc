@@ -1,6 +1,7 @@
 // STD
 #include <array>
 #include <cstddef>
+#include <iostream>
 
 // SFML
 #include <SFML/Graphics.hpp>
@@ -38,13 +39,18 @@ void load(sf::RenderWindow& window)
 
 	font.loadFromFile("res/fonts/FiraCode-Regular.ttf");
 
-/*
-TEST
-*/
+	//// TEST
 	CmpShape* shape = entity.add_component<CmpShape>();
 	shape->use_shape<sf::CircleShape>(12.0f);
 	shape->shape().setOrigin(12.0f, 12.0f);
 	entity.add_component<CmpMovementPlayer>();
+
+	auto m = entity.component<CmpMovementPlayer>();
+	std::cout << "Speed: " << m[0]->speed_ << std::endl;
+
+	auto n = entity.component<CmpMovement>();
+	std::cout << "Speed: " << n[0]->speed_ << std::endl;
+	//// TEST
 
 	reset();
 }
@@ -72,7 +78,7 @@ void input(sf::RenderWindow& window)
 
 void update()
 {
-	// Time
+	// Handle time with fixed step and accumulator for variable framerate
 	static const float delta_time = 1.0f / 100.0f;
 
 	static sf::Clock clock;
@@ -81,11 +87,10 @@ void update()
 
 	while (accumulator >= delta_time) {
 		accumulator -= delta_time;
-		
-/*
-TEST
-*/
+
+		//// TEST
 		entity.update(delta_time);
+		//// TEST
 
 		renderer::update(delta_time);
 	}
@@ -93,11 +98,10 @@ TEST
 
 void render()
 {
-/*
-TEST
-*/
+	//// TEST
 	entity.render();
-
+	//// TEST
+	
 	renderer::render();
 }
 

@@ -56,6 +56,21 @@ struct Entity {
 		return (T*)components_.back().get();
 	}
 
+	template <typename T>
+	const std::vector<T*> component() const
+	{
+		static_assert(
+			std::is_base_of<Component, T>::value,
+			"T != component");
+		
+		std::vector<T*> output;
+		for (const std::unique_ptr<Component>& c : components_)
+			if (dynamic_cast<T*>(&(*c)))
+				output.push_back((T*)c.get());
+
+		return std::move(output);
+	}
+
 protected:
 	sf::Vector2f position_;
 	float rotation_;
