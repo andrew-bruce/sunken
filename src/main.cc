@@ -35,8 +35,10 @@ void reset() {}
 
 void load(sf::RenderWindow& window)
 {
+	std::cout << "Initialising renderer..." << std::endl;
 	renderer::initialise(window);
 
+	std::cout << "Loading font..." << std::endl;
 	font.loadFromFile("res/fonts/FiraCode-Regular.ttf");
 
 	//// TEST
@@ -44,12 +46,6 @@ void load(sf::RenderWindow& window)
 	shape->use_shape<sf::CircleShape>(12.0f);
 	shape->shape().setOrigin(12.0f, 12.0f);
 	entity.add_component<CmpMovementPlayer>();
-
-	auto m = entity.component<CmpMovementPlayer>();
-	std::cout << "Speed: " << m[0]->speed_ << std::endl;
-
-	auto n = entity.component<CmpMovement>();
-	std::cout << "Speed: " << n[0]->speed_ << std::endl;
 	//// TEST
 
 	reset();
@@ -101,7 +97,7 @@ void render()
 	//// TEST
 	entity.render();
 	//// TEST
-	
+
 	renderer::render();
 }
 
@@ -115,6 +111,9 @@ int main(void)
 	// Window
 	game_width = sf::VideoMode::getDesktopMode().width;
 	game_height = sf::VideoMode::getDesktopMode().height;
+	std::cout << "Resolution detected: " <<
+		game_width << 'x' <<
+		game_height << std::endl;
 
 	sf::RenderWindow window(sf::VideoMode(
 		game_width,
