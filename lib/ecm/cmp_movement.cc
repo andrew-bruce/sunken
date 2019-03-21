@@ -40,9 +40,9 @@ bool CmpMovement::valid_move(sf::Vector2f& position)
 		position.y <= size.y);
 
 	// Level bounds checking
-	if (bounds && Level::loaded())
+	if (bounds && level::loaded())
 		bounds = bounds &&
-			Level::WALL != Level::tile_at(
+			level::Tile::Wall != level::tile_at(
 				position);
 
 	return bounds;

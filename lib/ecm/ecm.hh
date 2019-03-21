@@ -62,7 +62,7 @@ struct Entity {
 		static_assert(
 			std::is_base_of<Component, T>::value,
 			"T != component");
-		
+
 		std::vector<T*> output;
 		for (const std::unique_ptr<Component>& c : components_)
 			if (dynamic_cast<T*>(&(*c)))
@@ -86,7 +86,7 @@ protected:
 struct Component {
 	Component() = delete;
 	virtual ~Component();
-	
+
 	// Logic
 	virtual void update(const float& delta_time) = 0;
 	virtual void render() = 0;
