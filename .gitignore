@@ -439,3 +439,6 @@ ASALocalRun/
 healthchecksdb
 
 # End of https://www.gitignore.io/api/c++,linux,windows,executable,visualstudio,visualstudiocode
+
+# Build directory if in the repo folder
+[Bb]uild/
