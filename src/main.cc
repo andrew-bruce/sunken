@@ -8,6 +8,7 @@
 
 // LIBRARIES
 #include <system_renderer.hh>
+#include <level_system.hh>
 #include <ecm.hh>
 #include <cmp_shape.hh>
 
@@ -24,10 +25,9 @@ std::size_t game_height;
 // Keyboard
 std::array<bool, sf::Keyboard::KeyCount> keyboard;
 
-/*
-TEST
-*/
+//// TEST
 Entity entity;
+//// TEST
 
 
 
@@ -42,10 +42,33 @@ void load(sf::RenderWindow& window)
 	font.loadFromFile("res/fonts/FiraCode-Regular.ttf");
 
 	//// TEST
+	level::load_level_file("res/levels/maze2.txt");
+	if (!level::loaded())
+		std::cout << "ERROR\n";
+	auto list = level::find_tiles(level::Tile::Empty);
+	std::cout << "Size:\t" << list.size() << std::endl;
+
 	CmpShape* shape = entity.add_component<CmpShape>();
 	shape->use_shape<sf::CircleShape>(12.0f);
 	shape->shape().setOrigin(12.0f, 12.0f);
 	entity.add_component<CmpMovementPlayer>();
+
+	// Move to start tile or centre of screen
+	std::vector<sf::Vector2ul> start_tiles(level::find_tiles(
+		level::Tile::Start));
+	if (start_tiles.size() != 0) {
+		sf::Vector2f position(level::tile_position(
+			start_tiles.front()));
+
+		sf::Vector2f offset(
+			level::tile_size() / 2.0f,
+			level::tile_size() / 2.0f);
+
+		entity.move_to(position + offset);
+	} else
+		entity.move_to(sf::Vector2f(
+			game_width,
+			game_height) / 2.0f);
 	//// TEST
 
 	reset();
@@ -95,6 +118,7 @@ void update()
 void render()
 {
 	//// TEST
+	level::render();
 	entity.render();
 	//// TEST
 
