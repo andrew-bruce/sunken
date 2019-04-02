@@ -1,7 +1,7 @@
 #include "ecm.hh"
 
 
-// Entity
+// Class oveerrides
 Entity::Entity() { }
 Entity::~Entity() { }
 
@@ -17,6 +17,8 @@ void Entity::render()
 	for (auto& c : components_)
 		c->render();
 }
+
+
 
 // Position
 sf::Vector2f Entity::position() const
@@ -34,6 +36,8 @@ void Entity::move_by(const sf::Vector2f& movement)
 	position_ += movement;
 }
 
+
+
 // Rotation
 float Entity::rotation() const
 {
@@ -49,6 +53,8 @@ void Entity::rotate_by(const float& rotation)
 {
 	rotation_ += rotation;
 }
+
+
 
 // Scale
 sf::Vector2f Entity::scale() const
@@ -66,6 +72,8 @@ void Entity::scale_by(const sf::Vector2f& scale)
 	scale_ += scale;
 }
 
+
+
 // Visibility
 bool Entity::is_visible() const
 {
@@ -77,6 +85,8 @@ void Entity::visible(const bool& visible)
 	visible_ = visible;
 }
 
+
+
 // Life
 bool Entity::is_alive() const
 {
@@ -87,6 +97,8 @@ void Entity::alive(const bool& alive)
 {
 	alive_ = alive;
 }
+
+
 
 // Deletion
 bool Entity::is_for_deletion() const
@@ -101,14 +113,14 @@ void Entity::delete_please()
 
 
 
-// Component
+// Class overrides
+Component::Component(Entity* const p) : parent_(p) { }
 Component::~Component() { }
+
+
 
 // Deletion
 bool Component::is_for_deletion() const
 {
 	return for_deletion_;
 }
-
-Component::Component(Entity* const p)
-: parent_(p) { }

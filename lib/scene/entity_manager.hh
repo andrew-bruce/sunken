@@ -1,6 +1,5 @@
 #pragma once
 
-// STD
 #include <memory>
 #include <vector>
 
@@ -10,11 +9,13 @@
 
 
 // Entity manager
-struct Entities {
+struct Entities
+{
+	// Logic
 	void update(const float& delta_time) const;
-
 	void render() const;
 
+	// Entities
 	void add(std::unique_ptr<Entity> entity);
 	void clear();
 

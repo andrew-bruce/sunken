@@ -3,12 +3,19 @@
 #include <memory>
 #include <vector>
 
+// SFML
 #include <SFML/System.hpp>
+
+
 
 // Forward declare
 struct Component;
 
-struct Entity {
+
+
+// Entity
+struct Entity
+{
 	Entity();
 	virtual ~Entity();
 
@@ -47,21 +54,18 @@ struct Entity {
 	template <typename T, typename... Targs>
 	T* const add_component(Targs... params)
 	{
-		static_assert(
-			std::is_base_of<Component, T>::value,
-			"T != Component");
+		static_assert(std::is_base_of<Component, T>::value, "T != Component");
 
 		std::unique_ptr<T> component(std::make_unique<T>(this, params...));
 		components_.push_back(std::move(component));
+
 		return (T*)components_.back().get();
 	}
 
 	template <typename T>
-	const std::vector<T*> component() const
+	const std::vector<T*> components() const
 	{
-		static_assert(
-			std::is_base_of<Component, T>::value,
-			"T != component");
+		static_assert(std::is_base_of<Component, T>::value, "T != component");
 
 		std::vector<T*> output;
 		for (const std::unique_ptr<Component>& c : components_)
@@ -73,7 +77,7 @@ struct Entity {
 
 protected:
 	sf::Vector2f position_;
-	float rotation_;
+	float        rotation_;
 	sf::Vector2f scale_;
 
 	bool alive_;
@@ -83,7 +87,12 @@ protected:
 	std::vector<std::unique_ptr<Component>> components_;
 };
 
-struct Component {
+
+
+// Component
+struct Component
+{
+	explicit Component(Entity* const p);
 	Component() = delete;
 	virtual ~Component();
 
@@ -95,9 +104,7 @@ struct Component {
 	bool is_for_deletion() const;
 
 protected:
-	explicit Component(Entity* const p);
-
-	bool for_deletion_;
+	bool          for_deletion_;
 	Entity* const parent_;
 };
 

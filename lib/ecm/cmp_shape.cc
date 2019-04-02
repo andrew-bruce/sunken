@@ -1,10 +1,16 @@
 #include "cmp_shape.hh"
 
+// Project
 #include <system_renderer.hh>
 
-CmpShape::CmpShape(Entity* p)
-: Component(p) {};
 
+
+// Class overrides
+CmpShape::CmpShape(Entity* p) : Component(p) {};
+
+
+
+// Logic
 void CmpShape::update(const float& delta_time)
 {
 	shape_->setPosition(parent_->position());
@@ -15,6 +21,9 @@ void CmpShape::render()
 	renderer::queue(shape_.get());
 }
 
+
+
+// Reference to shape
 sf::Shape& CmpShape::shape() const
 {
 	return *shape_;

@@ -1,6 +1,5 @@
 #include "system_renderer.hh"
 
-// STD
 #include <iostream>
 #include <queue>
 
@@ -48,7 +47,10 @@ namespace renderer
 		if (!render_target)
 		{
 			std::cerr <<
-				"ERROR -> RENDERER -> RENDER -> NO TARGET"
+				"ERROR"
+				" -> RENDERER"
+				" -> RENDER"
+				" -> NO TARGET"
 				<< std::endl;
 			return shutdown();
 		}
@@ -57,8 +59,7 @@ namespace renderer
 
 		while (!render_queue.empty())
 		{
-			render_target->draw(
-				*render_queue.front());
+			render_target->draw(*render_queue.front());
 			render_queue.pop();
 		}
 
@@ -70,7 +71,6 @@ namespace renderer
 	// Shutdown renderer
 	void shutdown()
 	{
-		while (!render_queue.empty())
-			render_queue.pop();
+		while (!render_queue.empty()) render_queue.pop();
 	}
 };

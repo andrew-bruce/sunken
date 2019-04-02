@@ -1,20 +1,22 @@
 #include "cmp_movement_player.hh"
 
+// Project
 #include <maths.hh>
-
 #include "sunken.hh"
 
 
 
-CmpMovementPlayer::CmpMovementPlayer(Entity* p)
-: CmpMovement(p) {}
+// Class overrides
+CmpMovementPlayer::CmpMovementPlayer(Entity* p) : CmpMovement(p) {}
 
 
 
+// Logic
 void CmpMovementPlayer::update(const float& delta_time)
 {
 	// Input decides direction vector
 	sf::Vector2f movement(0.0f, 0.0f);
+
 	if (keyboard[sf::Keyboard::Left])
 		--movement.x;
 	if (keyboard[sf::Keyboard::Right])
@@ -25,7 +27,7 @@ void CmpMovementPlayer::update(const float& delta_time)
 		++movement.y;
 
 	// Normalise movement vector
-	movement = sf::normalise(movement);
+	movement  = sf::normalise(movement);
 	movement *= speed_ * delta_time;
 
 	// Move player

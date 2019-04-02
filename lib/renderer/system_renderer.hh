@@ -15,6 +15,7 @@ namespace renderer
 
 	// Queue drawable to be rendered
 	void queue(const sf::Drawable*);
+
 	// Render queued drawables
 	void render();
 

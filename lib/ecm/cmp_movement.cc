@@ -1,12 +1,13 @@
 #include "cmp_movement.hh"
 
+// Project
 #include <system_renderer.hh>
 #include <level_system.hh>
 
 
 
-CmpMovement::CmpMovement(Entity* p)
-: Component(p), speed_(100.0f) {}
+// Class overrides
+CmpMovement::CmpMovement(Entity* p) : Component(p), speed_(100.0f) {}
 
 
 
@@ -41,9 +42,7 @@ bool CmpMovement::valid_move(sf::Vector2f& position)
 
 	// Level bounds checking
 	if (bounds && level::loaded())
-		bounds = bounds &&
-			level::Tile::Wall != level::tile_at(
-				position);
+		bounds = bounds && level::Tile::Wall != level::tile_at(position);
 
 	return bounds;
 }

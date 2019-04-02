@@ -1,6 +1,7 @@
-// STD
 #include <array>
 #include <cstddef>
+#include <cstdlib>
+#include <ctime>
 #include <iostream>
 
 // SFML
@@ -14,6 +15,7 @@
 
 // GAME
 #include "cmp_movement_player.hh"
+#include "cmp_movement_enemy.hh"
 #include "sunken.hh"
 
 
@@ -35,6 +37,8 @@ void reset() {}
 
 void load(sf::RenderWindow& window)
 {
+	srand(time(NULL));
+
 	std::cout << "Initialising renderer..." << std::endl;
 	renderer::initialise(window);
 
@@ -43,32 +47,29 @@ void load(sf::RenderWindow& window)
 
 	//// TEST
 	level::load_level_file("res/levels/maze2.txt");
-	if (!level::loaded())
-		std::cout << "ERROR\n";
-	auto list = level::find_tiles(level::Tile::Empty);
-	std::cout << "Size:\t" << list.size() << std::endl;
 
-	CmpShape* shape = entity.add_component<CmpShape>();
+	CmpShape* shape(entity.add_component<CmpShape>());
 	shape->use_shape<sf::CircleShape>(12.0f);
 	shape->shape().setOrigin(12.0f, 12.0f);
-	entity.add_component<CmpMovementPlayer>();
+
+	entity.add_component<CmpMovementEnemy>();
 
 	// Move to start tile or centre of screen
-	std::vector<sf::Vector2ul> start_tiles(level::find_tiles(
-		level::Tile::Start));
-	if (start_tiles.size() != 0) {
-		sf::Vector2f position(level::tile_position(
-			start_tiles.front()));
+	std::vector<sf::Vector2ul> start_tiles(
+		level::find_tiles(level::Tile::Start));
+
+	if (start_tiles.size() != 0)
+	{
+		sf::Vector2f position(level::tile_position(start_tiles.front()));
 
 		sf::Vector2f offset(
 			level::tile_size() / 2.0f,
 			level::tile_size() / 2.0f);
 
 		entity.move_to(position + offset);
-	} else
-		entity.move_to(sf::Vector2f(
-			game_width,
-			game_height) / 2.0f);
+	}
+	else
+		entity.move_to(sf::Vector2f(game_width, game_height) / 2.0f);
 	//// TEST
 
 	reset();
@@ -77,6 +78,7 @@ void load(sf::RenderWindow& window)
 void input(sf::RenderWindow& window)
 {
 	sf::Event event{};
+
 	while (window.pollEvent(event))
 		if (event.type == sf::Event::Closed)
 			window.close();
@@ -98,10 +100,10 @@ void input(sf::RenderWindow& window)
 void update()
 {
 	// Handle time with fixed step and accumulator for variable framerate
-	static const float delta_time = 1.0f / 100.0f;
+	static const float delta_time(1.0f / 100.0f);
 
 	static sf::Clock clock;
-	static float accumulator = 0.0f;
+	static float accumulator(0.0f);
 	accumulator += clock.restart().asSeconds();
 
 	while (accumulator >= delta_time) {
@@ -133,20 +135,16 @@ void unload(sf::RenderWindow& window)
 int main(void)
 {
 	// Window
-	game_width = sf::VideoMode::getDesktopMode().width;
-	game_height = sf::VideoMode::getDesktopMode().height;
-	std::cout << "Resolution detected: " <<
-		game_width << 'x' <<
-		game_height << std::endl;
-
-	sf::RenderWindow window(sf::VideoMode(
-		game_width,
-		game_height),
-		"Sunken");
+	game_width  = 1920;//sf::VideoMode::getDesktopMode().width;
+	game_height = 1080;//sf::VideoMode::getDesktopMode().height;
+	std::cout << "Resolution detected: "
+		<< game_width << 'x' << game_height << std::endl;
+	sf::RenderWindow window(sf::VideoMode(game_width, game_height), "Sunken");
 
 	// Game loop
 	load(window);
-	while (window.isOpen()) {
+	while (window.isOpen())
+	{
 		input(window);
 		update();
 		render();

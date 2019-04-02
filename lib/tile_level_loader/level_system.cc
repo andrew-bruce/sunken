@@ -1,8 +1,5 @@
 #include "level_system.hh"
 
-
-
-// STD
 #include <fstream>
 #include <iostream>
 
@@ -12,18 +9,20 @@
 
 
 // Level singleton
-namespace level {
+namespace level
+{
 	// Level attributes
-	static bool level_loaded(false);
+	static bool        level_loaded(false);
 	static std::size_t level_width;
 	static std::size_t level_height;
-	static float level_tile_size(100.0f);
+	static float       level_tile_size(100.0f);
 
 
 
 	// Tile lists
 	static std::vector<Tile> level_tiles;
-	static const std::set<Tile> level_tile_enums {
+	static const std::set<Tile> level_tile_enums
+	{
 		Tile::Wall,
 		Tile::Start,
 		Tile::End,
@@ -31,10 +30,13 @@ namespace level {
 		Tile::Waypoint,
 		Tile::Enemy
 	};
-	static std::map<Tile, sf::Color> level_tile_colours { {
+	static std::map<Tile, sf::Color> level_tile_colours
+	{
+		{
 			Tile::Wall,
 			sf::Color::White
-		}, {
+		},
+		{
 			Tile::End,
 			sf::Color::Red
 		}
@@ -51,22 +53,12 @@ namespace level {
 		{
 			for (std::size_t x(0); x < level_width; ++x)
 			{
-				auto s =
-					std::make_unique<sf::RectangleShape>();
+				sf::Vector2ul index(x, y);
+				auto s = std::make_unique<sf::RectangleShape>();
 
-				s->setPosition(
-					tile_position(sf::Vector2ul(
-						x,
-						y)));
-
-				s->setSize(sf::Vector2f(
-					level_tile_size,
-					level_tile_size));
-
-				s->setFillColor(
-					tile_colour(tile_at(sf::Vector2ul(
-						x,
-						y))));
+				s->setPosition(tile_position(index));
+				s->setSize(sf::Vector2f(level_tile_size, level_tile_size));
+				s->setFillColor(tile_colour(tile_at(index)));
 
 				level_tile_sprites.push_back(std::move(s));
 			}
@@ -84,9 +76,9 @@ namespace level {
 	// Unload level
 	void unload()
 	{
-		level_loaded = false;
-		level_width = 0;
-		level_height = 0;
+		level_loaded    = false;
+		level_width     = 0;
+		level_height    = 0;
 		level_tile_size = 0;
 
 		level_tiles.clear();
@@ -120,9 +112,11 @@ namespace level {
 			return level_tiles[position.y * level_width + position.x];
 
 		std::cerr <<
-			"ERROR -> LEVEL_SYSTEM -> GET_TILE -> OUT OF BOUNDS: " <<
-			position.x << ", " <<
-			position.y << std::endl;
+			"WARNING"
+			" -> LEVEL_SYSTEM"
+			" -> GET_TILE"
+			" -> OUT OF BOUNDS: "
+			<< position.x << ", " << position.y << std::endl;
 
 		return Tile::Empty;
 	}
@@ -130,22 +124,29 @@ namespace level {
 	// Tile at position
 	Tile tile_at(const sf::Vector2f& position)
 	{
-		const sf::Vector2f p = position;
-		if (p.x >= 0 && p.y >= 0)
-			return tile_at(sf::Vector2ul(p / level_tile_size));
+		if (position.x >= 0 && position.y >= 0)
+			return tile_at(sf::Vector2ul(position / level_tile_size));
 
 		std::cerr <<
-			"ERROR -> LEVEL_SYSTEM -> GET_TILE_AT -> OUT OF BOUNDS: " <<
-			position.x << ", " <<
-			position.y << std::endl;
+			"WARNING"
+			" -> LEVEL_SYSTEM"
+			" -> GET_TILE_AT"
+			" -> OUT OF BOUNDS: "
+			<< position.x << ", " << position.y << std::endl;
 
 		return Tile::Empty;
 	}
 
 	// Position of tile index
-	sf::Vector2f tile_position(const sf::Vector2ul& position)
+	sf::Vector2f tile_position(const sf::Vector2ul& index)
 	{
-		return sf::Vector2f(position) * level_tile_size;
+		return sf::Vector2f(index) * level_tile_size;
+	}
+
+	// Index of tile at position
+	sf::Vector2ul tile_index(const sf::Vector2f& position)
+	{
+		return sf::Vector2ul(position / level_tile_size);
 	}
 
 	// Get indices of tiles
@@ -172,9 +173,7 @@ namespace level {
 		return level_tile_colours[tile];
 	}
 
-	void tile_colour(
-		const Tile& tile,
-		const sf::Color& colour)
+	void tile_colour(const Tile& tile, const sf::Color& colour)
 	{
 		level_tile_colours[tile] = colour;
 	}
@@ -182,14 +181,12 @@ namespace level {
 
 
 	// Load level from file
-	void load_level_file(
-		const std::string& filepath,
-		const float& tile_size)
+	void load_level_file(const std::string& filepath, const float& tile_size)
 	{
 		// Set variables
 		level_tile_size = tile_size;
-		std::size_t height(0);
-		std::size_t width(0);
+		level_height    = 0;
+		level_width     = 0;
 
 		// Read file to string
 		std::string content;
@@ -198,8 +195,11 @@ namespace level {
 			if (!file.good())
 			{
 				std::cerr <<
-					"ERROR -> LEVELSYSTEM -> LOAD_LEVEL_FILE -> FILE ERROR: " <<
-					filepath << std::endl;
+					"ERROR"
+					" -> LEVEL_SYSTEM"
+					" -> LOAD_LEVEL_FILE"
+					" -> FILE ERROR: "
+					<< filepath << std::endl;
 
 				return unload();
 			}
@@ -217,54 +217,58 @@ namespace level {
 			// New line
 			if (c == '\n')
 			{
-				if (!width)
-					width = i;
-				++height;
+				if (!level_width)
+					level_width = i;
+				++level_height;
+				continue;
 			}
-			else
-			{
-				// If character matches tile
-				bool invalid(true);
-				for (const Tile& tile : level_tile_enums)
-					if (tile == c)
-					{
-						temp_tiles.push_back(tile);
-						invalid = false;
-					}
 
-				// Invalid character
-				if (invalid)
-					std::cerr <<
-					"WARNING -> LEVELSYSTEM -> LOAD_LEVEL_FILE -> INVALID CHARACTER: " <<
-					c << std::endl;
-			}
+			// If character matches tile
+			bool invalid(true);
+			for (const Tile& tile : level_tile_enums)
+				if (tile == c)
+				{
+					temp_tiles.push_back(tile);
+					invalid = false;
+					break;
+				}
+
+			// Invalid character
+			if (invalid)
+				std::cerr <<
+					"WARNING"
+					" -> LEVEL_SYSTEM"
+					" -> LOAD_LEVEL_FILE"
+					" -> INVALID CHARACTER: "
+					<< c << std::endl;
 		}
 
 		// Invalid amount of tiles
-		if (temp_tiles.size() != width * height)
+		if (temp_tiles.size() != level_width * level_height)
 		{
 			std::cerr <<
-				"ERROR -> LEVELSYSTEM -> LOAD_LEVEL_FILE -> INVALID TILE COUNT: " <<
-				filepath << std::endl;
+				"ERROR"
+				" -> LEVEL_SYSTEM"
+				" -> LOAD_LEVEL_FILE"
+				" -> INVALID TILE COUNT: "
+				<< filepath << std::endl;
 
 			return unload();
 		}
 
-		// Set values
-		level_width = width;
-		level_height = height;
-
+		// Moves tiles and build sprites
 		level_tiles.swap(temp_tiles);
-
 		build_sprites();
 
-		std::cout <<
-			"SUCCESS -> LEVELSYSTEM -> LOAD_LEVEL_FILE: Width = " <<
-			level_width << ", Height = " <<
-			level_height << ", File = " <<
-			filepath << std::endl;
-
+		// Level is loaded
 		level_loaded = true;
+		std::cout <<
+			"SUCCESS"
+			" -> LEVEL_SYSTEM"
+			" -> LOAD_LEVEL_FILE: "
+			<< "Width = " << level_width << ", "
+			<< "Height = " << level_height << ", "
+			<< "File = " << filepath << std::endl;
 	}
 
 
@@ -276,3 +280,4 @@ namespace level {
 			renderer::queue(level_tile_sprites[i].get());
 	}
 };
+
