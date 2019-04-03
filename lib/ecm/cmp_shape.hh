@@ -2,16 +2,16 @@
 
 #include <memory>
 
-// SFML
 #include <SFML/Graphics.hpp>
 
-// Project
 #include "ecm.hh"
-
-
 
 struct CmpShape : Component
 {
+protected:
+	std::unique_ptr<sf::Shape> shape_;
+
+public:
 	// Class overrides
 	CmpShape() = delete;
 	explicit CmpShape(Entity* p);
@@ -29,7 +29,5 @@ struct CmpShape : Component
 	void use_shape(Targs... params) {
 		shape_.reset(new T(params...));
 	}
-
-protected:
-	std::unique_ptr<sf::Shape> shape_;
 };
+

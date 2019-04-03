@@ -2,16 +2,16 @@
 
 #include <memory>
 
-// SFML
 #include <SFML/Graphics.hpp>
 
-// Project
 #include "ecm.hh"
-
-
 
 struct CmpSprite : Component
 {
+protected:
+	std::unique_ptr<sf::Sprite> sprite_;
+
+public:
 	// Class overrides
 	CmpSprite() = delete;
 	explicit CmpSprite(Entity* p);
@@ -29,7 +29,4 @@ struct CmpSprite : Component
 	void use_sprite(Targs... params) {
 		sprite_.reset(new T(params...));
 	}
-
-protected:
-	std::unique_ptr<sf::Sprite> sprite_;
 };

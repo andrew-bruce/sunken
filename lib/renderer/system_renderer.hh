@@ -22,3 +22,4 @@ namespace renderer
 	// Shutdown renderer
 	void shutdown();
 };
+

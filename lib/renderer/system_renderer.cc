@@ -3,7 +3,6 @@
 #include <iostream>
 #include <queue>
 
-
 namespace renderer
 {
 	// Target rendered to
@@ -12,15 +11,11 @@ namespace renderer
 	// Queue of drawables to be rendered
 	static std::queue<const sf::Drawable*> render_queue;
 
-
-
 	// Window being used
 	sf::RenderWindow& window()
 	{
 		return *render_target;
 	}
-
-
 
 	// Initialise renderer with window
 	void initialise(sf::RenderWindow& window)
@@ -28,12 +23,8 @@ namespace renderer
 		render_target = &window;
 	}
 
-
-
 	// Update renderer
 	void update(const float& delta_time) {}
-
-
 
 	// Queue drawable to be rendered
 	void queue(const sf::Drawable* drawable)
@@ -66,11 +57,10 @@ namespace renderer
 		render_target->display();
 	}
 
-
-
 	// Shutdown renderer
 	void shutdown()
 	{
 		while (!render_queue.empty()) render_queue.pop();
 	}
 };
+

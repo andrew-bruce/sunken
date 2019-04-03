@@ -2,14 +2,11 @@
 
 #include <cstdlib>
 
-// Project
 #include <level_system.hh>
-
-
 
 // Class overrides
 CmpMovementEnemy::CmpMovementEnemy(Entity* p)
-: CmpMovement(p), state_(Rotating) {}
+ : CmpMovement(p), state_(Rotating) {}
 
 
 
@@ -20,8 +17,10 @@ void CmpMovementEnemy::update(const float& delta_time)
 
 	// Variables
 	const sf::Vector2f movement     (direction_ * speed_ * delta_time);
+
 	const sf::Vector2f position     (parent_->position());
 	const sf::Vector2f new_position (position + movement);
+
 	const sf::Vector2i bad_direction(sf::Vector2i(direction_) * -1);
 	      sf::Vector2i new_direction(directions[rand() % 4]);
 
@@ -79,3 +78,4 @@ void CmpMovementEnemy::update(const float& delta_time)
 }
 
 void CmpMovementEnemy::render() {}
+

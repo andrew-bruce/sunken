@@ -1,15 +1,10 @@
 #include "cmp_movement_player.hh"
 
-// Project
 #include <maths.hh>
 #include "sunken.hh"
 
-
-
 // Class overrides
 CmpMovementPlayer::CmpMovementPlayer(Entity* p) : CmpMovement(p) {}
-
-
 
 // Logic
 void CmpMovementPlayer::update(const float& delta_time)
@@ -35,3 +30,4 @@ void CmpMovementPlayer::update(const float& delta_time)
 }
 
 void CmpMovementPlayer::render() {}
+

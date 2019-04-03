@@ -1,9 +1,6 @@
 #pragma once
 
-// Project
 #include <cmp_movement.hh>
-
-
 
 struct CmpMovementPlayer : CmpMovement
 {
@@ -15,3 +12,4 @@ struct CmpMovementPlayer : CmpMovement
 	void update(const float& delta_time) override;
 	void render() override;
 };
+

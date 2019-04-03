@@ -6,12 +6,9 @@
 #include <string>
 #include <vector>
 
-// SFML
 #include <SFML/Graphics.hpp>
 
-// PROJECT
 #include <maths.hh>
-
 
 namespace level
 {
@@ -35,12 +32,16 @@ namespace level
 
 	// Tile at position index
 	Tile tile_at(const sf::Vector2ul& position);
+
 	// Tile at position
 	Tile tile_at(const sf::Vector2f& position);
+
 	// Position of tile index
 	sf::Vector2f tile_position(const sf::Vector2ul& index);
+
 	// Index of tile at position
 	sf::Vector2ul tile_index(const sf::Vector2f& position);
+
 	// Get indices of tiles
 	std::vector<sf::Vector2ul> find_tiles(const Tile& tile);
 

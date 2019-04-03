@@ -3,31 +3,28 @@
 #include <cmath>
 #include <ostream>
 
-// SFML
 #include <SFML/System.hpp>
-
-
 
 namespace sf
 {
-	// TYPE DEFINITION
+	// Type definition
 	typedef Vector2<std::size_t> Vector2ul;
 
-	// SQUARED LENGTH
+	// Squared length
 	template <typename T>
 	T length2(const Vector2<T>& vector)
 	{
 		return vector.x * vector.x + vector.y * vector.y;
 	}
 
-	// LENGTH
+	// Length
 	template <typename T>
 	double length(const Vector2<T>& vector)
 	{
 		return sqrt(static_cast<double>(length2(vector)));
 	}
 
-	// NORMALISE
+	// Normalise
 	template <typename T>
 	Vector2<T> normalise(const Vector2<T>& vector)
 	{
@@ -41,24 +38,24 @@ namespace sf
 		return output;
 	}
 
-	// CAST
+	// Cast
 	template <typename T, typename U>
 	Vector2<T> cast(const Vector2<U>& vector)
 	{
 		return Vector2<T>(static_cast<T>(vector.x), static_cast<T>(vector.y));
 	}
 
-	// DEGREES TO RADIANS
-	static double deg2rad(const double& degrees)
+	// Degrees to radians
+	static double deg_to_rad(const double& degrees)
 	{
 		return degrees / 180.0 * 3.141592653589793238462643383279502884L;
 	}
 
-	// ROTATE VECTOR BY DEGREES
+	// Rotate vector by degrees
 	template <typename T>
 	Vector2<T> rotate(const Vector2<T>& vector, const double& degrees)
 	{
-		const double theta (deg2rad(degrees));
+		const double theta (deg_to_rad(degrees));
 		const double c     (cos(theta));
 		const double s     (sin(theta));
 
@@ -67,7 +64,7 @@ namespace sf
 			vector.x * s + vector.y * c);
 	}
 
-	// OUTPUT STREAM OPERATOR
+	// Output stream operator
 	template <typename T>
 	std::ostream& operator<<(std::ostream& output, const Vector2<T>& vector)
 	{
@@ -75,3 +72,4 @@ namespace sf
 		return output;
 	}
 };
+

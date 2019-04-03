@@ -4,21 +4,16 @@
 #include <ctime>
 #include <iostream>
 
-// SFML
 #include <SFML/Graphics.hpp>
 
-// LIBRARIES
 #include <system_renderer.hh>
 #include <level_system.hh>
 #include <ecm.hh>
 #include <cmp_shape.hh>
 
-// GAME
 #include "cmp_movement_player.hh"
 #include "cmp_movement_enemy.hh"
 #include "sunken.hh"
-
-
 
 // Window
 std::size_t game_width;
@@ -30,8 +25,6 @@ std::array<bool, sf::Keyboard::KeyCount> keyboard;
 //// TEST
 Entity entity;
 //// TEST
-
-
 
 void reset() {}
 
@@ -135,8 +128,8 @@ void unload(sf::RenderWindow& window)
 int main(void)
 {
 	// Window
-	game_width  = 1920;//sf::VideoMode::getDesktopMode().width;
-	game_height = 1080;//sf::VideoMode::getDesktopMode().height;
+	game_width  = 1280;//sf::VideoMode::getDesktopMode().width;
+	game_height = 720; //sf::VideoMode::getDesktopMode().height;
 	std::cout << "Resolution detected: "
 		<< game_width << 'x' << game_height << std::endl;
 	sf::RenderWindow window(sf::VideoMode(game_width, game_height), "Sunken");

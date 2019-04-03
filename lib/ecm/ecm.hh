@@ -3,19 +3,26 @@
 #include <memory>
 #include <vector>
 
-// SFML
 #include <SFML/System.hpp>
-
-
 
 // Forward declare
 struct Component;
 
-
-
 // Entity
 struct Entity
 {
+protected:
+	sf::Vector2f position_;
+	float        rotation_;
+	sf::Vector2f scale_;
+
+	bool alive_;
+	bool visible_;
+	bool for_deletion_;
+
+	std::vector<std::unique_ptr<Component>> components_;
+
+public:
 	Entity();
 	virtual ~Entity();
 
@@ -74,26 +81,18 @@ struct Entity
 
 		return std::move(output);
 	}
-
-protected:
-	sf::Vector2f position_;
-	float        rotation_;
-	sf::Vector2f scale_;
-
-	bool alive_;
-	bool visible_;
-	bool for_deletion_;
-
-	std::vector<std::unique_ptr<Component>> components_;
 };
-
-
 
 // Component
 struct Component
 {
-	explicit Component(Entity* const p);
+protected:
+	bool          for_deletion_;
+	Entity* const parent_;
+
+public:
 	Component() = delete;
+	explicit Component(Entity* const p);
 	virtual ~Component();
 
 	// Logic
@@ -102,9 +101,5 @@ struct Component
 
 	// Deletion
 	bool is_for_deletion() const;
-
-protected:
-	bool          for_deletion_;
-	Entity* const parent_;
 };
 

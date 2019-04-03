@@ -2,10 +2,7 @@
 
 #include <array>
 
-// SFML
 #include <SFML/Graphics.hpp>
-
-
 
 // Window
 extern std::size_t game_width;
@@ -16,3 +13,4 @@ extern std::array<bool, sf::Keyboard::KeyCount> keyboard;
 
 // Font
 extern sf::Font font;
+

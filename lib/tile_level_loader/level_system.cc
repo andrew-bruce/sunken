@@ -3,21 +3,16 @@
 #include <fstream>
 #include <iostream>
 
-// PROJECT
 #include <system_renderer.hh>
-
-
 
 // Level singleton
 namespace level
 {
 	// Level attributes
-	static bool        level_loaded(false);
-	static std::size_t level_width;
-	static std::size_t level_height;
+	static bool        level_loaded   (false);
+	static std::size_t level_width    (0);
+	static std::size_t level_height   (0);
 	static float       level_tile_size(100.0f);
-
-
 
 	// Tile lists
 	static std::vector<Tile> level_tiles;
@@ -43,8 +38,6 @@ namespace level
 	};
 	static std::vector<std::unique_ptr<sf::RectangleShape>> level_tile_sprites;
 
-
-
 	// Build tile sprites
 	void build_sprites()
 	{
@@ -65,8 +58,6 @@ namespace level
 		}
 	}
 
-
-
 	// Whether level has been loaded
 	bool loaded()
 	{
@@ -85,8 +76,6 @@ namespace level
 		level_tile_sprites.clear();
 	}
 
-
-
 	// Level dimensions
 	std::size_t width()
 	{
@@ -102,8 +91,6 @@ namespace level
 	{
 		return level_tile_size;
 	}
-
-
 
 	// Tile at position index
 	Tile tile_at(const sf::Vector2ul& position)
@@ -162,8 +149,6 @@ namespace level
 		return std::move(output);
 	}
 
-
-
 	// Tile colours
 	sf::Color tile_colour(const Tile& tile)
 	{
@@ -177,8 +162,6 @@ namespace level
 	{
 		level_tile_colours[tile] = colour;
 	}
-
-
 
 	// Load level from file
 	void load_level_file(const std::string& filepath, const float& tile_size)
@@ -270,8 +253,6 @@ namespace level
 			<< "Height = " << level_height << ", "
 			<< "File = " << filepath << std::endl;
 	}
-
-
 
 	// Render level
 	void render()
