@@ -24,8 +24,14 @@ SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${output_directory})
 
 #### Add External Dependencies
 
+# SFML
 add_subdirectory("lib/sfml")
 set(sfml_include "lib/sfml/include")
+link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
+
+# Box2D
+add_subdirectory("lib/b2d/Box2D")
+set(b2d_include "lib/b2d/Box2D")
 link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
 
 
@@ -125,7 +131,9 @@ file(GLOB_RECURSE sources
 )
 add_executable(Sunken ${sources})
 target_include_directories(Sunken
-	PRIVATE ${sfml_include}
+	PRIVATE
+		${sfml_include}
+		${b2d_include}
 )
 target_link_libraries(Sunken
 	lib_scene
@@ -134,6 +142,7 @@ target_link_libraries(Sunken
 	lib_renderer
 	lib_maths
 	sfml-graphics
+	Box2D
 )
 set_target_properties(Sunken
 	PROPERTIES
