@@ -4,8 +4,11 @@
 #include <ctime>
 #include <iostream>
 
+#include <Box2D/Box2D.h>
+
 #include <SFML/Graphics.hpp>
 
+#include <physics.hh>
 #include <system_renderer.hh>
 #include <level_system.hh>
 #include <ecm.hh>
@@ -23,7 +26,9 @@ std::size_t game_height;
 std::array<bool, sf::Keyboard::KeyCount> keyboard;
 
 //// TEST
-Entity entity;
+b2World* world;
+std::vector<b2Body*> bodies;
+std::vector<std::unique_ptr<sf::RectangleShape>> shapes;
 //// TEST
 
 void reset() {}
@@ -39,30 +44,24 @@ void load(sf::RenderWindow& window)
 	font.loadFromFile("res/fonts/FiraCode-Regular.ttf");
 
 	//// TEST
-	level::load_level_file("res/levels/maze2.txt");
-
-	CmpShape* shape(entity.add_component<CmpShape>());
-	shape->use_shape<sf::CircleShape>(12.0f);
-	shape->shape().setOrigin(12.0f, 12.0f);
-
-	entity.add_component<CmpMovementEnemy>();
-
-	// Move to start tile or centre of screen
-	std::vector<sf::Vector2ul> start_tiles(
-		level::find_tiles(level::Tile::Start));
-
-	if (start_tiles.size() != 0)
+	const b2Vec2 gravity(0.0f, -9.8f);
+	world = new b2World(gravity);
+	physics::initialise(world);
+	for (int i(1); i < 11; ++i)
 	{
-		sf::Vector2f position(level::tile_position(start_tiles.front()));
+		// Shapes
+		auto s = std::make_unique<sf::RectangleShape>();
+		s->setPosition(i * (game_width / 12.0f), game_height * 0.7f);
+		s->setSize(sf::Vector2f(50.0f, 50.0f));
+		s->setOrigin(25.0f, 25.0f);
+		s->setFillColor(sf::Color::White);
+		shapes.push_back(std::move(s));
 
-		sf::Vector2f offset(
-			level::tile_size() / 2.0f,
-			level::tile_size() / 2.0f);
-
-		entity.move_to(position + offset);
+		// Physics
+		auto b = physics::create_box(true, *shapes.back());
+		b->ApplyAngularImpulse(5.0f, true);
+		bodies.push_back(b);
 	}
-	else
-		entity.move_to(sf::Vector2f(game_width, game_height) / 2.0f);
 	//// TEST
 
 	reset();
@@ -103,7 +102,13 @@ void update()
 		accumulator -= delta_time;
 
 		//// TEST
-		entity.update(delta_time);
+		physics::update(delta_time);
+		for (int i = 0; i < bodies.size(); ++i)
+		{
+			shapes[i]->setPosition(physics::invert_height(physics::bv2_to_sv2(bodies[i]->GetPosition()), game_height));
+
+			shapes[i]->setRotation((180 / b2_pi) * bodies[i]->GetAngle());
+		}
 		//// TEST
 
 		renderer::update(delta_time);
@@ -114,7 +119,8 @@ void render()
 {
 	//// TEST
 	level::render();
-	entity.render();
+	for (auto& s : shapes)
+		renderer::queue(s.get());
 	//// TEST
 
 	renderer::render();
@@ -122,6 +128,10 @@ void render()
 
 void unload(sf::RenderWindow& window)
 {
+	for (auto& b : bodies)
+		world->DestroyBody(b);
+	delete world;
+	bodies.clear();
 	renderer::shutdown();
 }
 

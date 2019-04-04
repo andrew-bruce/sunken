@@ -32,7 +32,7 @@ link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
 # Box2D
 add_subdirectory("lib/b2d/Box2D")
 set(b2d_include "lib/b2d/Box2D")
-link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
+link_directories("${CMAKE_BINARY_DIR}/lib/b2d/lib")
 
 
 
@@ -42,8 +42,8 @@ add_custom_target(
 	copy_resources ALL
 	COMMAND ${CMAKE_COMMAND} -E
 		copy_directory
-    		"${CMAKE_SOURCE_DIR}/res"
-    		"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CONFIG}/res"
+			"${CMAKE_SOURCE_DIR}/res"
+			"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CONFIG}/res"
 )
 
 
@@ -57,7 +57,23 @@ target_sources(lib_maths
 )
 target_include_directories(lib_maths
 	INTERFACE "${CMAKE_SOURCE_DIR}/lib/maths"
-	SYSTEM INTERFACE ${sfml_include}
+	SYSTEM INTERFACE "${sfml_include}"
+)
+
+# Physics library
+file(GLOB_RECURSE sources
+	lib/physics/*.cc
+	lib/physics/*.hh
+)
+add_library(lib_physics STATIC ${sources})
+target_include_directories(lib_physics
+	INTERFACE "${CMAKE_SOURCE_DIR}/lib/physics/"
+	PRIVATE "${b2d_include}"
+)
+target_link_libraries(lib_physics
+	lib_maths
+	sfml-graphics
+	Box2D
 )
 
 # Renderer library
@@ -140,6 +156,7 @@ target_link_libraries(Sunken
 	lib_ecm
 	lib_tile_level_loader
 	lib_renderer
+	lib_physics
 	lib_maths
 	sfml-graphics
 	Box2D
