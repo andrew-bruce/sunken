@@ -44,9 +44,39 @@ void load(sf::RenderWindow& window)
 	font.loadFromFile("res/fonts/FiraCode-Regular.ttf");
 
 	//// TEST
+	// World
 	const b2Vec2 gravity(0.0f, -9.8f);
 	world = new b2World(gravity);
 	physics::initialise(world);
+
+	// Walls
+	sf::Vector2f walls[] {
+		// Top
+		sf::Vector2f(game_width / 2.0f, 5.0f),
+		sf::Vector2f(game_width, 10.0f),
+		// Bottom
+		sf::Vector2f(game_width / 2.0f, game_height - 5.0f),
+		sf::Vector2f(game_width, 10.0f),
+		// Left
+		sf::Vector2f(5.0f, game_height / 2.0f),
+		sf::Vector2f(10.0f, game_height),
+		// Right
+		sf::Vector2f(game_width - 5.0f, game_height / 2.0f),
+		sf::Vector2f(10.0f, game_height)
+	};
+	for (int i = 0; i < 4; ++i)
+	{
+		auto s = std::make_unique<sf::RectangleShape>();
+		s->setSize(walls[2 * i + 1]);
+		s->setOrigin(walls[2 * i + 1] / 2.0f);
+		s->setPosition(walls[2 * i]);
+		shapes.push_back(std::move(s));
+
+		auto b = physics::create_box(false, *shapes.back());
+		bodies.push_back(b);
+	}
+
+	// Boxes
 	for (int i(1); i < 11; ++i)
 	{
 		// Shapes
