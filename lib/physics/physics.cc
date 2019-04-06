@@ -15,10 +15,48 @@ namespace physics
 	// Physics world
 	static b2World* physics_world;
 
+	// List of bodies
+	static std::vector<b2Body*> physics_bodies;
+
 	// Initialise physics with world
 	void initialise(b2World* world)
 	{
+		if (physics_world != nullptr)
+			cleanup();
+
+		if (!world)
+			world = new b2World(b2Vec2(0.0f, -9.8f));
+
 		physics_world = world;
+		b2Body* body = world->GetBodyList();
+		while (body)
+		{
+			physics_bodies.push_back(body);
+			body = body->GetNext();
+		}
+	}
+
+	// Cleanup
+	void cleanup()
+	{
+		for (auto& b : physics_bodies)
+			physics_world->DestroyBody(b);
+		physics_bodies.clear();
+
+		delete physics_world;
+		physics_world = nullptr;
+	}
+
+	// Current physics world
+	const b2World* world()
+	{
+		return physics_world;
+	}
+
+	// List of bodies in world
+	const std::vector<b2Body*> bodies()
+	{
+		return physics_bodies;
 	}
 
 	// Update world
@@ -28,26 +66,6 @@ namespace physics
 			delta_time,
 			velocity_iterations,
 			position_iterations);
-	}
-
-	// Convert from b2Vec2 to Vector2f
-	const sf::Vector2f bv2_to_sv2(const b2Vec2& vector)
-	{
-		return sf::Vector2f(vector.x, vector.y) * scale;
-	}
-
-	// Convert from Vector2f to b2Vec2
-	const b2Vec2 sv2_to_bv2(const sf::Vector2f& vector)
-	{
-		return b2Vec2(vector.x * scale_inv, vector.y * scale_inv);
-	}
-
-	// Convert from screenspace to physics
-	const sf::Vector2f invert_height(
-		const sf::Vector2f& vector,
-		const float height)
-	{
-		return sf::Vector2f(vector.x, height - vector.y);
 	}
 
 	// Create a Box2D body with a box fixture
@@ -76,6 +94,8 @@ namespace physics
 		// Create body
 		auto body = physics_world->CreateBody(&body_def);
 		body->CreateFixture(&fixture_def);
+		physics_bodies.push_back(body);
+
 		return body;
 	}
 
@@ -88,5 +108,27 @@ namespace physics
 			dynamic,
 			rs.getPosition(),
 			rs.getSize());
+	}
+
+
+
+	// Convert from b2Vec2 to Vector2f
+	const sf::Vector2f bv2_to_sv2(const b2Vec2& vector)
+	{
+		return sf::Vector2f(vector.x, vector.y) * scale;
+	}
+
+	// Convert from Vector2f to b2Vec2
+	const b2Vec2 sv2_to_bv2(const sf::Vector2f& vector)
+	{
+		return b2Vec2(vector.x * scale_inv, vector.y * scale_inv);
+	}
+
+	// Convert from screenspace to physics
+	const sf::Vector2f invert_height(
+		const sf::Vector2f& vector,
+		const float height)
+	{
+		return sf::Vector2f(vector.x, height - vector.y);
 	}
 }

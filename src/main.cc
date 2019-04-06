@@ -26,8 +26,6 @@ std::size_t game_height;
 std::array<bool, sf::Keyboard::KeyCount> keyboard;
 
 //// TEST
-b2World* world;
-std::vector<b2Body*> bodies;
 std::vector<std::unique_ptr<sf::RectangleShape>> shapes;
 //// TEST
 
@@ -46,8 +44,7 @@ void load(sf::RenderWindow& window)
 	//// TEST
 	// World
 	const b2Vec2 gravity(0.0f, -9.8f);
-	world = new b2World(gravity);
-	physics::initialise(world);
+	physics::initialise(new b2World(gravity));
 
 	// Walls
 	sf::Vector2f walls[] {
@@ -72,8 +69,7 @@ void load(sf::RenderWindow& window)
 		s->setPosition(walls[2 * i]);
 		shapes.push_back(std::move(s));
 
-		auto b = physics::create_box(false, *shapes.back());
-		bodies.push_back(b);
+		physics::create_box(false, *shapes.back());
 	}
 
 	// Boxes
@@ -90,7 +86,6 @@ void load(sf::RenderWindow& window)
 		// Physics
 		auto b = physics::create_box(true, *shapes.back());
 		b->ApplyAngularImpulse(5.0f, true);
-		bodies.push_back(b);
 	}
 	//// TEST
 
@@ -133,6 +128,7 @@ void update()
 
 		//// TEST
 		physics::update(delta_time);
+		std::vector<b2Body*> bodies = physics::bodies();
 		for (int i = 0; i < bodies.size(); ++i)
 		{
 			shapes[i]->setPosition(physics::invert_height(physics::bv2_to_sv2(bodies[i]->GetPosition()), game_height));
@@ -158,10 +154,7 @@ void render()
 
 void unload(sf::RenderWindow& window)
 {
-	for (auto& b : bodies)
-		world->DestroyBody(b);
-	delete world;
-	bodies.clear();
+	physics::cleanup();
 	renderer::shutdown();
 }
 
