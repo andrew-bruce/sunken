@@ -46,48 +46,9 @@ void load(sf::RenderWindow& window)
 	const b2Vec2 gravity(0.0f, -9.8f);
 	physics::initialise(new b2World(gravity));
 
-	// Walls
-	sf::Vector2f walls[] {
-		// Top
-		sf::Vector2f(game_width / 2.0f, 5.0f),
-		sf::Vector2f(game_width, 10.0f),
-		// Bottom
-		sf::Vector2f(game_width / 2.0f, game_height - 5.0f),
-		sf::Vector2f(game_width, 10.0f),
-		// Left
-		sf::Vector2f(5.0f, game_height / 2.0f),
-		sf::Vector2f(10.0f, game_height),
-		// Right
-		sf::Vector2f(game_width - 5.0f, game_height / 2.0f),
-		sf::Vector2f(10.0f, game_height)
-	};
-	for (int i = 0; i < 4; ++i)
-	{
-		auto s = std::make_unique<sf::RectangleShape>();
-		s->setSize(walls[2 * i + 1]);
-		s->setOrigin(walls[2 * i + 1] / 2.0f);
-		s->setPosition(walls[2 * i]);
-		shapes.push_back(std::move(s));
-
-		physics::create_box(false, *shapes.back());
-	}
-
-	// Boxes
-	for (int i(1); i < 11; ++i)
-	{
-		// Shapes
-		auto s = std::make_unique<sf::RectangleShape>();
-		s->setPosition(i * (game_width / 12.0f), game_height * 0.7f);
-		s->setSize(sf::Vector2f(50.0f, 50.0f));
-		s->setOrigin(25.0f, 25.0f);
-		s->setFillColor(sf::Color::White);
-		shapes.push_back(std::move(s));
-
-		// Physics
-		auto b = physics::create_box(true, *shapes.back());
-		b->ApplyAngularImpulse(5.0f, true);
-	}
 	//// TEST
+	// Loads items to the screen at game beginning
+	level::load_level_file("res/levels/maze2.txt");
 
 	reset();
 }
