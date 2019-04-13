@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include <ecm.hh>
+#include "entity.hh"
 
 // Entity manager
 struct Entities

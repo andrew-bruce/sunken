@@ -1,6 +1,6 @@
 #pragma once
 
-#include "entity_manager.hh"
+#include <entity_manager.hh>
 
 struct Scene
 {
