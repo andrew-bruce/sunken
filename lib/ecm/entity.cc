@@ -1,20 +1,48 @@
 #include "entity.hh"
 
 // Class oveerrides
-Entity::Entity() { }
+Entity::Entity(Scene* const scene)
+	:	scene_       (scene),
+		position_    (sf::Vector2f(0.0f, 0.0f)),
+		rotation_    (0.0f),
+		scale_       (sf::Vector2f(0.0f, 0.0f)),
+		alive_       (true),
+		visible_     (true),
+		for_deletion_(false)
+{ }
 Entity::~Entity() { }
 
 // Logic
 void Entity::update(const float& delta_time)
 {
-	for (const std::unique_ptr<Component>& c : components_)
-		c->update(delta_time);
+	if (!alive_)
+		return;
+
+	for (std::size_t i = 0; i < components_.size(); ++i)
+		if (components_[i]->is_for_deletion())
+			components_.erase(components_.begin() + i--);
+		else
+			components_[i]->update(delta_time);
 }
 
 void Entity::render()
 {
+	if (!visible_)
+		return;
+
 	for (const std::unique_ptr<Component>& c : components_)
 		c->render();
+}
+
+// Tags
+void Entity::add_tag(const std::string& t)
+{
+	tags_.insert(t);
+}
+
+const std::set<std::string>& Entity::tags() const
+{
+	return tags_;
 }
 
 // Position
@@ -95,5 +123,7 @@ bool Entity::is_for_deletion() const
 
 void Entity::delete_please()
 {
+	alive_ = false;
+	visible_ = false;
 	for_deletion_ = true;
 }

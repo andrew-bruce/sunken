@@ -6,13 +6,16 @@ struct Entity;
 // Component
 struct Component
 {
+	friend struct Entity;
+
 protected:
 	bool          for_deletion_;
 	Entity* const parent_;
 
+	explicit Component(Entity* const p);
+
 public:
 	Component() = delete;
-	explicit Component(Entity* const p);
 	virtual ~Component();
 
 	// Logic

@@ -1,7 +1,10 @@
 #include "component.hh"
 
 // Class overrides
-Component::Component(Entity* const p) : parent_(p) { }
+Component::Component(Entity* const p)
+	:	for_deletion_(false),
+		parent_(p)
+{ }
 Component::~Component() { }
 
 // Deletion

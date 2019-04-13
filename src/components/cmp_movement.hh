@@ -7,10 +7,11 @@ struct CmpMovement : Component
 protected:
 	float speed_;
 
+	explicit CmpMovement(Entity* p);
+
 public:
 	// Class overrides
 	CmpMovement() = delete;
-	explicit CmpMovement(Entity* p);
 
 	// Move
 	void move(const sf::Vector2f& move);

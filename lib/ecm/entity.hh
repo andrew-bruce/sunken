@@ -1,16 +1,26 @@
 #pragma once
 
 #include <memory>
+#include <set>
+#include <string>
 #include <vector>
 
 #include <SFML/System.hpp>
 
 #include "component.hh"
 
+// Forward declare
+struct Entities;
+struct Scene;
+
 // Entity
 struct Entity
 {
+	friend struct Entities;
+
 protected:
+	Scene* const scene_;
+
 	sf::Vector2f position_;
 	float        rotation_;
 	sf::Vector2f scale_;
@@ -19,10 +29,13 @@ protected:
 	bool visible_;
 	bool for_deletion_;
 
+	std::set<std::string> tags_;
+
 	std::vector<std::unique_ptr<Component>> components_;
 
 public:
-	Entity();
+	Entity() = delete;
+	explicit Entity(Scene* const scene);
 	virtual ~Entity();
 
 	// Logic
@@ -56,6 +69,10 @@ public:
 	bool is_for_deletion() const;
 	void delete_please();
 
+	// Tags
+	void add_tag(const std::string& t);
+	const std::set<std::string>& tags() const;
+
 	// Components
 	template <typename T, typename... Targs>
 	T* const add_component(Targs... params)
@@ -70,6 +87,19 @@ public:
 
 	template <typename T>
 	const std::vector<T*> components() const
+	{
+		static_assert(std::is_base_of<Component, T>::value, "T != component");
+
+		std::vector<T*> output;
+		for (const std::unique_ptr<Component>& c : components_)
+			if (typeid(c.get()) == typeid(T))
+				output.push_back((T*)c.get());
+
+		return std::move(output);
+	}
+
+	template <typename T>
+	const std::vector<T*> compatible_components() const
 	{
 		static_assert(std::is_base_of<Component, T>::value, "T != component");
 
