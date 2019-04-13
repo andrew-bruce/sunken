@@ -3,7 +3,7 @@
 // Logic
 void Entities::update(const float& delta_time)
 {
-	for (std::size_t i = 0; i < entities_.size(); ++i)
+	for (std::size_t i(0); i < entities_.size(); ++i)
 		if (entities_[i]->is_for_deletion())
 			entities_.erase(entities_.begin() + i--);
 		else

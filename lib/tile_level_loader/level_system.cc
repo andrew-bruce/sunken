@@ -39,23 +39,113 @@ namespace level
 	static std::vector<std::unique_ptr<sf::RectangleShape>> level_tile_sprites;
 
 	// Build tile sprites
-	void build_sprites()
+	void build_sprites(bool optimise = true)
 	{
 		level_tile_sprites.clear();
+
+		// Tile properties used for sprites
+		struct tile_def
+		{
+			sf::Vector2f p;
+			sf::Vector2f s;
+			sf::Color c;
+		};
+
+		std::vector<tile_def> tiles;
+		const sf::Vector2f size(sf::Vector2f(level_tile_size, level_tile_size));
+
 		for (std::size_t y(0); y < level_height; ++y)
 		{
 			for (std::size_t x(0); x < level_width; ++x)
 			{
-				sf::Vector2ul index(x, y);
-				auto s = std::make_unique<sf::RectangleShape>();
+				Tile t(tile_at(sf::Vector2ul(x, y)));
+				if (t == Tile::Empty)
+					continue;
 
-				s->setPosition(tile_position(index));
-				s->setSize(sf::Vector2f(level_tile_size, level_tile_size));
-				s->setFillColor(tile_colour(tile_at(index)));
-
-				level_tile_sprites.push_back(std::move(s));
+				tile_def td;
+				td.p = tile_position(sf::Vector2ul(x, y));
+				td.s = size;
+				td.c = tile_colour(t);
+				tiles.push_back(td);
 			}
 		}
+
+		if (optimise && tiles.size() > 0)
+		{
+			tile_def last(tiles.front());
+			std::size_t same_count;
+
+			// Combine tiles in X direction
+			std::vector<tile_def> tox;
+			for (std::size_t i(1); i < tiles.size(); ++i)
+			{
+				bool same(tiles[i].p.y == last.p.y &&
+				          tiles[i].p.x == last.p.x + size.x * (same_count + 1) &&
+						  tiles[i].c == last.c);
+				if (same)
+					// Keep going
+					++same_count;
+				else
+				{
+					if (same_count)
+						last.s.x = size.x * (same_count + 1);
+					tox.push_back(last);
+					same_count = 0;
+					last = tiles[i];
+				}
+			}
+
+			// Catch last tile
+			if (same_count)
+			{
+				last.s.x = size.x * (same_count + 1);
+				tox.push_back(last);
+				same_count = 0;
+			}
+
+			// Combine tiles in Y direction
+			std::vector<tile_def> toy;
+			for (std::size_t i(0); i < tox.size(); ++i)
+			{
+				last = tox[i];
+				for (std::size_t j(i + 1); j < tox.size(); ++j)
+				{
+					bool same(tox[j].p.x == last.p.x &&
+					          tox[j].s == last.s &&
+							  tox[j].p.y == last.p.y + size.y * (same_count + 1) &&
+							  tox[j].c == last.c);
+					if (same)
+					{
+						++same_count;
+						tox.erase(tox.begin() + j--);
+					}
+				}
+
+				if (same_count)
+					last.s.y = size.y * (same_count + 1);
+
+				toy.push_back(last);
+				same_count = 0;
+			}
+
+			tiles.swap(toy);
+		}
+
+		for (const tile_def& t : tiles)
+		{
+			auto s = std::make_unique<sf::RectangleShape>();
+
+			s->setPosition(t.p);
+			s->setSize(t.s);
+			s->setFillColor(t.c);
+
+			level_tile_sprites.push_back(std::move(s));
+		}
+
+		std::cout << "Level with " <<
+			level_width * level_height << " tiles using " <<
+			level_tile_sprites.size() << " tiles" << std::endl;
+
 	}
 
 	// Whether level has been loaded

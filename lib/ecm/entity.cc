@@ -18,7 +18,7 @@ void Entity::update(const float& delta_time)
 	if (!alive_)
 		return;
 
-	for (std::size_t i = 0; i < components_.size(); ++i)
+	for (std::size_t i(0); i < components_.size(); ++i)
 		if (components_[i]->is_for_deletion())
 			components_.erase(components_.begin() + i--);
 		else
