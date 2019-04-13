@@ -16,6 +16,7 @@
 
 #include "cmp_movement_player.hh"
 #include "cmp_movement_enemy.hh"
+#include "cmp_combat_player.hh"
 #include "sunken.hh"
 
 // Window
@@ -27,6 +28,8 @@ std::array<bool, sf::Keyboard::KeyCount> keyboard;
 
 //// TEST
 std::vector<std::unique_ptr<sf::RectangleShape>> shapes;
+
+Entity player;
 //// TEST
 
 void reset() {}
@@ -48,7 +51,16 @@ void load(sf::RenderWindow& window)
 
 	//// TEST
 	// Loads items to the screen at game beginning
-	level::load_level_file("res/levels/maze2.txt");
+	//level::load_level_file("res/levels/maze2.txt");
+
+	auto s = player.add_component<CmpShape>();
+	s->use_shape<sf::CircleShape>(12.f);
+	s->shape().setFillColor(sf::Color::Yellow);
+	s->shape().setOrigin(sf::Vector2f(12.f, 12.f));
+
+	auto m = player.add_component<CmpMovementPlayer>();
+	auto c = player.add_component<CmpCombatPlayer>();
+
 
 	reset();
 }
@@ -100,6 +112,8 @@ void update()
 
 		renderer::update(delta_time);
 	}
+
+	player.update(delta_time);
 }
 
 void render()
@@ -111,6 +125,7 @@ void render()
 	//// TEST
 
 	renderer::render();
+	player.render();
 }
 
 void unload(sf::RenderWindow& window)
