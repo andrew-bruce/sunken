@@ -12,10 +12,10 @@
 #include <system_renderer.hh>
 #include <level_system.hh>
 #include <ecm.hh>
-#include <cmp_shape.hh>
 
-#include "cmp_movement_player.hh"
-#include "cmp_movement_enemy.hh"
+#include "components/cmp_shape.hh"
+#include "components/cmp_movement_player.hh"
+#include "components/cmp_movement_enemy.hh"
 #include "sunken.hh"
 
 // Window

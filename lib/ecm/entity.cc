@@ -1,4 +1,4 @@
-#include "ecm.hh"
+#include "entity.hh"
 
 // Class oveerrides
 Entity::Entity() { }
@@ -97,16 +97,3 @@ void Entity::delete_please()
 {
 	for_deletion_ = true;
 }
-
-
-
-// Class overrides
-Component::Component(Entity* const p) : parent_(p) { }
-Component::~Component() { }
-
-// Deletion
-bool Component::is_for_deletion() const
-{
-	return for_deletion_;
-}
-

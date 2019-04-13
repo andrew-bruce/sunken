@@ -1,7 +1,7 @@
 #include "cmp_movement_player.hh"
 
 #include <maths.hh>
-#include "sunken.hh"
+#include "../sunken.hh"
 
 // Class overrides
 CmpMovementPlayer::CmpMovementPlayer(Entity* p) : CmpMovement(p) {}
