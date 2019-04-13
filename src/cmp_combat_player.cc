@@ -18,4 +18,5 @@ void CmpCombatPlayer::update(const float & delta_time)
 
 void CmpCombatPlayer::render()
 {
+	
 }
