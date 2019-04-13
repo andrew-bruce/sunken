@@ -239,6 +239,31 @@ namespace level
 			return unload();
 		}
 
+		// Needs start and end tiles
+		if (find_tiles(Tile::Start).size() == 0)
+		{
+			std::cerr <<
+				"ERROR -> "
+				"LEVEL_SYSTEM -> "
+				"LOAD_LEVEL_FILE -> "
+				"NO START TILES"
+				<< std::endl;
+
+			return unload();
+		}
+
+		if (find_tiles(Tile::End).size() == 0)
+		{
+			std::cerr <<
+				"ERROR -> "
+				"LEVEL_SYSTEM -> "
+				"LOAD_LEVEL_FILE -> "
+				"NO END TILES"
+				<< std::endl;
+
+			return unload();
+		}
+
 		// Moves tiles and build sprites
 		level_tiles.swap(temp_tiles);
 		build_sprites();
