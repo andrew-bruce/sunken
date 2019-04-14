@@ -23,9 +23,10 @@ void Entities::clear()
 	entities_.clear();
 }
 
-void Entities::add(std::unique_ptr<Entity> entity)
+Entity* Entities::add(std::unique_ptr<Entity> entity)
 {
 	entities_.push_back(std::move(entity));
+	return entities_.back().get();
 }
 
 const std::vector<std::unique_ptr<Entity>>& Entities::list() const
