@@ -144,7 +144,7 @@ namespace level
 
 		std::cout << "Level with " <<
 			level_width * level_height << " tiles using " <<
-			level_tile_sprites.size() << " tiles" << std::endl;
+			level_tile_sprites.size() << " sprites" << std::endl;
 
 	}
 
@@ -329,6 +329,9 @@ namespace level
 			return unload();
 		}
 
+		// Move tiles from temporary storage
+		level_tiles.swap(temp_tiles);
+
 		// Needs start and end tiles
 		if (find_tiles(Tile::Start).size() == 0)
 		{
@@ -355,7 +358,6 @@ namespace level
 		}
 
 		// Moves tiles and build sprites
-		level_tiles.swap(temp_tiles);
 		build_sprites();
 
 		// Level is loaded
@@ -372,8 +374,8 @@ namespace level
 	// Render level
 	void render()
 	{
-		for (std::size_t i(0); i < level_width * level_height; ++i)
-			renderer::queue(level_tile_sprites[i].get());
+		for (const std::unique_ptr<sf::RectangleShape>& s : level_tile_sprites)
+			renderer::queue(s.get());
 	}
 };
 

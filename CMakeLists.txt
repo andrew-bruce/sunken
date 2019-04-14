@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Project name
-project(SUNKEN)
+project(SUNKEN C CXX)
 
 
 
@@ -23,6 +23,9 @@ SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${output_directory})
 
 
 #### Add External Dependencies
+
+# Threads
+find_package(Threads REQUIRED)
 
 # SFML
 add_subdirectory("lib/sfml")
@@ -135,6 +138,7 @@ target_link_libraries(lib_scene
 	lib_renderer
 	lib_maths
 	sfml-graphics
+	${CMAKE_THREAD_LIBS_INIT}
 )
 
 

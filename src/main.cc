@@ -13,9 +13,8 @@
 #include <level_system.hh>
 #include <ecm.hh>
 
-#include "components/cmp_shape.hh"
-#include "components/cmp_movement_player.hh"
-#include "components/cmp_movement_enemy.hh"
+#include "scenes/scene_test.hh"
+
 #include "sunken.hh"
 
 // Window
@@ -26,10 +25,7 @@ std::size_t game_height;
 std::array<bool, sf::Keyboard::KeyCount> keyboard;
 
 //// TEST
-std::vector<std::unique_ptr<sf::RectangleShape>> shapes;
-//// TEST
-
-void reset() {}
+SceneTest scene_test;
 
 void load(sf::RenderWindow& window)
 {
@@ -41,55 +37,7 @@ void load(sf::RenderWindow& window)
 	std::cout << "Loading font..." << std::endl;
 	font.loadFromFile("res/fonts/FiraCode-Regular.ttf");
 
-	//// TEST
-	// World
-	const b2Vec2 gravity(0.0f, -9.8f);
-	physics::initialise(new b2World(gravity));
-
-	// Walls
-	sf::Vector2f walls[] {
-		// Top
-		sf::Vector2f(game_width / 2.0f, 5.0f),
-		sf::Vector2f(game_width, 10.0f),
-		// Bottom
-		sf::Vector2f(game_width / 2.0f, game_height - 5.0f),
-		sf::Vector2f(game_width, 10.0f),
-		// Left
-		sf::Vector2f(5.0f, game_height / 2.0f),
-		sf::Vector2f(10.0f, game_height),
-		// Right
-		sf::Vector2f(game_width - 5.0f, game_height / 2.0f),
-		sf::Vector2f(10.0f, game_height)
-	};
-	for (int i = 0; i < 4; ++i)
-	{
-		auto s = std::make_unique<sf::RectangleShape>();
-		s->setSize(walls[2 * i + 1]);
-		s->setOrigin(walls[2 * i + 1] / 2.0f);
-		s->setPosition(walls[2 * i]);
-		shapes.push_back(std::move(s));
-
-		physics::create_box(false, *shapes.back());
-	}
-
-	// Boxes
-	for (int i(1); i < 11; ++i)
-	{
-		// Shapes
-		auto s = std::make_unique<sf::RectangleShape>();
-		s->setPosition(i * (game_width / 12.0f), game_height * 0.7f);
-		s->setSize(sf::Vector2f(50.0f, 50.0f));
-		s->setOrigin(25.0f, 25.0f);
-		s->setFillColor(sf::Color::White);
-		shapes.push_back(std::move(s));
-
-		// Physics
-		auto b = physics::create_box(true, *shapes.back());
-		b->ApplyAngularImpulse(5.0f, true);
-	}
-	//// TEST
-
-	reset();
+	scene_test.load();
 }
 
 void input(sf::RenderWindow& window)
@@ -126,35 +74,20 @@ void update()
 	while (accumulator >= delta_time) {
 		accumulator -= delta_time;
 
-		//// TEST
-		physics::update(delta_time);
-		std::vector<b2Body*> bodies = physics::bodies();
-		for (int i = 0; i < bodies.size(); ++i)
-		{
-			shapes[i]->setPosition(physics::invert_height(physics::bv2_to_sv2(bodies[i]->GetPosition()), game_height));
-
-			shapes[i]->setRotation((180 / b2_pi) * bodies[i]->GetAngle());
-		}
-		//// TEST
-
+		scene_test.update(delta_time);
 		renderer::update(delta_time);
 	}
 }
 
 void render()
 {
-	//// TEST
-	level::render();
-	for (auto& s : shapes)
-		renderer::queue(s.get());
-	//// TEST
-
+	scene_test.render();
 	renderer::render();
 }
 
 void unload(sf::RenderWindow& window)
 {
-	physics::cleanup();
+	scene_test.unload();
 	renderer::shutdown();
 }
 
