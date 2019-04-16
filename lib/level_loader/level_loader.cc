@@ -1,7 +1,11 @@
 #include "level_loader.hh"
 
+#include <array>
 #include <fstream>
 #include <iostream>
+#include <map>
+#include <memory>
+#include <set>
 
 #include <system_renderer.hh>
 
@@ -14,7 +18,7 @@ namespace level
 	static sf::Vector2ul size_      = {0, 0};
 
 	// Tile lists
-	static std::vector<Tile> tiles_;
+	static std::unique_ptr<Tile[]> tiles_;
 	static const std::set<Tile> tile_enums_ =
 	{
 		Tile::Empty,
@@ -52,7 +56,7 @@ namespace level
 		for (std::size_t y = 0; y < size_.y; ++y)
 			for (std::size_t x = 0; x < size_.x; ++x)
 			{
-				Tile t(tile_at(sf::Vector2ul(x, y)));
+				Tile t = tile_at(sf::Vector2ul(x, y));
 				if (t == Tile::Empty)
 					continue;
 
@@ -174,22 +178,34 @@ namespace level
 
 		// Populate temporary vector with contents of string
 		std::vector<Tile> tiles;
+		std::size_t width_check = 0;
 		for (std::size_t i = 0; i < file_content.size(); ++i)
 		{
 			const Tile t = static_cast<Tile>(file_content[i]);
 
-			if (t == '\n')
+			if (tile_enums_.find(t) != tile_enums_.end())
+				tiles.push_back(t);
+
+			else if (t == '\0') break;
+
+			else if (t == '\n')
 			{
 				if (size_.x == 0)
 					size_.x = i;
+				else if (size_.x != (width_check - 1))
+				{
+					std::cerr << "ERROR non-uniform width in level " << filepath
+						<< " @ height " << size_.y << std::endl;
+					return unload();
+				}
+				width_check = 0;
 				++size_.y;
-				continue;
 			}
 
-			if (tile_enums_.find(t) != tile_enums_.end())
-				tiles.push_back(t);
 			else
 				std::cerr << "WARNING level contains invalid tile: " << t << std::endl;
+
+			++width_check;
 		}
 
 		// Invalid amount of tiles
@@ -213,7 +229,9 @@ namespace level
 		}
 
 		// Move tiles from temporary storage
-		tiles_.swap(tiles);
+		tiles_.reset();
+		tiles_ = std::make_unique<Tile[]>(size_.x * size_.y);
+		std::copy(tiles.begin(), tiles.end(), &tiles_[0]);
 
 		// Moves tiles and build sprites
 		build_sprites();
@@ -231,7 +249,7 @@ namespace level
 		size_      = {0, 0};
 		tile_size_ = 0;
 
-		tiles_.clear();
+		tiles_.reset();
 		tile_sprites_.clear();
 	}
 
