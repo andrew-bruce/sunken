@@ -1,10 +1,10 @@
 #include "scene.hh"
 
 // Loading
-void Scene::loaded(bool l)
+void Scene::loaded(bool b)
 {
 	std::lock_guard<std::mutex> lock(loaded_mutex_);
-	loaded_ = l;
+	loaded_ = b;
 }
 
 bool Scene::is_loaded() const
@@ -49,4 +49,9 @@ Entity* Scene::make_entity()
 {
 	auto e = std::make_unique<Entity>(this);
 	return entities_.add(std::move(e));
+}
+
+const Entities& Scene::entities() const
+{
+	return entities_;
 }

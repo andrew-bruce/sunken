@@ -23,4 +23,3 @@ public:
 	const std::vector<Entity*> find(const std::string& tag) const;
 	const std::vector<Entity*> find(const std::vector<std::string>& tags) const;
 };
-

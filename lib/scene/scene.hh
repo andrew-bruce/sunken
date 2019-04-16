@@ -17,10 +17,11 @@ protected:
 	// Entities
 	Entities entities_;
 
-	void loaded(bool l);
+	void loaded(bool b);
 
 public:
 	// Class overrides
+	Scene() = default;
 	virtual ~Scene() = default;
 
 	// Loading
@@ -35,4 +36,5 @@ public:
 
 	// Entities
 	Entity* make_entity();
+	const Entities& entities() const;
 };

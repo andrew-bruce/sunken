@@ -93,16 +93,16 @@ target_link_libraries(lib_renderer
 	sfml-graphics
 )
 
-# Tile loader library
+# Level loader library
 file(GLOB_RECURSE sources
-	lib/tile_level_loader/*.cc
-	lib/tile_level_loader/*.hh
+	lib/level_loader/*.cc
+	lib/level_loader/*.hh
 )
-add_library(lib_tile_level_loader STATIC ${sources})
-target_include_directories(lib_tile_level_loader
-	INTERFACE "${CMAKE_SOURCE_DIR}/lib/tile_level_loader/"
+add_library(lib_level_loader STATIC ${sources})
+target_include_directories(lib_level_loader
+	INTERFACE "${CMAKE_SOURCE_DIR}/lib/level_loader/"
 )
-target_link_libraries(lib_tile_level_loader
+target_link_libraries(lib_level_loader
 	lib_renderer
 	lib_maths
 	sfml-graphics
@@ -118,7 +118,7 @@ target_include_directories(lib_ecm
 	INTERFACE "${CMAKE_SOURCE_DIR}/lib/ecm"
 )
 target_link_libraries(lib_ecm
-	lib_tile_level_loader
+	lib_level_loader
 	lib_renderer
 	lib_maths
 )
@@ -134,7 +134,7 @@ target_include_directories(lib_scene
 )
 target_link_libraries(lib_scene
 	lib_ecm
-	lib_tile_level_loader
+	lib_level_loader
 	lib_renderer
 	lib_maths
 	sfml-graphics
@@ -158,7 +158,7 @@ target_include_directories(Sunken
 target_link_libraries(Sunken
 	lib_scene
 	lib_ecm
-	lib_tile_level_loader
+	lib_level_loader
 	lib_renderer
 	lib_physics
 	lib_maths
