@@ -8,6 +8,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <resources.hh>
 #include <physics.hh>
 #include <renderer.hh>
 #include <level_loader.hh>
@@ -24,6 +25,9 @@ std::size_t game_height;
 // Keyboard
 std::array<bool, sf::Keyboard::KeyCount> keyboard;
 
+// Font
+sf::Font* font;
+
 //// TEST
 SceneTest scene_test;
 
@@ -35,7 +39,7 @@ void load(sf::RenderWindow& window)
 	renderer::initialise(window);
 
 	std::cout << "Loading font..." << std::endl;
-	font.loadFromFile("res/fonts/FiraCode-Regular.ttf");
+	font = resources::get<sf::Font>("FiraCode-Regular.ttf");
 
 	scene_test.load();
 }

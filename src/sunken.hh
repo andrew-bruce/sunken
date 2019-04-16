@@ -12,5 +12,5 @@ extern std::size_t game_height;
 extern std::array<bool, sf::Keyboard::KeyCount> keyboard;
 
 // Font
-extern sf::Font font;
+extern sf::Font* font;
 

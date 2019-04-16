@@ -53,6 +53,20 @@ add_custom_target(
 
 #### Libraries
 
+# Resources library
+file(GLOB_RECURSE sources
+	lib/resources/*.cc
+	lib/resources/*.hh
+)
+add_library(lib_resources STATIC ${sources})
+target_include_directories(lib_resources
+	INTERFACE "${CMAKE_SOURCE_DIR}/lib/resources/"
+)
+target_link_libraries(lib_resources
+	sfml-audio
+	sfml-graphics
+)
+
 # Maths library
 add_library(lib_maths INTERFACE)
 target_sources(lib_maths
@@ -162,6 +176,7 @@ target_link_libraries(Sunken
 	lib_renderer
 	lib_physics
 	lib_maths
+	lib_resources
 	sfml-graphics
 	Box2D
 )
