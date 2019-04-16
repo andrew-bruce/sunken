@@ -9,7 +9,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <physics.hh>
-#include <system_renderer.hh>
+#include <renderer.hh>
 #include <level_loader.hh>
 #include <ecm.hh>
 

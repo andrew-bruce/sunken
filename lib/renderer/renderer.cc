@@ -1,4 +1,4 @@
-#include "system_renderer.hh"
+#include "renderer.hh"
 
 #include <iostream>
 #include <queue>

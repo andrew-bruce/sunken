@@ -7,7 +7,7 @@
 #include <memory>
 #include <set>
 
-#include <system_renderer.hh>
+#include <renderer.hh>
 
 // Level singleton
 namespace level

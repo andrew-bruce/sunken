@@ -1,6 +1,6 @@
 #include "cmp_sprite.hh"
 
-#include <system_renderer.hh>
+#include <renderer.hh>
 
 // Class overrides
 CmpSprite::CmpSprite(Entity* p) : Component(p) {};

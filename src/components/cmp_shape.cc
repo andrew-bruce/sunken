@@ -1,6 +1,6 @@
 #include "cmp_shape.hh"
 
-#include <system_renderer.hh>
+#include <renderer.hh>
 
 // Class overrides
 CmpShape::CmpShape(Entity* p) : Component(p) {};
