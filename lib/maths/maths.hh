@@ -10,6 +10,13 @@ namespace sf
 	// Type definition
 	typedef Vector2<std::size_t> Vector2ul;
 
+	// Cast
+	template <typename T, typename U>
+	Vector2<T> cast(const Vector2<U>& vector)
+	{
+		return Vector2<T>(static_cast<T>(vector.x), static_cast<T>(vector.y));
+	}
+
 	// Squared length
 	template <typename T>
 	T length2(const Vector2<T>& vector)
@@ -28,21 +35,9 @@ namespace sf
 	template <typename T>
 	Vector2<T> normalise(const Vector2<T>& vector)
 	{
-		const double l(length(vector));
+		const double l = length(vector);
 		if (l == 0.0) return vector;
-
-		Vector2<T> output(
-			static_cast<T>(static_cast<double>(vector.x) / l),
-			static_cast<T>(static_cast<double>(vector.y) / l));
-
-		return output;
-	}
-
-	// Cast
-	template <typename T, typename U>
-	Vector2<T> cast(const Vector2<U>& vector)
-	{
-		return Vector2<T>(static_cast<T>(vector.x), static_cast<T>(vector.y));
+		return cast<T>(cast<double>(vector) / l);
 	}
 
 	// Degrees to radians
@@ -55,9 +50,9 @@ namespace sf
 	template <typename T>
 	Vector2<T> rotate(const Vector2<T>& vector, const double& degrees)
 	{
-		const double theta (deg_to_rad(degrees));
-		const double c     (cos(theta));
-		const double s     (sin(theta));
+		const double theta = deg_to_rad(degrees);
+		const double c     = cos(theta);
+		const double s     = sin(theta);
 
 		return Vector2<T>(
 			vector.x * c - vector.y * s,
@@ -68,7 +63,7 @@ namespace sf
 	template <typename T>
 	std::ostream& operator<<(std::ostream& output, const Vector2<T>& vector)
 	{
-		output << '(' << vector.x << ", " << vector.y << ')';
+		output << '[' << vector.x << ',' << vector.y << ']';
 		return output;
 	}
 };
