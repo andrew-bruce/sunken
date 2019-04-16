@@ -1,7 +1,7 @@
 #include "cmp_movement.hh"
 
 #include <system_renderer.hh>
-#include <level_system.hh>
+#include <level_loader.hh>
 
 // Class overrides
 CmpMovement::CmpMovement(Entity* p) : Component(p), speed_(100.0f) {}

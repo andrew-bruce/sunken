@@ -1,13 +1,13 @@
 #include "scene_test.hh"
 
-#include <level_system.hh>
+#include <level_loader.hh>
 
 #include "../components/cmp_shape.hh"
 #include "../components/cmp_movement_player.hh"
 
 void SceneTest::load()
 {
-	level::load_level_file("res/levels/maze.txt");
+	level::load("res/levels/maze.txt");
 
 	sf::Vector2f position(
 		level::tile_position(

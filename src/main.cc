@@ -10,7 +10,7 @@
 
 #include <physics.hh>
 #include <system_renderer.hh>
-#include <level_system.hh>
+#include <level_loader.hh>
 #include <ecm.hh>
 
 #include "scenes/scene_test.hh"

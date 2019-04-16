@@ -2,7 +2,7 @@
 
 #include <cstdlib>
 
-#include <level_system.hh>
+#include <level_loader.hh>
 
 // Class overrides
 CmpMovementEnemy::CmpMovementEnemy(Entity* p)
