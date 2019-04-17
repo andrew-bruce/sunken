@@ -28,7 +28,7 @@ void CmpCombat::fire(sf::Vector2f direction)
 	s->shape().setOrigin(size);
 	s->shape().setFillColor(sf::Color::Red);
 
-	auto t = e->add_component<CmpTorpedo>(direction);
+	auto t = e->add_component<CmpMovementTorpedo>(direction);
 
 	--ammo_;
 	fire_cooldown_ = 2.0f;
