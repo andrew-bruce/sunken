@@ -60,7 +60,6 @@ namespace engine
 		static sf::Event event;
 
 		while (window_->pollEvent(event))
-		{
 			if (event.type == sf::Event::Closed)
 				window_->close();
 
@@ -71,7 +70,12 @@ namespace engine
 			else if (event.type     == sf::Event::KeyReleased
 			     &&  event.key.code != sf::Keyboard::Unknown)
 				keyboard[event.key.code] = false;
-		}
+
+			else if (event.type == sf::Event::MouseButtonPressed)
+				mouse[event.mouseButton.button] = true;
+
+			else if (event.type == sf::Event::MouseButtonReleased)
+				mouse[event.mouseButton.button] = false;
 
 		if (keyboard[sf::Keyboard::Escape])
 			window_->close();

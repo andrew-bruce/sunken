@@ -11,6 +11,7 @@
 namespace engine
 {
 	extern std::array<bool, sf::Keyboard::KeyCount> keyboard;
+	extern std::array<bool, sf::Mouse::ButtonCount> mouse;
 
 	void start(unsigned width,
 	           unsigned height,
