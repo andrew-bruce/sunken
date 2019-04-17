@@ -20,7 +20,7 @@ void CmpMovement::move(const float& x, const float& y)
 }
 
 // Whether position is a valid move
-bool CmpMovement::valid_move(sf::Vector2f& position)
+bool CmpMovement::valid_move(const sf::Vector2f& position)
 {
 	// Level bounds checking
 	if (level::loaded())

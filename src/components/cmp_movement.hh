@@ -21,6 +21,6 @@ public:
 	void render() override = 0;
 
 	// Whether position is a valid move
-	bool valid_move(sf::Vector2f& position);
+	bool valid_move(const sf::Vector2f& position);
 };
 
