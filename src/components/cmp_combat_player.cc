@@ -1,19 +1,15 @@
 #include "cmp_combat_player.hh"
 
-CmpCombatPlayer::CmpCombatPlayer(Entity * p) : CmpCombat(p){
-	ammo_ = 5;
-	fire_cooldown_ = 0;
-}
+#include <engine.hh>
+
+CmpCombatPlayer::CmpCombatPlayer(Entity * p) : CmpCombat(p) {}
 
 void CmpCombatPlayer::update(const float & delta_time)
  {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+	if (engine::keyboard[sf::Keyboard::Space])
 		fire();
-	}
 
 	CmpCombat::update(delta_time);
 }
 
-void CmpCombatPlayer::render()
-{
-}
+void CmpCombatPlayer::render() {}

@@ -7,7 +7,7 @@
 struct CmpCombat : Component
 {
 protected:
-	float ammo_;
+	unsigned ammo_;
 	float fire_cooldown_;
 
 public:
@@ -17,11 +17,10 @@ public:
 
 	// combat logic
 	void fire();
-	float get_ammo_count();
+	unsigned ammo();
 	void set_ammo(float pickup);
 
 	// Logic (Pure virtual)
 	void update(const float& delta_time) override;
 	void render() override = 0;
 };
-

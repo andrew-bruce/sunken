@@ -2,15 +2,15 @@
 
 // Class oveerrides
 Entity::Entity(Scene* const scene)
-	:	scene_       (scene),
-		position_    (sf::Vector2f(0.0f, 0.0f)),
-		rotation_    (0.0f),
-		scale_       (sf::Vector2f(0.0f, 0.0f)),
-		alive_       (true),
-		visible_     (true),
-		for_deletion_(false)
-{ }
-Entity::~Entity() { }
+ : position_    (sf::Vector2f(0.0f, 0.0f)),
+   rotation_    (0.0f),
+   scale_       (sf::Vector2f(0.0f, 0.0f)),
+   alive_       (true),
+   visible_     (true),
+   for_deletion_(false),
+   scene        (scene)
+{}
+Entity::~Entity() {}
 
 // Logic
 void Entity::update(const float& delta_time)
@@ -32,17 +32,6 @@ void Entity::render()
 
 	for (const std::unique_ptr<Component>& c : components_)
 		c->render();
-}
-
-// Tags
-void Entity::add_tag(const std::string& t)
-{
-	tags_.insert(t);
-}
-
-const std::set<std::string>& Entity::tags() const
-{
-	return tags_;
 }
 
 // Position
@@ -126,4 +115,15 @@ void Entity::delete_please()
 	alive_ = false;
 	visible_ = false;
 	for_deletion_ = true;
+}
+
+// Tags
+void Entity::add_tag(const std::string& t)
+{
+	tags_.insert(t);
+}
+
+const std::set<std::string>& Entity::tags() const
+{
+	return tags_;
 }

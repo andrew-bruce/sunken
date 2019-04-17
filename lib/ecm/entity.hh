@@ -19,8 +19,6 @@ struct Entity
 	friend struct Entities;
 
 protected:
-	Scene* const scene_;
-
 	sf::Vector2f position_;
 	float        rotation_;
 	sf::Vector2f scale_;
@@ -34,6 +32,8 @@ protected:
 	std::vector<std::unique_ptr<Component>> components_;
 
 public:
+	Scene* const scene;
+
 	Entity() = delete;
 	explicit Entity(Scene* const scene);
 	virtual ~Entity();
