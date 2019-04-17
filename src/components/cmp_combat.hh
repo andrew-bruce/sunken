@@ -1,7 +1,6 @@
 #pragma once
 #include "ecm.hh"
 #include "cmp_shape.hh"
-#include <iostream>
 #include "scene.hh"
 
 struct CmpCombat : Component
@@ -16,9 +15,9 @@ public:
 	explicit CmpCombat(Entity* p);
 
 	// combat logic
-	void fire();
+	void fire(sf::Vector2f direction);
 	unsigned ammo();
-	void set_ammo(float pickup);
+	void set_ammo(unsigned pickup);
 
 	// Logic (Pure virtual)
 	void update(const float& delta_time) override;

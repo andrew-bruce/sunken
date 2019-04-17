@@ -5,7 +5,6 @@
 #include "../components/cmp_shape.hh"
 #include "../components/cmp_movement_player.hh"
 #include "../components/cmp_combat_player.hh"
-#include "../components/cmp_torpedo.hh"
 
 void SceneTest::load()
 {
@@ -27,7 +26,7 @@ void SceneTest::load()
 	auto m = p->add_component<CmpMovementPlayer>();
 	auto c = p->add_component<CmpCombatPlayer>();
 
-	std::this_thread::sleep_for(std::chrono::milliseconds(4444));
+	//std::this_thread::sleep_for(std::chrono::milliseconds(4444));
 	loaded(true);
 }
 

@@ -1,17 +1,14 @@
 #include "cmp_combat.hh"
-#include "scene.hh"
-#include "../scenes/scene_test.hh"
+#include "cmp_torpedo.hh"
 
 #include <iostream>
 
 #include <scene.hh>
 
-#include "cmp_torpedo.hh"
-
 CmpCombat::CmpCombat(Entity* p) : Component(p), ammo_(5) {}
 
 // fires missile
-void CmpCombat::fire()
+void CmpCombat::fire(sf::Vector2f direction)
 {
 	if (ammo_ == 0)
 		return;
@@ -23,7 +20,7 @@ void CmpCombat::fire()
 
 	auto e = parent_->scene->make_entity();
 	auto s = e->add_component<CmpShape>();
-	auto t = e->add_component<CmpTorpedo>();
+	auto t = e->add_component<CmpTorpedo>(direction);
 	s->use_shape<sf::CircleShape>(12.f);
 	s->shape().setFillColor(sf::Color::Red);
 	e->move_to(parent_->position());
@@ -41,7 +38,7 @@ unsigned CmpCombat::ammo()
 }
 
 // adds more ammo upon pickup
-void CmpCombat::set_ammo(float pickup)
+void CmpCombat::set_ammo(unsigned pickup)
 {
 	ammo_ += pickup;
 }
