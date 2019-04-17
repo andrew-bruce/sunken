@@ -71,7 +71,7 @@ namespace level
 		if (optimise && tiles.size() > 0)
 		{
 			tile_def last = tiles.front();
-			std::size_t same_count;
+			std::size_t same_count = 0;
 
 			// Combine tiles in X direction
 			std::vector<tile_def> tox;
