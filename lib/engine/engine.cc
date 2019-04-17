@@ -8,6 +8,7 @@
 namespace engine
 {
 	std::array<bool, sf::Keyboard::KeyCount> keyboard;
+	std::array<bool, sf::Mouse::ButtonCount> mouse;
 
 	static std::string       window_title_;
 	static sf::RenderWindow* window_       = nullptr;
