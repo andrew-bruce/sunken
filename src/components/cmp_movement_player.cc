@@ -12,13 +12,13 @@ void CmpMovementPlayer::update(const float& delta_time)
 	// Input decides direction vector
 	sf::Vector2f movement(0.0f, 0.0f);
 
-	if (engine::keyboard[sf::Keyboard::Left])
+	if (engine::keyboard[sf::Keyboard::A])
 		--movement.x;
-	if (engine::keyboard[sf::Keyboard::Right])
+	if (engine::keyboard[sf::Keyboard::D])
 		++movement.x;
-	if (engine::keyboard[sf::Keyboard::Up])
+	if (engine::keyboard[sf::Keyboard::W])
 		--movement.y;
-	if (engine::keyboard[sf::Keyboard::Down])
+	if (engine::keyboard[sf::Keyboard::S])
 		++movement.y;
 
 	// Normalise movement vector
