@@ -5,6 +5,7 @@
 #include "../components/cmp_shape.hh"
 #include "../components/cmp_movement_player.hh"
 #include "../components/cmp_combat_player.hh"
+#include "../components/cmp_torpedo.hh"
 
 void SceneTest::load()
 {

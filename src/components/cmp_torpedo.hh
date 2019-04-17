@@ -1,12 +1,12 @@
 #pragma once
 
 #include <ecm.hh>
+#include "cmp_movement.hh"
+#include <maths.hh>
+#include <engine.hh>
 
-struct CmpTorpedo : Component
+struct CmpTorpedo : CmpMovement
 {
-private:
-	float speed_;
-
 public:
 	// Class overrides
 	CmpTorpedo() = delete;

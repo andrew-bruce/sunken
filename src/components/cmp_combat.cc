@@ -22,13 +22,11 @@ void CmpCombat::fire()
 
 
 	auto e = parent_->scene->make_entity();
+	auto s = e->add_component<CmpShape>();
 	auto t = e->add_component<CmpTorpedo>();
-	//auto t = torpedo.add_component<CmpShape>();
-	////auto t = torpedo.add_component<CmpTorpedo>();
-
-	//t->use_shape<sf::CircleShape>(12.f);
-	//t->shape().setFillColor(sf::Color::Yellow);
-	//t->shape().setOrigin(sf::Vector2f(50.f, 50.f));
+	s->use_shape<sf::CircleShape>(12.f);
+	s->shape().setFillColor(sf::Color::Red);
+	e->move_to(parent_->position());
 
 	--ammo_;
 	fire_cooldown_ = 2.0f;
