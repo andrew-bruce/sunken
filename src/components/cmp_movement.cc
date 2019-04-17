@@ -9,8 +9,7 @@ CmpMovement::CmpMovement(Entity* p) : Component(p), speed_(100.0f) {}
 // Move
 void CmpMovement::move(const sf::Vector2f& movement)
 {
-	sf::Vector2f position(parent_->position() + movement);
-	if (valid_move(position))
+	if (valid_move(movement))
 		parent_->move_by(movement);
 }
 
@@ -20,8 +19,10 @@ void CmpMovement::move(const float& x, const float& y)
 }
 
 // Whether position is a valid move
-bool CmpMovement::valid_move(const sf::Vector2f& position)
+bool CmpMovement::valid_move(const sf::Vector2f& movement)
 {
+	const sf::Vector2f position(parent_->position() + movement);
+
 	// Level bounds checking
 	if (level::loaded())
 		return level::tile_at(position) != level::Tile::Wall;
