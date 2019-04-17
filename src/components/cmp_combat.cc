@@ -1,5 +1,5 @@
 #include "cmp_combat.hh"
-#include "cmp_torpedo.hh"
+#include "cmp_movement_torpedo.hh"
 
 #include <iostream>
 
