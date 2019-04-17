@@ -15,8 +15,12 @@ void CmpTorpedo::update(const float & delta_time)
 	// Move player
 	move(direction_);
 
+
 	//
-	if (!valid_move(parent_->position() + direction_)) {
+
+
+	if (!valid_move(direction_))
+	{
 		parent_->delete_please();
 	}
 }
