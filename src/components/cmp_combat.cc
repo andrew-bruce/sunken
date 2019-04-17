@@ -1,5 +1,5 @@
 #include "cmp_combat.hh"
-#include "cmp_torpedo.hh"
+#include "cmp_movement_torpedo.hh"
 
 #include <iostream>
 
@@ -20,7 +20,7 @@ void CmpCombat::fire(sf::Vector2f direction)
 
 	auto e = parent_->scene->make_entity();
 	auto s = e->add_component<CmpShape>();
-	auto t = e->add_component<CmpTorpedo>(direction);
+	auto t = e->add_component<CmpMovementTorpedo>(direction);
 	s->use_shape<sf::CircleShape>(12.f);
 	s->shape().setFillColor(sf::Color::Red);
 	e->move_to(parent_->position());
