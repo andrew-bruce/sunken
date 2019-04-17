@@ -1,7 +1,6 @@
 #pragma once
-#include <SFML/Graphics.hpp>
+
 #include "cmp_combat.hh"
-#include "cmp_torpedo.hh"
 
 struct CmpCombatPlayer : CmpCombat
 {
@@ -13,4 +12,3 @@ struct CmpCombatPlayer : CmpCombat
 	void update(const float& delta_time) override;
 	void render() override;
 };
-
