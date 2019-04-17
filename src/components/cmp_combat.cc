@@ -1,4 +1,6 @@
 #include "cmp_combat.hh"
+#include "scene.hh"
+#include "../scenes/scene_test.hh"
 
 
 CmpCombat::CmpCombat(Entity* p) : Component(p) {
@@ -14,8 +16,7 @@ void CmpCombat::fire()
 		return;
 	
 	std::cout << "FIRE" << std::endl;
-
-	//Entity torpedo;
+	
 	//auto t = torpedo.add_component<CmpShape>();
 	////auto t = torpedo.add_component<CmpTorpedo>();
 
@@ -25,9 +26,7 @@ void CmpCombat::fire()
 
 	ammo_ --;
 	fire_cooldown_+= 1;
-	// create missile object
-	// sets it's position
-	// set its speed a trajectory
+
 }
 
 // checks ammo

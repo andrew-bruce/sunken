@@ -2,6 +2,7 @@
 #include "ecm.hh"
 #include "cmp_shape.hh"
 #include <iostream>
+#include "scene.hh"
 
 struct CmpCombat : Component
 {
