@@ -37,12 +37,7 @@ namespace renderer
 	{
 		if (!render_target)
 		{
-			std::cerr <<
-				"ERROR"
-				" -> RENDERER"
-				" -> RENDER"
-				" -> NO TARGET"
-				<< std::endl;
+			std::cerr << "ERROR no render target" << std::endl;
 			return shutdown();
 		}
 
@@ -61,6 +56,7 @@ namespace renderer
 	void shutdown()
 	{
 		while (!render_queue.empty()) render_queue.pop();
+		render_target = nullptr;
 	}
 };
 

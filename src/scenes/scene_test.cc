@@ -23,6 +23,9 @@ void SceneTest::load()
 	s->shape().setFillColor(sf::Color::Yellow);
 
 	auto m = p->add_component<CmpMovementPlayer>();
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(4444));
+	loaded(true);
 }
 
 void SceneTest::update(const float& delta_time)

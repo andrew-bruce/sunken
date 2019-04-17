@@ -1,7 +1,10 @@
 #pragma once
 
 #include <cmath>
+#include <iomanip>
 #include <ostream>
+#include <sstream>
+#include <vector>
 
 #include <SFML/System.hpp>
 
@@ -9,6 +12,13 @@ namespace sf
 {
 	// Type definition
 	typedef Vector2<std::size_t> Vector2ul;
+
+	// Operators
+	template <typename T>
+	Vector2<T> operator*(const Vector2<T>& left, const Vector2<T>& right)
+	{
+		return Vector2<T>(left.x * right.x, left.y * right.y);
+	}
 
 	// Cast
 	template <typename T, typename U>
@@ -63,8 +73,25 @@ namespace sf
 	template <typename T>
 	std::ostream& operator<<(std::ostream& output, const Vector2<T>& vector)
 	{
-		output << '[' << vector.x << ',' << vector.y << ']';
+		output << '(' << vector.x << ',' << vector.y << ')';
 		return output;
 	}
 };
 
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
+{
+	os << "vec[";
+	for (const T& i : v)
+		os << i << ',';
+	os << ']';
+	return os;
+}
+
+template <typename T>
+std::string to_decimal_place(const unsigned& dp, const T& i)
+{
+	std::stringstream stream;
+	stream << std::fixed << std::setprecision(dp) << i;
+	return stream.str();
+}
