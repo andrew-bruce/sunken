@@ -30,7 +30,7 @@ std::array<bool, sf::Keyboard::KeyCount> keyboard;
 std::vector<std::unique_ptr<sf::RectangleShape>> shapes;
 
 Entity player;
-//// TEST
+//// TEST //
 
 void reset() {}
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmp_combat.hh>
+#include "cmp_torpedo.hh"
 
 struct CmpCombatPlayer : CmpCombat
 {

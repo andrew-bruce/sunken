@@ -1,6 +1,5 @@
 #include "cmp_combat.hh"
 #include "cmp_shape.hh"
-
 #include <system_renderer.hh>
 #include <level_system.hh>
 #include <iostream>
@@ -19,14 +18,17 @@ void CmpCombat::fire()
 		return;
 	
 	std::cout << "FIRE" << std::endl;
-	ammo_ --;
-	fire_cooldown_+= 5;
 
 	Entity torpedo;
 	auto t = torpedo.add_component<CmpShape>();
+	//auto t = torpedo.add_component<CmpTorpedo>();
+
 	t->use_shape<sf::CircleShape>(12.f);
 	t->shape().setFillColor(sf::Color::Yellow);
 	t->shape().setOrigin(sf::Vector2f(50.f, 50.f));
+
+	ammo_ --;
+	fire_cooldown_+= 5;
 	// create missile object
 	// sets it's position
 	// set its speed a trajectory
