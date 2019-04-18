@@ -113,6 +113,8 @@ namespace engine
 		{
 			accumulator -= physics_tick;
 
+			event();
+
 			if (loading_)
 				loading_update(physics_tick);
 //				loading_update(delta_time);
@@ -123,6 +125,8 @@ namespace engine
 
 		if (accumulator > 0.0f)
 		{
+			event();
+
 			if (loading_)
 				loading_update(accumulator);
 //				loading_update(delta_time);
@@ -158,7 +162,6 @@ namespace engine
 
 		while (window.isOpen())
 		{
-			event();
 			update();
 			render();
 		}

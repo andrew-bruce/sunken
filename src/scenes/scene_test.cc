@@ -2,14 +2,16 @@
 
 #include <level_loader.hh>
 
-#include "../components/cmp_shape.hh"
-#include "../components/cmp_movement_player.hh"
+#include "../components/cmp_camera.hh"
 #include "../components/cmp_combat_player.hh"
+#include "../components/cmp_movement_player.hh"
+#include "../components/cmp_shape.hh"
 
 void SceneTest::load()
 {
 	level::load("res/levels/example.txt", 64.0f);
 
+	// Player
 	{
 		sf::Vector2f position =
 			level::tile_position(level::find_tiles(
@@ -26,6 +28,7 @@ void SceneTest::load()
 		s->shape().setOrigin(size / 2.0f);
 		s->shape().setFillColor(sf::Color::Yellow);
 
+		p->add_component<CmpCamera>();
 		p->add_component<CmpMovementPlayer>();
 		p->add_component<CmpCombatPlayer>();
 	}
