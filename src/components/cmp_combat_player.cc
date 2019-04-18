@@ -9,7 +9,7 @@ void CmpCombatPlayer::update(const float & delta_time)
 {
 	if (engine::mouse[sf::Mouse::Left]) {
 		auto m = sf::Mouse::getPosition(engine::window());
-		auto d = sf::normalise(sf::cast<float>(sf::Mouse::getPosition(engine::window())) - parent_->position());
+		auto d = sf::normalise(sf::cast<float>(m) - parent_->position());
 		fire(d);
 	}
 

@@ -5,7 +5,7 @@
 
 #include <scene.hh>
 
-CmpCombat::CmpCombat(Entity* p) : Component(p), ammo_(5) {}
+CmpCombat::CmpCombat(Entity* p) : Component(p), ammo_(500) {}
 
 // fires missile
 void CmpCombat::fire(sf::Vector2f direction)
@@ -21,12 +21,12 @@ void CmpCombat::fire(sf::Vector2f direction)
 	auto e = parent_->scene->make_entity();
 	auto s = e->add_component<CmpShape>();
 	auto t = e->add_component<CmpMovementTorpedo>(direction);
-	s->use_shape<sf::CircleShape>(12.f);
+	s->use_shape<sf::RectangleShape>(sf::Vector2f(5.f, 5.f));
 	s->shape().setFillColor(sf::Color::Red);
 	e->move_to(parent_->position());
 
 	--ammo_;
-	fire_cooldown_ = 2.0f;
+	fire_cooldown_ = 2.f;
 
 
 }

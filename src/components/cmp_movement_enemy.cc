@@ -6,7 +6,10 @@
 
 // Class overrides
 CmpMovementEnemy::CmpMovementEnemy(Entity* p)
- : CmpMovement(p), state_(Rotating) {}
+	: CmpMovement(p), state_(Rotating) 
+{
+	speed_ = 70.f;
+}
 
 
 
