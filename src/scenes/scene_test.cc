@@ -8,12 +8,12 @@
 
 void SceneTest::load()
 {
-	level::load("res/levels/maze.txt");
+	level::load("res/levels/example.txt", 64.0f);
 
 	{
 		sf::Vector2f position =
 			level::tile_position(level::find_tiles(
-				level::Tile::Start).front())
+				level::Tile::Player).front())
 			+ sf::Vector2f(level::tile_size(), level::tile_size())
 				/ 2.0f;
 		sf::Vector2f size = sf::Vector2f(level::tile_size(), level::tile_size()) / 8.0f;

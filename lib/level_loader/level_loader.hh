@@ -11,12 +11,17 @@ namespace level
 {
 	enum Tile
 	{
-		Empty    = ' ',
-		Start    = 's',
-		End      = 'e',
-		Wall     = 'w',
-		Enemy    = 'n',
-		Waypoint = '+'
+		Empty      = '\0',
+		Player     = '@',
+		Water      = '.',
+		Air        = '~',
+		Wall       = '#',
+		Health     = '+',
+		Ammo       = '=',
+		Waypoint   = '*',
+		Objective  = '!',
+		Battleship = 'B',
+		Submarine  = 'S'
 	};
 
 	// Loading

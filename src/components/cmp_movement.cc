@@ -4,7 +4,10 @@
 #include <level_loader.hh>
 
 // Class overrides
-CmpMovement::CmpMovement(Entity* p) : Component(p), speed_(100.0f) {}
+CmpMovement::CmpMovement(Entity* p)
+ : Component(p),
+   speed_(level::tile_size() / 2.0f)
+{}
 
 // Move
 void CmpMovement::move(const sf::Vector2f& movement)

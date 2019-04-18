@@ -1,6 +1,7 @@
 #include "level_loader.hh"
 
 #include <array>
+#include <cctype>
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -21,17 +22,29 @@ namespace level
 	static std::unique_ptr<Tile[]> tiles_;
 	static const std::set<Tile> tile_enums_ =
 	{
-		Tile::Empty,
-		Tile::Start,
-		Tile::End,
+		Tile::Player,
+		Tile::Water,
+		Tile::Air,
 		Tile::Wall,
-		Tile::Enemy,
-		Tile::Waypoint
+		Tile::Health,
+		Tile::Ammo,
+		Tile::Waypoint,
+		Tile::Objective,
+		Tile::Battleship,
+		Tile::Submarine
 	};
 	static std::map<Tile, sf::Color> tile_colours_
 	{
-		{ Tile::End,  sf::Color::Red },
-		{ Tile::Wall, sf::Color::White }
+//		{ Tile::Player,     sf::Color::Green   },
+//		{ Tile::Water,      sf::Color::Blue    },
+		{ Tile::Air,        sf::Color::Cyan    },
+		{ Tile::Wall,       sf::Color::White   },
+//		{ Tile::Health,     sf::Color::Yellow  },
+//		{ Tile::Ammo,       sf::Color::Yellow  },
+//		{ Tile::Waypoint,   sf::Color::Magenta },
+//		{ Tile::Objective,  sf::Color::Cyan    },
+		{ Tile::Battleship, sf::Color::Cyan    },
+//		{ Tile::Submarine,  sf::Color::Red     }
 	};
 	static std::vector<std::unique_ptr<sf::RectangleShape>> tile_sprites_;
 
@@ -56,14 +69,10 @@ namespace level
 		for (std::size_t y = 0; y < size_.y; ++y)
 			for (std::size_t x = 0; x < size_.x; ++x)
 			{
-				Tile t = tile_at(sf::Vector2ul(x, y));
-				if (t == Tile::Empty)
-					continue;
-
 				tile_def td;
 				td.p = tile_position({x, y});
 				td.s = size;
-				td.c = tile_colour(t);
+				td.c = tile_colour(tile_at(sf::Vector2ul(x, y)));
 				tiles.push_back(td);
 			}
 
@@ -82,9 +91,11 @@ namespace level
 				Width matches with the current same_count
 				Colour is the same
 				*/
-				bool is_same = tiles[i].p.y == last.p.y
-				         && tiles[i].p.x == last.p.x + size.x * (same_count + 1)
-					     && tiles[i].c   == last.c;
+				bool is_same =
+					tiles[i].p.y == last.p.y &&
+					tiles[i].p.x == last.p.x + size.x * (same_count + 1) &&
+					tiles[i].c   == last.c;
+
 				if (is_same)
 					++same_count;
 				else
@@ -118,11 +129,13 @@ namespace level
 					Height matches with the current same_count
 					Colour is the same
 					*/
-					bool same = tox[j].p.x == last.p.x
-					         && tox[j].s   == last.s
-							 && tox[j].p.y == last.p.y + size.y * (same_count + 1)
-							 && tox[j].c   == last.c;
-					if (same)
+					bool is_same =
+						tox[j].p.x == last.p.x &&
+						tox[j].s   == last.s &&
+						tox[j].p.y == last.p.y + size.y * (same_count + 1) &&
+						tox[j].c   == last.c;
+
+					if (is_same)
 					{
 						++same_count;
 						tox.erase(tox.begin() + j--);
@@ -162,67 +175,74 @@ namespace level
 	{
 		// Set variables
 		tile_size_ = tile_size;
-		size_ = {0, 0};
+		size_ = sf::Vector2ul(0, 0);
 
 		// Read file to string
-		std::string file_content;
+		std::vector<std::string> file_content;
 		{
 			std::ifstream file(filepath);
 			if (!file.good())
 			{
-				std::cerr << "ERROR loading level " << filepath << std::endl;
+				std::cerr << "ERROR loading level file " << filepath << std::endl;
 				return unload();
 			}
-			file_content.append(std::istreambuf_iterator<char>(file), {});
+
+			for (std::string line; std::getline(file, line); ++size_.y)
+			{
+				line.erase(std::remove_if(line.begin(), line.end(), isspace), line.end());
+
+				// Catch empty lines
+				if (line.empty())
+				{
+					--size_.y;
+					continue;
+				}
+
+				file_content.push_back(line);
+
+				// Make sure width is consistent
+				if (size_.x == 0)
+					size_.x = line.size();
+
+				else if (size_.x != line.size())
+				{
+					std::cerr << "ERROR inconsistent level width " << filepath << std::endl;
+					return unload();
+				}
+			}
+
+			if (size_.y != file_content.size())
+				std::cout << "INCORRECT HEIGHT FOUND USING FILE LOOP" << std::endl;
+			size_.y = file_content.size();
 		}
 
 		// Populate temporary vector with contents of string
 		std::vector<Tile> tiles;
-		std::size_t width_check = 0;
-		for (std::size_t i = 0; i < file_content.size(); ++i)
+		for (std::size_t y = 0; y < size_.y; ++y)
 		{
-			const Tile t = static_cast<Tile>(file_content[i]);
-
-			if (tile_enums_.find(t) != tile_enums_.end())
-				tiles.push_back(t);
-
-			else if (t == '\0') break;
-
-			else if (t == '\n')
+			for (std::size_t x = 0; x < size_.x; ++x)
 			{
-				if (size_.x == 0)
-					size_.x = i;
-				else if (size_.x != (width_check - 1))
+				const Tile t = static_cast<Tile>(file_content[y][x]);
+
+				if (tile_enums_.find(t) == tile_enums_.end())
 				{
-					std::cerr << "ERROR non-uniform width in level " << filepath
-						<< " @ height " << size_.y << std::endl;
+					std::cerr << "ERROR level contains invalid tile: " << t
+						<< " @ " << sf::Vector2ul(x, y) << std::endl;
 					return unload();
 				}
-				width_check = 0;
-				++size_.y;
+
+				tiles.push_back(t);
 			}
-
-			else
-				std::cerr << "WARNING level contains invalid tile: " << t << std::endl;
-
-			++width_check;
-		}
-
-		// Invalid amount of tiles
-		if (tiles.size() != size_.x * size_.y)
-		{
-			std::cerr << "ERROR tile count doesn't match size of " << filepath << std::endl;
-			return unload();
 		}
 
 		// Need start and end tiles
-		if (std::find(tiles.begin(), tiles.end(), Tile::Start) == tiles.end())
+		if (std::find(tiles.begin(), tiles.end(), Tile::Player) == tiles.end())
 		{
 			std::cerr << "ERROR no start tile in level " << filepath << std::endl;
 			return unload();
 		}
 
-		if (std::find(tiles.begin(), tiles.end(), Tile::End) == tiles.end())
+		if (std::find(tiles.begin(), tiles.end(), Tile::Objective) == tiles.end())
 		{
 			std::cerr << "ERROR no end tile in level " << filepath << std::endl;
 			return unload();
