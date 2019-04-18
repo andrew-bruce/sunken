@@ -9,6 +9,7 @@
 #include "../components/cmp_movement_enemy.hh"
 #include "../components/cmp_combat_enemy.hh"
 #include "../components/cmp_pickup_ammo.hh"
+#include "../components/cmp_pickup_health.hh"
 
 void SceneTest::load()
 {
@@ -53,17 +54,27 @@ void SceneTest::load()
 
 		e->add_component<CmpMovementEnemy>();
 		e->add_component<CmpCombatEnemy>();
+		// Add enemy //
 
 		// Spawn ammo pickups //
 		for (auto t : level::find_tiles(level::Tile::Ammo))
 		{
 			sf::Vector2f pickup_position = level::tile_position(t) + sf::Vector2f(level::tile_size(), level::tile_size()) / 2.0f;
-			std::cout << "PICKUP" << std::endl;
 			auto e = make_entity();
 			e->move_to(pickup_position);
 			e->add_component <CmpPickupAmmo>();
 		}
 		// Spawn ammo pickups //
+
+		// Spawn health pickups //
+		for (auto t : level::find_tiles(level::Tile::Health))
+		{
+			sf::Vector2f pickup_position = level::tile_position(t) + sf::Vector2f(level::tile_size(), level::tile_size()) / 2.0f;
+			auto e = make_entity();
+			e->move_to(pickup_position);
+			e->add_component <CmpPickupHealth>();
+		}
+		// Spawn health pickups //
 	}
 
 	//	std::this_thread::sleep_for(std::chrono::milliseconds(4444));

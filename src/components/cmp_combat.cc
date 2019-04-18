@@ -39,9 +39,9 @@ unsigned CmpCombat::ammo()
 }
 
 // adds more ammo upon pickup
-void CmpCombat::set_ammo(unsigned pickup)
+void CmpCombat::pickup_ammo(unsigned ammo)
 {
-	ammo_ += pickup;
+	ammo_ += ammo;
 }
 
 void CmpCombat::update(const float& delta_time) {

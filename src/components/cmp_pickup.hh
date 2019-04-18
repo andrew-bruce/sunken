@@ -7,6 +7,7 @@ struct CmpPickup : Component
 {
 private:
 	sf::Color colour_;
+	float distance_;
 
 public:
 	// Class overrides
@@ -14,8 +15,9 @@ public:
 	explicit CmpPickup(Entity* p);
 
 	void pickup();
+	float distance();
 
 	// Logic (Pure virtual)
-	void update(const float& delta_time) override = 0;
+	void update(const float& delta_time) override;
 	void render() override = 0;
 };

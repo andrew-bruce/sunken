@@ -17,7 +17,7 @@ void CmpCombatEnemy::update(const float & delta_time)
 	sf::Vector2f ep = parent_->position();
 
 	// Get distance between enemy and player
-	float distance = pow(pow(pp.x - ep.x, 2) + pow(pp.y - ep.y, 2), 0.5);
+	float distance = sf::length(player->position() - parent_->position());
 
 	// If the enemy is close enough to the player, fire in their direction
 	if (distance <= 200) 
