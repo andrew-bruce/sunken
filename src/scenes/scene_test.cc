@@ -1,12 +1,14 @@
 #include "scene_test.hh"
 
 #include <level_loader.hh>
+#include <iostream>
 
 #include "../components/cmp_shape.hh"
 #include "../components/cmp_movement_player.hh"
 #include "../components/cmp_combat_player.hh"
 #include "../components/cmp_movement_enemy.hh"
 #include "../components/cmp_combat_enemy.hh"
+#include "../components/cmp_pickup_ammo.hh"
 
 void SceneTest::load()
 {
@@ -51,6 +53,17 @@ void SceneTest::load()
 
 		e->add_component<CmpMovementEnemy>();
 		e->add_component<CmpCombatEnemy>();
+
+		// Spawn ammo pickups //
+		for (auto t : level::find_tiles(level::Tile::Ammo))
+		{
+			sf::Vector2f pickup_position = level::tile_position(t) + sf::Vector2f(level::tile_size(), level::tile_size()) / 2.0f;
+			std::cout << "PICKUP" << std::endl;
+			auto e = make_entity();
+			e->move_to(pickup_position);
+			e->add_component <CmpPickupAmmo>();
+		}
+		// Spawn ammo pickups //
 	}
 
 	//	std::this_thread::sleep_for(std::chrono::milliseconds(4444));

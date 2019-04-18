@@ -13,6 +13,7 @@ void CmpMovementPlayer::update(const float& delta_time)
 	// Input decides direction vector
 	sf::Vector2f movement(0.0f, 0.0f);
 
+	// Prevents player from going above surface of water
 	if(level::tile_at(parent_->position()) != level::Tile::Air)
 		if (engine::keyboard[sf::Keyboard::W])
 			--movement.y;

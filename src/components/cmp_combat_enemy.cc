@@ -1,6 +1,7 @@
 #include "cmp_combat_enemy.hh"
 #include<maths.hh>
 #include <iostream>
+#include <level_loader.hh>
 
 CmpCombatEnemy::CmpCombatEnemy(Entity * p) : CmpCombat(p) {
 	ammo_ = 1000;
