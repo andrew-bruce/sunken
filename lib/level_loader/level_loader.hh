@@ -22,7 +22,6 @@ namespace level
 		Objective  = '!',
 		Battleship = 'B',
 		Submarine  = 'S',
-		EnemySpawn = 'E'
 	};
 
 	// Loading

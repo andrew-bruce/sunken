@@ -8,6 +8,7 @@
 CmpMovementEnemy::CmpMovementEnemy(Entity* p)
 	: CmpMovement(p), state_(Rotating) 
 {
+	speed_ = 200.f;
 }
 
 

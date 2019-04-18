@@ -37,7 +37,7 @@ void SceneTest::load()
 		// Add enemy //
 		sf::Vector2f enemy_position =
 			level::tile_position(level::find_tiles(
-				level::Tile::EnemySpawn).front())
+				level::Tile::Submarine).front())
 			+ sf::Vector2f(level::tile_size(), level::tile_size())
 			/ 2.0f;
 
