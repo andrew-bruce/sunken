@@ -6,7 +6,7 @@
 #include <level_loader.hh>
 #include <scene.hh>
 
-CmpCombat::CmpCombat(Entity* p) : Component(p), ammo_(5) {}
+CmpCombat::CmpCombat(Entity* p) : Component(p), ammo_(500) {}
 
 // fires missile
 void CmpCombat::fire(sf::Vector2f direction)
@@ -31,7 +31,7 @@ void CmpCombat::fire(sf::Vector2f direction)
 	auto t = e->add_component<CmpMovementTorpedo>(direction);
 
 	--ammo_;
-	fire_cooldown_ = 2.0f;
+	fire_cooldown_ = 2.f;
 }
 
 // checks ammo

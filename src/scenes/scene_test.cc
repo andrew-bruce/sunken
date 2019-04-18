@@ -15,7 +15,7 @@ void SceneTest::load()
 			level::tile_position(level::find_tiles(
 				level::Tile::Player).front())
 			+ sf::Vector2f(level::tile_size(), level::tile_size())
-				/ 2.0f;
+			/ 2.0f;
 		sf::Vector2f size = sf::Vector2f(level::tile_size(), level::tile_size()) / 8.0f;
 
 		auto p = make_entity();
@@ -30,7 +30,7 @@ void SceneTest::load()
 		p->add_component<CmpCombatPlayer>();
 	}
 
-//	std::this_thread::sleep_for(std::chrono::milliseconds(4444));
+	//	std::this_thread::sleep_for(std::chrono::milliseconds(4444));
 	loaded(true);
 }
 
