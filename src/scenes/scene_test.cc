@@ -23,6 +23,7 @@ void SceneTest::load()
 		// Add player //
 		auto p = make_entity();
 		p->move_to(position);
+		p->add_tag("player");
 #
 		auto s = p->add_component<CmpShape>();
 		s->use_shape<sf::RectangleShape>(size);
@@ -36,7 +37,7 @@ void SceneTest::load()
 		// Add enemy //
 		sf::Vector2f enemy_position =
 			level::tile_position(level::find_tiles(
-				level::Tile::Objective).front())
+				level::Tile::EnemySpawn).front())
 			+ sf::Vector2f(level::tile_size(), level::tile_size())
 			/ 2.0f;
 
@@ -48,8 +49,8 @@ void SceneTest::load()
 		es->shape().setOrigin(size / 2.0f);
 		es->shape().setFillColor(sf::Color::Blue);
 
-		//e->add_component<CmpMovementEnemy>();
-		//e->add_component<CmpCombatEnemy>();
+		e->add_component<CmpMovementEnemy>();
+		e->add_component<CmpCombatEnemy>();
 	}
 
 	//	std::this_thread::sleep_for(std::chrono::milliseconds(4444));

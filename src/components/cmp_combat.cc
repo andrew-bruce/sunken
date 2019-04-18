@@ -16,8 +16,6 @@ void CmpCombat::fire(sf::Vector2f direction)
 	if (fire_cooldown_ > 0.0f)
 		return;
 
-	std::cout << "FIRE" << std::endl;
-
 	auto size = sf::Vector2f(level::tile_size(), level::tile_size()) / 32.0f;
 
 	auto e = parent_->scene->make_entity();

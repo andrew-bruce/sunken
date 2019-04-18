@@ -22,7 +22,6 @@ void CmpCombatEnemy::update(const float & delta_time)
 	if (distance <= 200) 
 	{
 		auto d = sf::normalise(pp - ep);
-		std::cout << "Normalise: " << sf::normalise(pp - ep) << std::endl;
 		fire(d);
 	}
 

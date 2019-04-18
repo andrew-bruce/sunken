@@ -31,7 +31,8 @@ namespace level
 		Tile::Waypoint,
 		Tile::Objective,
 		Tile::Battleship,
-		Tile::Submarine
+		Tile::Submarine,
+		Tile::EnemySpawn
 	};
 	static std::map<Tile, sf::Color> tile_colours_
 	{
