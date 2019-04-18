@@ -19,8 +19,10 @@ void CmpCombatEnemy::update(const float & delta_time)
 	float distance = pow(pow(pp.x - ep.x, 2) + pow(pp.y - ep.y, 2), 0.5);
 
 	// If the enemy is close enough to the player, fire in their direction
-	if (distance <= 200) {
+	if (distance <= 200) 
+	{
 		auto d = sf::normalise(pp - ep);
+		std::cout << "Normalise: " << sf::normalise(pp - ep) << std::endl;
 		fire(d);
 	}
 
