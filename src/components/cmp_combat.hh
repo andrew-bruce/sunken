@@ -17,7 +17,7 @@ public:
 	// combat logic
 	void fire(sf::Vector2f direction);
 	unsigned ammo();
-	void set_ammo(unsigned pickup);
+	void pickup_ammo(unsigned ammo);
 
 	// Logic (Pure virtual)
 	void update(const float& delta_time) override;

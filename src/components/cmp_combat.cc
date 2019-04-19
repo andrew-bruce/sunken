@@ -20,8 +20,6 @@ void CmpCombat::fire(sf::Vector2f direction)
 	if (fire_cooldown_ > 0.0f)
 		return;
 
-	std::cout << "FIRE" << std::endl;
-
 	auto size = sf::Vector2f(level::tile_size(), level::tile_size()) / 32.0f;
 
 	auto e = parent_->scene->make_entity();
@@ -35,7 +33,7 @@ void CmpCombat::fire(sf::Vector2f direction)
 	auto t = e->add_component<CmpMovementTorpedo>(direction);
 
 	--ammo_;
-	fire_cooldown_ = 2.0f;
+	fire_cooldown_ = 2.f;
 }
 
 // checks ammo
@@ -45,9 +43,9 @@ unsigned CmpCombat::ammo()
 }
 
 // adds more ammo upon pickup
-void CmpCombat::set_ammo(unsigned pickup)
+void CmpCombat::pickup_ammo(unsigned ammo)
 {
-	ammo_ += pickup;
+	ammo_ += ammo;
 }
 
 void CmpCombat::update(const float& delta_time) {

@@ -21,7 +21,7 @@ namespace level
 		Waypoint   = '*',
 		Objective  = '!',
 		Battleship = 'B',
-		Submarine  = 'S'
+		Submarine  = 'S',
 	};
 
 	// Loading

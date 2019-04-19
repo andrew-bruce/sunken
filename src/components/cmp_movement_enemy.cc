@@ -6,7 +6,9 @@
 
 // Class overrides
 CmpMovementEnemy::CmpMovementEnemy(Entity* p)
- : CmpMovement(p), state_(Rotating) {}
+	: CmpMovement(p), state_(Rotating) 
+{
+}
 
 
 
@@ -56,7 +58,7 @@ void CmpMovementEnemy::update(const float& delta_time)
 			// If bigger than 1, remove the bad direction
 			if (all_directions.size() > 1)
 				all_directions.erase(
-					std::find(all_directions.begin(), all_directions.end(),
+					std::find(all_directions.begin(), (all_directions.end()-1),
 						bad_direction));
 			new_direction = all_directions[rand() % all_directions.size()];
 
