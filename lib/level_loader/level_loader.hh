@@ -1,5 +1,6 @@
 #pragma once
 
+#include <set>
 #include <string>
 #include <vector>
 
@@ -9,6 +10,13 @@
 
 namespace level
 {
+	enum TileType
+	{
+		Solid,
+		Water,
+		Air
+	};
+
 	enum Tile
 	{
 		Empty      = '\0',
@@ -40,6 +48,7 @@ namespace level
 	// Tile at position/index
 	Tile tile_at(const sf::Vector2f& position);
 	Tile tile_at(const sf::Vector2ul& index);
+	std::set<Tile> tiles_of_type(const TileType& type);
 	std::vector<sf::Vector2ul> find_tiles(const Tile& tile);
 
 	// Tile colours
