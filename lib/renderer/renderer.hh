@@ -8,7 +8,7 @@ namespace renderer
 	void initialise(sf::RenderWindow* window);
 
 	// Window being used
-	sf::RenderWindow& window();
+	sf::RenderWindow* window();
 
 	// Update renderer
 	void update(const float& delta_time);

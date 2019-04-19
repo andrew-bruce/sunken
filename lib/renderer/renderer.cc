@@ -12,9 +12,9 @@ namespace renderer
 	static std::queue<const sf::Drawable*> render_queue;
 
 	// Window being used
-	sf::RenderWindow& window()
+	sf::RenderWindow* window()
 	{
-		return *render_target;
+		return render_target;
 	}
 
 	// Initialise renderer with window
