@@ -9,7 +9,7 @@
 CmpCombat::CmpCombat(Entity* p) : Component(p), ammo_(500) {}
 
 // fires missile
-void CmpCombat::fire(sf::Vector2f direction)
+void CmpCombat::fire(sf::Vector2f direction, std::string tag)
 {
 	if (ammo_ == 0)
 		return;
@@ -27,6 +27,7 @@ void CmpCombat::fire(sf::Vector2f direction)
 	s->shape().setFillColor(sf::Color::Red);
 
 	auto t = e->add_component<CmpMovementTorpedo>(direction);
+	e->add_tag(tag);
 
 	--ammo_;
 	fire_cooldown_ = 2.f;

@@ -23,7 +23,7 @@ void CmpCombatEnemy::update(const float & delta_time)
 	if (distance <= 200) 
 	{
 		auto d = sf::normalise(pp - ep);
-		fire(d);
+		fire(d, "enemy_torpedo");
 	}
 
 	CmpCombat::update(delta_time);

@@ -5,7 +5,7 @@
 #include <level_loader.hh>
 
 // Class overrides
-CmpMovementPlayer::CmpMovementPlayer(Entity* p) : CmpMovement(p) {}
+CmpMovementPlayer::CmpMovementPlayer(Entity* p) : CmpMovement(p) { speed_ = 100.f; }
 
 // Logic
 void CmpMovementPlayer::update(const float& delta_time)

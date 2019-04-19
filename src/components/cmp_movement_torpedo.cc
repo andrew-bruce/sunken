@@ -1,4 +1,5 @@
 #include "cmp_movement_torpedo.hh"
+#include "cmp_shape.hh"
 
 #include <iostream>
 
@@ -21,6 +22,32 @@ void CmpMovementTorpedo::update(const float & delta_time)
 	if (!valid_move(direction_))
 	{
 		parent_->delete_please();
+	}
+
+	// Gets torpedo tag
+	std::set<std::string>::iterator it = parent_->tags().begin();
+	std::advance(it, 0);
+	std::string tag = *it;
+
+	// Enemy torpedo collision
+	if (tag == "enemy_torpedo")
+	{
+		// Gets player
+		auto player = parent_->scene->entities().find("player").front();
+
+		// Gets it's shape component
+		auto ps = player->compatible_components<CmpShape>().front();
+		auto ts = parent_->compatible_components<CmpShape>().front();
+
+		// If the enemy torpedo colides with the player
+		if (ps->shape().getGlobalBounds().intersects(ts->shape().getGlobalBounds())) {
+			parent_->delete_please();
+			std::cout << "HIT" << std::endl;
+		}
+	} 
+	else if (tag == "player_torpedo")
+	{
+		// Deal with player torpedo collision
 	}
 }
 

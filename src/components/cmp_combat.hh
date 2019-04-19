@@ -15,7 +15,7 @@ public:
 	explicit CmpCombat(Entity* p);
 
 	// combat logic
-	void fire(sf::Vector2f direction);
+	void fire(sf::Vector2f direction, std::string tag);
 	unsigned ammo();
 	void pickup_ammo(unsigned ammo);
 

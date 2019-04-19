@@ -14,7 +14,7 @@ void CmpCombatPlayer::update(const float & delta_time)
 		auto m = sf::Mouse::getPosition(engine::window());
 		auto d = sf::normalise(sf::cast<float>(m) - parent_->position());
 
-		fire(d);
+		fire(d, "player_torpedo");
 	}
 
 	CmpCombat::update(delta_time);
