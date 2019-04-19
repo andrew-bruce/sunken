@@ -5,7 +5,7 @@
 namespace renderer
 {
 	// Initialise renderer with window
-	void initialise(sf::RenderWindow& window);
+	void initialise(sf::RenderWindow* window);
 
 	// Window being used
 	sf::RenderWindow& window();

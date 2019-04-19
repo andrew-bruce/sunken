@@ -12,13 +12,14 @@ namespace engine
 {
 	extern std::array<bool, sf::Keyboard::KeyCount> keyboard;
 	extern std::array<bool, sf::Mouse::ButtonCount> mouse;
+	extern sf::Vector2f                             mouse_position;
 
 	void start(unsigned width,
 	           unsigned height,
 	           const std::string& title,
 	           Scene* scene);
 
-	sf::RenderWindow& window();
+	sf::RenderWindow* window();
 	sf::Vector2ul window_size();
 
 	void vsync(bool b);

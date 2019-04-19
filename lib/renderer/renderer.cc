@@ -18,9 +18,9 @@ namespace renderer
 	}
 
 	// Initialise renderer with window
-	void initialise(sf::RenderWindow& window)
+	void initialise(sf::RenderWindow* window)
 	{
-		render_target = &window;
+		render_target = window;
 	}
 
 	// Update renderer

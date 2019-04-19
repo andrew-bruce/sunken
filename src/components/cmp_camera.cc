@@ -12,7 +12,7 @@ CmpCamera::CmpCamera(Entity* const p)
 
 CmpCamera::~CmpCamera()
 {
-	engine::window().setView(engine::window().getDefaultView());
+	engine::window()->setView(engine::window()->getDefaultView());
 }
 
 // Logic
@@ -29,8 +29,8 @@ void CmpCamera::render()
 	sf::Vector2f size = sf::Vector2f(scale, scale);
 
 	// Make view fill screen
-	auto& window = engine::window();
-	auto  w_size = sf::cast<float>(window.getSize());
+	auto window = engine::window();
+	auto  w_size = sf::cast<float>(window->getSize());
 	if (w_size.x < w_size.y)
 		size.x *= w_size.x / w_size.y;
 	else
@@ -38,5 +38,5 @@ void CmpCamera::render()
 
 	view_.setCenter(buffer_.front());
 	view_.setSize(size);
-	window.setView(view_);
+	window->setView(view_);
 }

@@ -1,6 +1,6 @@
 #include "cmp_movement.hh"
 
-#include <renderer.hh>
+#include <engine.hh>
 #include <level_loader.hh>
 
 // Class overrides
@@ -31,7 +31,7 @@ bool CmpMovement::valid_move(const sf::Vector2f& movement)
 		return level::tile_at(position) != level::Tile::Wall;
 
 	// Get window bounds
-	sf::Vector2u size(renderer::window().getSize());
+	sf::Vector2u size(engine::window()->getSize());
 
 	// Window bounds checking
 	return

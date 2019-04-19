@@ -1,6 +1,7 @@
 #include "engine.hh"
 
 #include <iostream>
+#include <memory>
 
 #include <resources.hh>
 #include <renderer.hh>
@@ -9,10 +10,11 @@ namespace engine
 {
 	std::array<bool, sf::Keyboard::KeyCount> keyboard;
 	std::array<bool, sf::Mouse::ButtonCount> mouse;
+	sf::Vector2f                             mouse_position;
 
-	static std::string       window_title_;
-	static sf::RenderWindow* window_       = nullptr;
-	static Scene*            active_scene_ = nullptr;
+	static std::string                       window_title_;
+	static std::unique_ptr<sf::RenderWindow> window_       = nullptr;
+	static Scene*                            active_scene_ = nullptr;
 
 	static bool  loading_         = false;
 	static float loading_spinner_ = 0.0f;
@@ -77,6 +79,9 @@ namespace engine
 
 			else if (event.type == sf::Event::MouseButtonReleased)
 				mouse[event.mouseButton.button] = false;
+
+			else if (event.type == sf::Event::MouseMoved)
+				mouse_position = window_->mapPixelToCoords(sf::Mouse::getPosition(*window_));
 
 		if (keyboard[sf::Keyboard::Escape])
 			window_->close();
@@ -153,14 +158,13 @@ namespace engine
 	           const std::string& title,
 	           Scene* scene)
 	{
-		sf::RenderWindow window(sf::VideoMode(width, height), title);
-		window_ = &window;
+		window_ = std::make_unique<sf::RenderWindow>(sf::VideoMode(width, height), title);
 		window_title_ = title;
 
-		renderer::initialise(window);
+		renderer::initialise(window_.get());
 		change_scene(scene);
 
-		while (window.isOpen())
+		while (window_->isOpen())
 		{
 			update();
 			render();
@@ -172,13 +176,13 @@ namespace engine
 			active_scene_ = nullptr;
 		}
 
-		window.close();
+		window_->close();
 		renderer::shutdown();
 	}
 
-	sf::RenderWindow& window()
+	sf::RenderWindow* window()
 	{
-		return *window_;
+		return window_.get();
 	}
 	sf::Vector2ul window_size()
 	{
