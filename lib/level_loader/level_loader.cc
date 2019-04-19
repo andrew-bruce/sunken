@@ -356,7 +356,8 @@ namespace level
 	// Position of tile index
 	sf::Vector2f tile_position(const sf::Vector2ul& index)
 	{
-		return sf::Vector2f(index) * tile_size_;
+		return sf::Vector2f(index) * tile_size_
+			+ sf::Vector2f(tile_size_, tile_size_) / 2.0f;
 	}
 
 	// Index of tile at position
