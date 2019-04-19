@@ -2,8 +2,8 @@
 
 // Class overrides
 Component::Component(Entity* const p)
-: parent_(p), for_deletion_(false)
-  
+: parent_(p),
+  for_deletion_(false)
 { }
 Component::~Component() { }
 

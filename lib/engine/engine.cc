@@ -18,8 +18,8 @@ namespace engine
 	static Scene*                            active_scene_ = nullptr;
 
 	static bool  loading_         = false;
-	static float loading_spinner_ = 0.0f;
 	static float loadimg_time_    = 0.0f;
+	static float loading_spinner_ = 0.0f;
 
 
 
