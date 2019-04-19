@@ -1,5 +1,18 @@
 #include "scene.hh"
 
+// Logic
+void Scene::update(const float& delta_time)
+{
+	entities_.update(delta_time);
+}
+
+void Scene::render()
+{
+	entities_.render();
+}
+
+
+
 // Loading
 void Scene::loaded(bool b) const
 {
@@ -11,8 +24,8 @@ bool Scene::is_loaded() const
 {
 	std::lock_guard<std::mutex> lock(loaded_mutex_);
 
-	if (loaded_future_.valid() &&
-	    loaded_future_.wait_for(std::chrono::seconds(0))
+	if (loaded_future_.valid()
+	&&  loaded_future_.wait_for(std::chrono::seconds(0))
 		== std::future_status::ready)
 	{
 		loaded_future_.get();
@@ -33,16 +46,7 @@ void Scene::unload()
 	loaded(false);
 }
 
-// Logic
-void Scene::update(const float& delta_time)
-{
-	entities_.update(delta_time);
-}
 
-void Scene::render()
-{
-	entities_.render();
-}
 
 // Entities
 Entity* Scene::make_entity()

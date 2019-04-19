@@ -9,20 +9,24 @@
 
 namespace engine
 {
+	// Input information
 	std::array<bool, sf::Keyboard::KeyCount> keyboard;
 	std::array<bool, sf::Mouse::ButtonCount> mouse;
 	sf::Vector2f                             mouse_position;
 
+	// Engine information
 	static std::string                       window_title_;
 	static std::unique_ptr<sf::RenderWindow> window_       = nullptr;
 	static Scene*                            active_scene_ = nullptr;
 
+	// Loading information
 	static bool  loading_         = false;
 	static float loadimg_time_    = 0.0f;
 	static float loading_spinner_ = 0.0f;
 
 
 
+	// Loading scenes
 	void loading_update(const float& delta_time)
 	{
 		if (active_scene_->is_loaded())
@@ -59,6 +63,7 @@ namespace engine
 
 
 
+	// Handle window events
 	void event()
 	{
 		static sf::Event event;
@@ -88,10 +93,13 @@ namespace engine
 			window_->close();
 	}
 
+
+
+	// Update scene
 	void update()
 	{
 		static sf::Clock clock;
-		float delta_time = clock.restart().asSeconds();
+		const float delta_time = clock.restart().asSeconds();
 
 		// Update window title with current framerate
 		{
@@ -111,6 +119,7 @@ namespace engine
 		// Physics/framerate separation toggle comment
 		{
 			event();
+
 			if (loading_)
 				loading_update(delta_time);
 			else
@@ -148,6 +157,9 @@ namespace engine
 		//*/
 	}
 
+
+
+	// Render scene
 	void render()
 	{
 		if (loading_)
@@ -159,10 +171,11 @@ namespace engine
 
 
 
-	void start(unsigned width,
-	           unsigned height,
-	           const std::string& title,
-	           Scene* scene)
+	// Start engine
+	void start(const std::string& title,
+	           const unsigned&    width,
+	           const unsigned&    height,
+	                 Scene*       scene)
 	{
 		window_ = std::make_unique<sf::RenderWindow>(sf::VideoMode(width, height), title);
 		window_title_ = title;
@@ -170,6 +183,7 @@ namespace engine
 		renderer::initialise(window_.get());
 		change_scene(scene);
 
+		// Main engine loop
 		while (window_->isOpen())
 		{
 			update();
@@ -186,20 +200,27 @@ namespace engine
 		renderer::shutdown();
 	}
 
+
+
+	// Window information
 	sf::RenderWindow* window()
 	{
 		return window_.get();
 	}
+
 	sf::Vector2ul window_size()
 	{
 		return sf::Vector2ul(window_->getSize());
 	}
 
-	void vsync(bool b)
+	void vsync(const bool& b)
 	{
 		window_->setVerticalSyncEnabled(b);
 	}
 
+
+
+	// Unload old scene and load new scene
 	void change_scene(Scene* scene)
 	{
 		std::cout << "INFO engine changing scene" << std::endl;
@@ -214,7 +235,6 @@ namespace engine
 		{
 			std::cout << "INFO entering loading screen" << std::endl;
 			loadimg_time_ = 0.0;
-//			active_scene_->load();
 			active_scene_->load_async();
 			loading_ = true;
 		}

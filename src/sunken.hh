@@ -1,5 +1,5 @@
 #pragma once
 
-#include "scenes/scene_test.hh"
+#include "scenes/scene_game.hh"
 
-extern SceneTest scene_test;
+extern SceneGame scene_game;

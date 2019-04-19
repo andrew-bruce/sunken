@@ -3,7 +3,9 @@
 #include <renderer.hh>
 
 // Class overrides
-CmpShape::CmpShape(Entity* p) : Component(p) {};
+CmpShape::CmpShape(Entity* const p)
+: Component(p)
+{}
 
 // Logic
 void CmpShape::update(const float& delta_time)

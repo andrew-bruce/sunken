@@ -24,15 +24,15 @@ public:
 	Scene() = default;
 	virtual ~Scene() = default;
 
+	// Logic
+	virtual void update(const float& delta_time);
+	virtual void render();
+
 	// Loading
 	bool is_loaded() const;
 	virtual void load() = 0;
 	virtual void load_async();
 	virtual void unload();
-
-	// Logic
-	virtual void update(const float& delta_time);
-	virtual void render();
 
 	// Entities
 	Entity* make_entity();

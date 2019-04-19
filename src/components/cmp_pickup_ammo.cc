@@ -1,15 +1,30 @@
 #include "cmp_pickup_ammo.hh"
-#include "cmp_combat.hh"
+
 #include <iostream>
 
-CmpPickupAmmo::CmpPickupAmmo(Entity * p)
-	: CmpPickup(p), colour_(sf::Color::Cyan)
+#include <SFML/Graphics.hpp>
+
+#include <level_loader.hh>
+#include <scene.hh>
+
+#include "cmp_combat.hh"
+#include "cmp_shape.hh"
+
+// Class overrides
+CmpPickupAmmo::CmpPickupAmmo(Entity * const p)
+: CmpPickup(p),
+  colour_(sf::Color::Cyan)
 {
+	auto size = sf::Vector2f(level::tile_size(), level::tile_size()) / 16.0f;
 	auto s = parent_->add_component<CmpShape>();
-	s->use_shape<sf::RectangleShape>(sf::Vector2f(12.f, 12.f));
+	s->use_shape<sf::RectangleShape>(size);
+	s->shape().setOrigin(size / 2.0f);
 	s->shape().setFillColor(colour_);
 }
 
+
+
+// Logic
 void CmpPickupAmmo::update(const float & delta_time)
 {
 	CmpPickup::update(delta_time);
@@ -23,7 +38,8 @@ void CmpPickupAmmo::update(const float & delta_time)
 
 		// Increase ammo
 		c->pickup_ammo(5);
-	}		
+	}
 }
 
-void CmpPickupAmmo::render(){}
+void CmpPickupAmmo::render()
+{}

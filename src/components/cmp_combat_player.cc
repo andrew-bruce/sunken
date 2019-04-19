@@ -1,19 +1,29 @@
 #include "cmp_combat_player.hh"
 
-#include <engine.hh>
 #include <SFML/Window.hpp>
 
-CmpCombatPlayer::CmpCombatPlayer(Entity * p) : CmpCombat(p) {}
+#include <engine.hh>
 
+// Class overrides
+CmpCombatPlayer::CmpCombatPlayer(Entity* const p)
+: CmpCombat(p)
+{}
+
+
+
+// Logic
 void CmpCombatPlayer::update(const float & delta_time)
 {
-	if (engine::mouse[sf::Mouse::Left]) {
-		auto m = engine::mouse_position;
-		auto d = sf::normalise(m - parent_->position());
-		fire(d);
+	// If fire button pressed
+	if (engine::mouse[sf::Mouse::Left])
+	{
+		// Get direction vector to mouse position
+		const sf::Vector2f vector = engine::mouse_position - parent_->position();
+		fire(sf::normalise(vector));
 	}
 
 	CmpCombat::update(delta_time);
 }
 
-void CmpCombatPlayer::render() {}
+void CmpCombatPlayer::render()
+{}

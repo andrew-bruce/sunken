@@ -6,7 +6,7 @@ struct CmpCombatPlayer : CmpCombat
 {
 	// Class overrides
 	CmpCombatPlayer() = delete;
-	explicit CmpCombatPlayer(Entity* p);
+	explicit CmpCombatPlayer(Entity* const p);
 
 	// Logic
 	void update(const float& delta_time) override;

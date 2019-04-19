@@ -6,7 +6,7 @@ struct CmpMovementPlayer : CmpMovement
 {
 	// Class overrides
 	CmpMovementPlayer() = delete;
-	explicit CmpMovementPlayer(Entity* p);
+	explicit CmpMovementPlayer(Entity* const p);
 
 	// Logic
 	void update(const float& delta_time) override;

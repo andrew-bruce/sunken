@@ -1,23 +1,47 @@
 #include "cmp_combat.hh"
-#include "cmp_movement_torpedo.hh"
 
 #include <iostream>
 
 #include <level_loader.hh>
 #include <scene.hh>
 
-CmpCombat::CmpCombat(Entity* p)
+#include "cmp_movement_torpedo.hh"
+#include "cmp_shape.hh"
+
+// Class overrides
+CmpCombat::CmpCombat(Entity* const p)
 : Component(p),
   ammo_(5),
   fire_cooldown_(0.0f)
 {}
 
-// fires missile
-void CmpCombat::fire(sf::Vector2f direction)
+
+
+// Ammo
+unsigned CmpCombat::ammo()
 {
-	if (ammo_ == 0)
-		return;
-	if (fire_cooldown_ > 0.0f)
+	return ammo_;
+}
+
+void CmpCombat::pickup_ammo(const unsigned& ammo)
+{
+	ammo_ += ammo;
+}
+
+
+
+// Logic
+void CmpCombat::update(const float& delta_time) {
+	if(fire_cooldown_ > 0.0f)
+		fire_cooldown_ -= delta_time;
+}
+
+
+
+// Fires torpedo along direction vector
+void CmpCombat::fire(const sf::Vector2f& direction)
+{
+	if (ammo_ == 0 || fire_cooldown_ > 0.0f)
 		return;
 
 	auto size = sf::Vector2f(level::tile_size(), level::tile_size()) / 32.0f;
@@ -33,22 +57,5 @@ void CmpCombat::fire(sf::Vector2f direction)
 	auto t = e->add_component<CmpMovementTorpedo>(direction);
 
 	--ammo_;
-	fire_cooldown_ = 2.f;
-}
-
-// checks ammo
-unsigned CmpCombat::ammo()
-{
-	return ammo_;
-}
-
-// adds more ammo upon pickup
-void CmpCombat::pickup_ammo(unsigned ammo)
-{
-	ammo_ += ammo;
-}
-
-void CmpCombat::update(const float& delta_time) {
-	if(fire_cooldown_ > 0.0f)
-		fire_cooldown_ -= delta_time;
+	fire_cooldown_ = 2.0f;
 }

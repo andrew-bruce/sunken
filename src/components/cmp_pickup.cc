@@ -1,11 +1,13 @@
 #include "cmp_pickup.hh"
-#include "cmp_shape.hh"
-#include <maths.hh>
+
 #include <iostream>
 
-CmpPickup::CmpPickup(Entity * p) : Component(p)
-{
-}
+#include <maths.hh>
+#include <scene.hh>
+
+CmpPickup::CmpPickup(Entity* const p)
+: Component(p)
+{}
 
 void CmpPickup::pickup()
 {

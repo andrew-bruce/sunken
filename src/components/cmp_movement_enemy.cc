@@ -5,10 +5,10 @@
 #include <level_loader.hh>
 
 // Class overrides
-CmpMovementEnemy::CmpMovementEnemy(Entity* p)
-	: CmpMovement(p), state_(Rotating) 
-{
-}
+CmpMovementEnemy::CmpMovementEnemy(Entity* const p)
+: CmpMovement(p),
+  state_(Rotating)
+{}
 
 
 
@@ -60,6 +60,7 @@ void CmpMovementEnemy::update(const float& delta_time)
 				all_directions.erase(
 					std::find(all_directions.begin(), (all_directions.end()-1),
 						bad_direction));
+
 			new_direction = all_directions[rand() % all_directions.size()];
 
 			direction_ = sf::Vector2f(new_direction);
@@ -82,5 +83,5 @@ void CmpMovementEnemy::update(const float& delta_time)
 	}
 }
 
-void CmpMovementEnemy::render() {}
-
+void CmpMovementEnemy::render()
+{}

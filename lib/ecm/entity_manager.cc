@@ -13,25 +13,28 @@ void Entities::update(const float& delta_time)
 void Entities::render() const
 {
 	for (const std::unique_ptr<Entity>& e : entities_)
-		if (e->is_visible())
-			e->render();
+		e->render();
 }
 
+
+
 // Entities
+const std::vector<std::unique_ptr<Entity>>& Entities::list() const
+{
+	return entities_;
+}
+
 void Entities::clear()
 {
 	entities_.clear();
 }
 
+
+
 Entity* Entities::add(std::unique_ptr<Entity> entity)
 {
 	entities_.push_back(std::move(entity));
 	return entities_.back().get();
-}
-
-const std::vector<std::unique_ptr<Entity>>& Entities::list() const
-{
-	return entities_;
 }
 
 const std::vector<Entity*> Entities::find(const std::string& tag) const

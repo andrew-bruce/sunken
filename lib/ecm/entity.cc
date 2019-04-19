@@ -10,7 +10,11 @@ Entity::Entity(Scene* const scene)
    for_deletion_(false),
    scene        (scene)
 {}
-Entity::~Entity() {}
+
+Entity::~Entity()
+{}
+
+
 
 // Logic
 void Entity::update(const float& delta_time)
@@ -34,6 +38,8 @@ void Entity::render()
 		c->render();
 }
 
+
+
 // Position
 sf::Vector2f Entity::position() const
 {
@@ -49,6 +55,8 @@ void Entity::move_by(const sf::Vector2f& movement)
 {
 	position_ += movement;
 }
+
+
 
 // Rotation
 float Entity::rotation() const
@@ -66,6 +74,8 @@ void Entity::rotate_by(const float& rotation)
 	rotation_ += rotation;
 }
 
+
+
 // Scale
 sf::Vector2f Entity::scale() const
 {
@@ -82,6 +92,8 @@ void Entity::scale_by(const sf::Vector2f& scale)
 	scale_ += scale;
 }
 
+
+
 // Visibility
 bool Entity::is_visible() const
 {
@@ -93,6 +105,8 @@ void Entity::visible(const bool& visible)
 	visible_ = visible;
 }
 
+
+
 // Life
 bool Entity::is_alive() const
 {
@@ -103,6 +117,8 @@ void Entity::alive(const bool& alive)
 {
 	alive_ = alive;
 }
+
+
 
 // Deletion
 bool Entity::is_for_deletion() const
@@ -116,6 +132,8 @@ void Entity::delete_please()
 	visible_ = false;
 	for_deletion_ = true;
 }
+
+
 
 // Tags
 void Entity::add_tag(const std::string& t)

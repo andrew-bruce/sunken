@@ -1,4 +1,7 @@
 #pragma once
+
+#include <SFML/Graphics.hpp>
+
 #include "cmp_pickup.hh"
 
 struct CmpPickupHealth : CmpPickup
@@ -9,7 +12,7 @@ private:
 public:
 	// Class overrides
 	CmpPickupHealth() = delete;
-	explicit CmpPickupHealth(Entity* p);
+	explicit CmpPickupHealth(Entity* const p);
 
 	// Logic
 	void update(const float& delta_time) override;

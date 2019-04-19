@@ -1,32 +1,33 @@
 #include "cmp_combat_enemy.hh"
-#include<maths.hh>
-#include <iostream>
-#include <level_loader.hh>
 
-CmpCombatEnemy::CmpCombatEnemy(Entity * p) : CmpCombat(p) {
+#include <iostream>
+
+#include <maths.hh>
+#include <level_loader.hh>
+#include <scene.hh>
+
+CmpCombatEnemy::CmpCombatEnemy(Entity* const p)
+: CmpCombat(p)
+{
 	ammo_ = 1000;
 }
 
 void CmpCombatEnemy::update(const float & delta_time)
 {
 	// Get player
-	auto player = parent_->scene->entities().find("player").front();
+	const Entity* player = parent_->scene->entities().find("player").front();
 
-	// Get player and enemy position
-	sf::Vector2f pp = player->position();
-	sf::Vector2f ep = parent_->position();
+	// Get vector between entity and player
+	const sf::Vector2f vector = player->position() - parent_->position();
 
 	// Get distance between enemy and player
-	float distance = sf::length(player->position() - parent_->position());
+	float distance2 = sf::length2(vector);
 
-	// If the enemy is close enough to the player, fire in their direction
-	if (distance <= 200) 
-	{
-		auto d = sf::normalise(pp - ep);
-		fire(d);
-	}
+	// If the player is close enough, fire in their direction (squared length of 200)
+	if (distance2 <= 40000)
+		fire(sf::normalise(vector));
 
 	CmpCombat::update(delta_time);
 }
 
-void CmpCombatEnemy::render(){}
+void CmpCombatEnemy::render() {}

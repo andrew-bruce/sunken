@@ -14,7 +14,7 @@ protected:
 public:
 	// Class overrides
 	CmpSprite() = delete;
-	explicit CmpSprite(Entity* p);
+	explicit CmpSprite(Entity* const p);
 	~CmpSprite() = default;
 
 	// Logic

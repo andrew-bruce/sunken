@@ -4,7 +4,9 @@
 
 #include <level_loader.hh>
 
-CmpMovementTorpedo::CmpMovementTorpedo(Entity * p, sf::Vector2f direction) : CmpMovement(p), direction_(direction)
+CmpMovementTorpedo::CmpMovementTorpedo(Entity* const p, const sf::Vector2f& direction)
+: CmpMovement(p),
+  direction_(direction)
 {
 	speed_ = level::tile_size();
 }
@@ -25,5 +27,4 @@ void CmpMovementTorpedo::update(const float & delta_time)
 }
 
 void CmpMovementTorpedo::render()
-{
-}
+{}

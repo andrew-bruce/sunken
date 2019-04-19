@@ -3,7 +3,9 @@
 #include <renderer.hh>
 
 // Class overrides
-CmpSprite::CmpSprite(Entity* p) : Component(p) {};
+CmpSprite::CmpSprite(Entity* const p)
+: Component(p)
+{}
 
 // Logic
 void CmpSprite::update(const float& delta_time)

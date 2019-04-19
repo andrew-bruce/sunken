@@ -19,21 +19,27 @@ struct Entity
 	friend struct Entities;
 
 protected:
+	// Properties
 	sf::Vector2f position_;
 	float        rotation_;
 	sf::Vector2f scale_;
 
+	// Flags
 	bool alive_;
 	bool visible_;
 	bool for_deletion_;
 
+	// String tags
 	std::set<std::string> tags_;
 
+	// Component list
 	std::vector<std::unique_ptr<Component>> components_;
 
 public:
+	// Scene containing entity
 	Scene* const scene;
 
+	// Class overrides
 	Entity() = delete;
 	explicit Entity(Scene* const scene);
 	virtual ~Entity();

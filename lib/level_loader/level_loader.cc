@@ -50,6 +50,7 @@ namespace level
 
 
 
+	// Make sprites for rendering
 	void build_sprites(bool optimise = true)
 	{
 		tile_sprites_.clear();
@@ -91,7 +92,7 @@ namespace level
 				Width matches with the current same_count
 				Colour is the same
 				*/
-				bool is_same =
+				const bool is_same =
 					tiles[i].p.y == last.p.y &&
 					tiles[i].p.x == last.p.x + size.x * (same_count + 1) &&
 					tiles[i].c   == last.c;
@@ -129,7 +130,7 @@ namespace level
 					Height matches with the current same_count
 					Colour is the same
 					*/
-					bool is_same =
+					const bool is_same =
 						tox[j].p.x == last.p.x &&
 						tox[j].s   == last.s &&
 						tox[j].p.y == last.p.y + size.y * (same_count + 1) &&
@@ -142,6 +143,7 @@ namespace level
 					}
 				}
 
+				// Catch last tile
 				if (same_count)
 					last.s.y = size.y * (same_count + 1);
 				toy.push_back(last);
@@ -151,13 +153,15 @@ namespace level
 			tiles.swap(toy);
 		}
 
+		// Create sprites with tile information
 		for (const tile_def& t : tiles)
 		{
-			auto s = std::make_unique<sf::RectangleShape>();
+			auto s = std::make_unique<sf::RectangleShape>(t.s);
 
-			s->setPosition(t.p);
-			s->setSize(t.s);
 			s->setFillColor(t.c);
+			s->setOrigin(t.s / 2.0f);
+			// Position is middle of top left tile. Add half sprite size and subtract half tile size to correctly position
+			s->setPosition(t.p + t.s / 2.0f - sf::Vector2f(tile_size_, tile_size_) / 2.0f);
 
 			tile_sprites_.push_back(std::move(s));
 		}
@@ -206,14 +210,11 @@ namespace level
 
 				else if (size_.x != line.size())
 				{
-					std::cerr << "ERROR inconsistent level width " << filepath << std::endl;
+					std::cerr << "ERROR inconsistent level width at line "
+						<< size_.y << " in file " << filepath << std::endl;
 					return unload();
 				}
 			}
-
-			if (size_.y != file_content.size())
-				std::cout << "INCORRECT HEIGHT FOUND USING FILE LOOP" << std::endl;
-			size_.y = file_content.size();
 		}
 
 		// Populate temporary vector with contents of string
@@ -333,6 +334,7 @@ namespace level
 			for (std::size_t y = 0; y < size_.y; ++y)
 				if (tile == tile_at(sf::Vector2ul(x, y)))
 					output.emplace_back(x, y);
+
 		return std::move(output);
 	}
 
@@ -343,6 +345,7 @@ namespace level
 	{
 		if (tile_colours_.find(tile) == tile_colours_.end())
 			tile_colours_[tile] = sf::Color::Transparent;
+
 		return tile_colours_[tile];
 	}
 
@@ -356,8 +359,8 @@ namespace level
 	// Position of tile index
 	sf::Vector2f tile_position(const sf::Vector2ul& index)
 	{
-		return sf::Vector2f(index) * tile_size_
-			+ sf::Vector2f(tile_size_, tile_size_) / 2.0f;
+		// Return tile center
+		return sf::Vector2f(index) * tile_size_ + sf::Vector2f(tile_size_, tile_size_) / 2.0f;
 	}
 
 	// Index of tile at position

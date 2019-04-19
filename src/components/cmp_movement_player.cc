@@ -1,11 +1,15 @@
 #include "cmp_movement_player.hh"
 
 #include <maths.hh>
-#include <engine.hh>
 #include <level_loader.hh>
+#include <engine.hh>
 
 // Class overrides
-CmpMovementPlayer::CmpMovementPlayer(Entity* p) : CmpMovement(p) {}
+CmpMovementPlayer::CmpMovementPlayer(Entity* const p)
+: CmpMovement(p)
+{}
+
+
 
 // Logic
 void CmpMovementPlayer::update(const float& delta_time)
@@ -33,5 +37,6 @@ void CmpMovementPlayer::update(const float& delta_time)
 	move(movement);
 }
 
-void CmpMovementPlayer::render() {}
+void CmpMovementPlayer::render()
+{}
 

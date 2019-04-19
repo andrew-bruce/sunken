@@ -3,9 +3,9 @@
 
 #include "sunken.hh"
 
-SceneTest scene_test;
+SceneGame scene_game;
 
 int main()
 {
-	engine::start(1280, 720, "Sunken", &scene_test);
+	engine::start("Sunken", 1280, 720, &scene_game);
 }

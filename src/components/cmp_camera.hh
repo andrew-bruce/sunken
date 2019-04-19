@@ -9,10 +9,13 @@
 struct CmpCamera : Component
 {
 private:
-	sf::View                 view_;
-	std::queue<sf::Vector2f> buffer_;
+	sf::View     view_;
+	sf::Vector2f buffer_;
+	float        easing_;
 
 public:
+	float        zoom;
+
 	// Class overrides
 	CmpCamera() = delete;
 	explicit CmpCamera(Entity* const p);

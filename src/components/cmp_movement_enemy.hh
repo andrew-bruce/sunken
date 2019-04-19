@@ -18,7 +18,7 @@ protected:
 public:
 	// Class overrides
 	CmpMovementEnemy() = delete;
-	explicit CmpMovementEnemy(Entity* p);
+	explicit CmpMovementEnemy(Entity* const p);
 
 	// Logic
 	void update(const float& delta_time) override;

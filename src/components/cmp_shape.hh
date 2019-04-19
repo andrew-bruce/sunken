@@ -14,7 +14,7 @@ protected:
 public:
 	// Class overrides
 	CmpShape() = delete;
-	explicit CmpShape(Entity* p);
+	explicit CmpShape(Entity* const p);
 	~CmpShape() = default;
 
 	// Logic
@@ -30,4 +30,3 @@ public:
 		shape_.reset(new T(params...));
 	}
 };
-

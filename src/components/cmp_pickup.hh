@@ -1,7 +1,8 @@
 #pragma once
-#include "ecm.hh"
-#include "cmp_shape.hh"
-#include "scene.hh"
+
+#include <SFML/Graphics.hpp>
+
+#include <ecm.hh>
 
 struct CmpPickup : Component
 {
@@ -12,7 +13,7 @@ private:
 public:
 	// Class overrides
 	CmpPickup() = delete;
-	explicit CmpPickup(Entity* p);
+	explicit CmpPickup(Entity* const p);
 
 	void pickup();
 	float distance();
