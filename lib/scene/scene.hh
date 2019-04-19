@@ -17,7 +17,7 @@ protected:
 	// Entities
 	Entities entities_;
 
-	void loaded(bool b);
+	void loaded(bool b) const;
 
 public:
 	// Class overrides

@@ -39,7 +39,7 @@ namespace level
 
 	// Tile at position/index
 	Tile tile_at(const sf::Vector2f& position);
-	Tile tile_at(const sf::Vector2ul& position);
+	Tile tile_at(const sf::Vector2ul& index);
 	std::vector<sf::Vector2ul> find_tiles(const Tile& tile);
 
 	// Tile colours

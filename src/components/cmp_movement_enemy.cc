@@ -13,7 +13,7 @@ CmpMovementEnemy::CmpMovementEnemy(Entity* p)
 // Logic
 void CmpMovementEnemy::update(const float& delta_time)
 {
-	static const sf::Vector2i directions[] {{1, 0}, {0, 1}, {0, -1}, {-1, 0}};
+	static const std::array<sf::Vector2i, 4> directions {{{1, 0}, {0, 1}, {0, -1}, {-1, 0}}};
 
 	// Variables
 	const sf::Vector2f movement     (direction_ * speed_ * delta_time);
@@ -46,9 +46,12 @@ void CmpMovementEnemy::update(const float& delta_time)
 
 			// Get all directions that don't lead immediately to a wall
 			std::vector<sf::Vector2i> all_directions;
-			for (const sf::Vector2i& d : directions)
-				if (level::tile_at(sf::Vector2ul(i + d)) != level::Tile::Wall)
-					all_directions.push_back(d);
+			std::copy_if(directions.begin(), directions.end(), std::back_inserter(all_directions),
+				[i](const sf::Vector2i& d)
+				{
+					return level::tile_at(sf::Vector2ul(i + d)) != level::Tile::Wall;
+				}
+			);
 
 			// If bigger than 1, remove the bad direction
 			if (all_directions.size() > 1)

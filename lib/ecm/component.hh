@@ -9,8 +9,8 @@ struct Component
 	friend struct Entity;
 
 protected:
-	bool          for_deletion_;
 	Entity* const parent_;
+	bool          for_deletion_;
 
 	explicit Component(Entity* const p);
 

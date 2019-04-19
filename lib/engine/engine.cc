@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <memory>
+#include <numeric>
 
 #include <resources.hh>
 #include <renderer.hh>
@@ -94,16 +95,14 @@ namespace engine
 
 		// Update window title with current framerate
 		{
-			static float frame_times[256];
+			static std::array<float, 256> frame_times;
 			static unsigned char ftc = 0;
 
 			frame_times[++ftc] = delta_time;
 			static std::string avg = window_title_ + " FPS:";
 			if (ftc % 60 == 0)
 			{
-				double davg = 0.0;
-				for (const auto& f : frame_times)
-					davg += f;
+				double davg = std::accumulate(frame_times.begin(), frame_times.end(), 0.0);
 				davg = 1.0 / (davg / 255.0);
 				window_->setTitle(avg + to_decimal_place(2, davg));
 			}

@@ -13,7 +13,7 @@ public:
 	CmpMovement() = delete;
 
 	// Move
-	void move(const sf::Vector2f& move);
+	void move(const sf::Vector2f& movement);
 	void move(const float& x, const float& y);
 
 	// Logic (Pure virtual)

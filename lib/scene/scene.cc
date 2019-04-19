@@ -1,7 +1,7 @@
 #include "scene.hh"
 
 // Loading
-void Scene::loaded(bool b)
+void Scene::loaded(bool b) const
 {
 	std::lock_guard<std::mutex> lock(loaded_mutex_);
 	loaded_ = b;

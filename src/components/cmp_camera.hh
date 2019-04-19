@@ -15,7 +15,7 @@ private:
 public:
 	// Class overrides
 	CmpCamera() = delete;
-	CmpCamera(Entity* const p);
+	explicit CmpCamera(Entity* const p);
 	~CmpCamera();
 
 	// Logic

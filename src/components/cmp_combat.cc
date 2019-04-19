@@ -6,7 +6,11 @@
 #include <level_loader.hh>
 #include <scene.hh>
 
-CmpCombat::CmpCombat(Entity* p) : Component(p), ammo_(5) {}
+CmpCombat::CmpCombat(Entity* p)
+: Component(p),
+  ammo_(5),
+  fire_cooldown_(0.0f)
+{}
 
 // fires missile
 void CmpCombat::fire(sf::Vector2f direction)
