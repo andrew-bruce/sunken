@@ -109,37 +109,44 @@ namespace engine
 			}
 		}
 
-		// Separate physics from framerate
-		static float accumulator = 0.0f;
-		accumulator += delta_time;
-		static const float physics_tick = 1.0f / 100.0f;
-
-		while (accumulator >= physics_tick)
-		{
-			accumulator -= physics_tick;
-
-			event();
-
-			if (loading_)
-				loading_update(physics_tick);
-//				loading_update(delta_time);
-			else if (active_scene_ != nullptr)
-				active_scene_->update(physics_tick);
-//				active_scene_->update(delta_time);
-		}
-
-		if (accumulator > 0.0f)
+		// Physics/framerate separation toggle comment
 		{
 			event();
-
 			if (loading_)
-				loading_update(accumulator);
-//				loading_update(delta_time);
-			else if (active_scene_ != nullptr)
-				active_scene_->update(accumulator);
-//				active_scene_->update(delta_time);
-			accumulator -= accumulator;
+				loading_update(delta_time);
+			else
+				active_scene_->update(delta_time);
 		}
+		/*/
+		{
+			static float accumulator = 0.0f;
+			accumulator += delta_time;
+			static const float physics_tick = 1.0f / 100.0f;
+
+			while (accumulator >= physics_tick)
+			{
+				accumulator -= physics_tick;
+
+				event();
+
+				if (loading_)
+					loading_update(physics_tick);
+				else if (active_scene_ != nullptr)
+					active_scene_->update(physics_tick);
+			}
+
+			if (accumulator > 0.0f)
+			{
+				event();
+
+				if (loading_)
+					loading_update(accumulator);
+				else if (active_scene_ != nullptr)
+					active_scene_->update(accumulator);
+				accumulator = 0.0f;
+			}
+		}
+		//*/
 	}
 
 	void render()
