@@ -40,8 +40,8 @@ void CmpMovementPlayer::render()
 // Valid move
 bool CmpMovementPlayer::valid_move(const sf::Vector2f& movement)
 {
-	auto tile  = level::tile_at(parent_->position() + movement);
-	auto tiles = level::tiles_of_type(level::TileType::Water);
+	const auto tile  = level::tile_at(parent_->position() + movement);
+	const auto tiles = level::tiles_of_type(level::TileType::Water);
 
 	// Player can only move in water
 	return tiles.find(tile) != tiles.end();
