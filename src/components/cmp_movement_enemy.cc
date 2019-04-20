@@ -1,5 +1,7 @@
 #include "cmp_movement_enemy.hh"
 
+#include <algorithm>
+#include <array>
 #include <cstdlib>
 #include <level_loader.hh>
 #include <array>

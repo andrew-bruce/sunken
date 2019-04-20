@@ -1,5 +1,7 @@
 #include "scene.hh"
 
+#include <renderer.hh>
+
 // Logic
 void Scene::update(const float& delta_time)
 {
@@ -8,7 +10,12 @@ void Scene::update(const float& delta_time)
 
 void Scene::render()
 {
+	renderer::target(nullptr);
+
 	entities_.render();
+
+	renderer::render();
+	renderer::draw();
 }
 
 
