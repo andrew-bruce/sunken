@@ -6,6 +6,7 @@
 #include <level_loader.hh>
 #include <engine.hh>
 
+#include "../sunken.hh"
 #include "../components/cmp_camera.hh"
 #include "../components/cmp_combat_player.hh"
 #include "../components/cmp_movement_player.hh"
@@ -36,7 +37,9 @@ void SceneGame::load()
 		s->shape().setOrigin(size / 2.0f);
 		s->shape().setFillColor(sf::Color::Yellow);
 
-		p->add_component<CmpCamera>();
+		auto c = p->add_component<CmpCamera>();
+		c->zoom = level::tile_size() * 4.0f;
+
 		p->add_component<CmpCombatPlayer>();
 		p->add_component<CmpMovementPlayer>();
 		p->add_component<CmpHealthPlayer>();
@@ -86,7 +89,7 @@ void SceneGame::load()
 		}
 	}
 
-	//	std::this_thread::sleep_for(std::chrono::milliseconds(4444));
+	std::this_thread::sleep_for(std::chrono::milliseconds(250));
 	loaded(true);
 }
 
@@ -101,6 +104,9 @@ void SceneGame::unload()
 // Logic
 void SceneGame::update(const float& delta_time)
 {
+	if (engine::keyboard[sf::Keyboard::Escape])
+		return engine::change_scene(&scene_menu);
+
 	Scene::update(delta_time);
 }
 
