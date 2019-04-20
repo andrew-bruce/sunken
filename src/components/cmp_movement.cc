@@ -28,20 +28,10 @@ void CmpMovement::move(const float& x, const float& y)
 // Whether position is a valid move
 bool CmpMovement::valid_move(const sf::Vector2f& movement)
 {
-	const sf::Vector2f position(parent_->position() + movement);
+	auto tile  = level::tile_at(parent_->position() + movement);
+	auto tiles = level::tiles_of_type(level::TileType::Solid);
 
-	// Level bounds checking
-	if (level::loaded())
-		return level::tile_at(position) != level::Tile::Wall;
-
-	// Get window bounds
-	sf::Vector2u size(engine::window()->getSize());
-
-	// Window bounds checking
-	return
-		position.x >= 0 &&
-		position.x <= size.x &&
-		position.y >= 0 &&
-		position.y <= size.y;
+	// If not a solid tile, valid move
+	return tiles.find(tile) == tiles.end();
 }
 

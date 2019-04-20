@@ -10,7 +10,7 @@
 
 namespace level
 {
-	enum TileType
+	enum class TileType
 	{
 		Solid,
 		Water,

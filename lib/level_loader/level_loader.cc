@@ -37,6 +37,7 @@ namespace level
 		{
 			TileType::Solid,
 			{
+				Tile::Empty,
 				Tile::Wall
 			}
 		},
