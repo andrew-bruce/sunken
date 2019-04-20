@@ -16,7 +16,6 @@ CmpCombat::CmpCombat(Entity* const p)
 {}
 
 
-
 // Ammo
 unsigned CmpCombat::ammo()
 {
@@ -39,7 +38,7 @@ void CmpCombat::update(const float& delta_time) {
 
 
 // Fires torpedo along direction vector
-void CmpCombat::fire(const sf::Vector2f& direction)
+void CmpCombat::fire(const sf::Vector2f& direction, std::string tag)
 {
 	if (ammo_ == 0 || fire_cooldown_ > 0.0f)
 		return;
@@ -55,6 +54,7 @@ void CmpCombat::fire(const sf::Vector2f& direction)
 	s->shape().setFillColor(sf::Color::Red);
 
 	auto t = e->add_component<CmpMovementTorpedo>(direction);
+	e->add_tag(tag);
 
 	--ammo_;
 	fire_cooldown_ = 2.0f;

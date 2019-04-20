@@ -21,11 +21,11 @@ void CmpCombatEnemy::update(const float & delta_time)
 	const sf::Vector2f vector = player->position() - parent_->position();
 
 	// Get distance between enemy and player
-	float distance2 = sf::length2(vector);
+	float distance = sf::length2(vector);
 
 	// If the player is close enough, fire in their direction (squared length of 200)
-	if (distance2 <= 40000)
-		fire(sf::normalise(vector));
+	if (distance <= 40000)
+		fire(sf::normalise(vector), "enemy_torpedo");
 
 	CmpCombat::update(delta_time);
 }

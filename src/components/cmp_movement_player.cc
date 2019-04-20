@@ -6,10 +6,7 @@
 
 // Class overrides
 CmpMovementPlayer::CmpMovementPlayer(Entity* const p)
-: CmpMovement(p)
-{}
-
-
+: CmpMovement(p) {}
 
 // Logic
 void CmpMovementPlayer::update(const float& delta_time)

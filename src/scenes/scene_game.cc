@@ -11,6 +11,8 @@
 #include "../components/cmp_combat_enemy.hh"
 #include "../components/cmp_pickup_ammo.hh"
 #include "../components/cmp_pickup_health.hh"
+#include "../components/cmp_health_player.hh"
+#include "../components/cmp_health_enemy.hh"
 
 void SceneGame::load()
 {
@@ -34,6 +36,7 @@ void SceneGame::load()
 		p->add_component<CmpCamera>();
 		p->add_component<CmpCombatPlayer>();
 		p->add_component<CmpMovementPlayer>();
+		p->add_component<CmpHealthPlayer>();
 	}
 
 	// Enemy submarines
@@ -53,6 +56,7 @@ void SceneGame::load()
 
 			e->add_component<CmpMovementEnemy>();
 			e->add_component<CmpCombatEnemy>();
+			e->add_component<CmpHealthEnemy>();
 		}
 	}
 

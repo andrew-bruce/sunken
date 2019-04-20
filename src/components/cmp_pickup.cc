@@ -1,4 +1,5 @@
 #include "cmp_pickup.hh"
+#include "cmp_shape.hh"
 
 #include <iostream>
 
@@ -14,9 +15,8 @@ void CmpPickup::pickup()
 	parent_->delete_please();
 }
 
-float CmpPickup::distance()
-{
-	return distance_;
+bool CmpPickup::picked_up() {
+	return picked_up_;
 }
 
 void CmpPickup::update(const float & delta_time)
@@ -24,16 +24,14 @@ void CmpPickup::update(const float & delta_time)
 	// Get player
 	auto player = parent_->scene->entities().find("player").front();
 
-	// Get player and enemy position
-	sf::Vector2f player_p= player->position();
-	sf::Vector2f pickup_p = parent_->position();
+	// Gets player and pickup's shape component
+	auto pls = player->compatible_components<CmpShape>().front();
+	auto ps = parent_->compatible_components<CmpShape>().front();
 
-	// Get distance between enemy and player
-	distance_ = sf::length(player->position() - parent_->position());
-
-	// If the enemy is close enough to the player, fire in their direction
-	if (distance_ <= 10)
-	{
+	// If the player intersects with pickup
+	if (pls->shape().getGlobalBounds().intersects(ps->shape().getGlobalBounds())) {
+		parent_->delete_please();
+		picked_up_ = true;
 		pickup();
 	}
 }

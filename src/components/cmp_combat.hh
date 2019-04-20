@@ -14,13 +14,12 @@ public:
 	explicit CmpCombat(Entity* const p);
 
 	// Ammo
+	// combat logic
+	void fire(const sf::Vector2f& direction, std::string tag);
 	unsigned ammo();
 	void     pickup_ammo(const unsigned& ammo);
 
 	// Logic (Pure virtual)
 	void update(const float& delta_time) override;
 	void render() override = 0;
-
-	// Fires torpedo along direction vector
-	void     fire(const sf::Vector2f& direction);
 };
