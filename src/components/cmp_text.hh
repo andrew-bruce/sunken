@@ -17,9 +17,10 @@ public:
 	~CmpText() override = default;
 
 	// Logic
-	void update(const float& delta_time);
-	void render();
+	void update(const float& delta_time) override;
+	void render() override;
 
 	// Text
 	void text(const std::string& string);
+	sf::FloatRect bounds() const;
 };

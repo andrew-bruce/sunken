@@ -33,3 +33,8 @@ void CmpText::text(const std::string& string)
 	string_ = string;
 	text_.setString(string);
 }
+
+sf::FloatRect CmpText::bounds() const
+{
+	return text_.getGlobalBounds();
+}
