@@ -1,11 +1,11 @@
 #include "cmp_health_player.hh"
 
 
-CmpHealthPlayer::CmpHealthPlayer(Entity * p) : CmpHealth(p){}
+CmpHealthPlayer::CmpHealthPlayer(Entity * p) : CmpHealth(p) { health_ = 100.f; }
 
 void CmpHealthPlayer::update(const float & delta_time)
 {
-	// Check if hit by torpedo or crash into wall, reduce health if so
+	CmpHealth::update(delta_time);
 }
 
 void CmpHealthPlayer::render(){}

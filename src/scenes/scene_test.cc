@@ -10,6 +10,8 @@
 #include "../components/cmp_combat_enemy.hh"
 #include "../components/cmp_pickup_ammo.hh"
 #include "../components/cmp_pickup_health.hh"
+#include "../components/cmp_health_player.hh"
+#include "../components/cmp_health_enemy.hh"
 
 void SceneTest::load()
 {
@@ -35,6 +37,7 @@ void SceneTest::load()
 
 		p->add_component<CmpMovementPlayer>();
 		p->add_component<CmpCombatPlayer>();
+		p->add_component<CmpHealthPlayer>();
 		// Add player //
 
 		// Add enemy //
@@ -46,8 +49,10 @@ void SceneTest::load()
 
 		auto e = make_entity();
 		e->move_to(enemy_position);
+		e->add_tag("enemy");
 
 		auto es = e->add_component<CmpShape>();
+		auto eh = e->add_component<CmpHealthEnemy>();
 		es->use_shape<sf::RectangleShape>(size);
 		es->shape().setOrigin(size / 2.0f);
 		es->shape().setFillColor(sf::Color::Blue);

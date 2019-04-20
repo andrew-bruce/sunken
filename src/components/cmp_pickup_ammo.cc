@@ -13,7 +13,8 @@ CmpPickupAmmo::CmpPickupAmmo(Entity * p)
 void CmpPickupAmmo::update(const float & delta_time)
 {
 	CmpPickup::update(delta_time);
-	if (distance() <= 10)
+
+	if (picked_up())
 	{
 		// Gets player
 		auto player = parent_->scene->entities().find("player").front();

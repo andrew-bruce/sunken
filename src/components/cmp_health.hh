@@ -16,6 +16,6 @@ public:
 	void set_health(float health);
 
 	// Logic (Pure virtual)
-	void update(const float& delta_time) override = 0;
+	void update(const float& delta_time) override;
 	void render() override = 0;
 };
