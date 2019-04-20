@@ -1,8 +1,9 @@
 #include "cmp_movement_enemy.hh"
 
 #include <cstdlib>
-
 #include <level_loader.hh>
+#include <array>
+#include <algorithm>
 
 // Class overrides
 CmpMovementEnemy::CmpMovementEnemy(Entity* const p)
