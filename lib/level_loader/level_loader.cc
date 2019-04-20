@@ -6,7 +6,6 @@
 #include <iostream>
 #include <map>
 #include <memory>
-#include <set>
 
 #include <renderer.hh>
 
@@ -32,6 +31,35 @@ namespace level
 		Tile::Objective,
 		Tile::Battleship,
 		Tile::Submarine,
+	};
+	static const std::map<TileType, std::set<Tile>> tile_types_
+	{
+		{
+			TileType::Solid,
+			{
+				Tile::Empty,
+				Tile::Wall
+			}
+		},
+		{
+			TileType::Water,
+			{
+				Tile::Player,
+				Tile::Water,
+				Tile::Health,
+				Tile::Ammo,
+				Tile::Waypoint,
+				Tile::Objective,
+				Tile::Submarine
+			}
+		},
+		{
+			TileType::Air,
+			{
+				Tile::Air,
+				Tile::Battleship
+			}
+		}
 	};
 	static std::map<Tile, sf::Color> tile_colours_
 	{
@@ -324,6 +352,17 @@ namespace level
 
 		std::cerr << "WARNING invalid level index " << index << std::endl;
 		return Tile::Empty;
+	}
+
+	// Returns the set of all tiles of given type
+	std::set<Tile> tiles_of_type(const TileType& type)
+	{
+		auto s = tile_types_.find(type);
+
+		if (s == tile_types_.end())
+			return std::set<Tile>();
+
+		return s->second;
 	}
 
 	// Return indices of all tiles matching search
