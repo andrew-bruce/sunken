@@ -4,6 +4,24 @@
 
 struct CmpMovementSubmarine : CmpMovement
 {
+protected:
+	enum State
+	{
+		Patrol,
+		Centering,
+		Scanning,
+		Rotating,
+		Rotated
+	};
+
+	State        state_;
+
+	sf::Vector2f direction_;
+	sf::Vector2f target_;
+	float        scan_time_;
+
+public:
+
 	// Class overrides
 	CmpMovementSubmarine() = delete;
 	explicit CmpMovementSubmarine(Entity* const p);

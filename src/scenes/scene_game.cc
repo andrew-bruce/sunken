@@ -10,7 +10,7 @@
 #include "../components/cmp_combat_player.hh"
 #include "../components/cmp_movement_player.hh"
 #include "../components/cmp_shape.hh"
-#include "../components/cmp_movement_enemy.hh"
+#include "../components/cmp_movement_submarine.hh"
 #include "../components/cmp_combat_enemy.hh"
 #include "../components/cmp_pickup_ammo.hh"
 #include "../components/cmp_pickup_health.hh"
@@ -57,7 +57,7 @@ void SceneGame::load()
 			s->shape().setOrigin(size / 2.0f);
 			s->shape().setFillColor(sf::Color::Blue);
 
-			e->add_component<CmpMovementEnemy>();
+			e->add_component<CmpMovementSubmarine>();
 			e->add_component<CmpCombatEnemy>();
 			e->add_component<CmpHealthEnemy>();
 		}
