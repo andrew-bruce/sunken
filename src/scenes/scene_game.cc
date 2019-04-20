@@ -90,6 +90,15 @@ void SceneGame::load()
 	loaded(true);
 }
 
+void SceneGame::unload()
+{
+	level::unload();
+	Scene::unload();
+}
+
+
+
+// Logic
 void SceneGame::update(const float& delta_time)
 {
 	Scene::update(delta_time);
