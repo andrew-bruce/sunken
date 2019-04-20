@@ -1,7 +1,10 @@
 #include "scene_game.hh"
 
-#include <level_loader.hh>
 #include <iostream>
+
+#include <renderer.hh>
+#include <level_loader.hh>
+#include <engine.hh>
 
 #include "../components/cmp_camera.hh"
 #include "../components/cmp_combat_player.hh"
@@ -90,6 +93,11 @@ void SceneGame::update(const float& delta_time)
 
 void SceneGame::render()
 {
+	renderer::target(nullptr);
+
 	level::render();
-	Scene::render();
+	entities_.render();
+
+	renderer::render();
+	renderer::draw();
 }
