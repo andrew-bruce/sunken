@@ -6,8 +6,10 @@
 #include "cmp_text.hh"
 
 // Clas overrides
-CmpButton::CmpButton(Entity* const p)
-: Component(p)
+CmpButton::CmpButton(Entity* const p, const std::string& string)
+: CmpText (p, string),
+  active_ (false),
+  clicked_(false)
 {}
 
 
@@ -15,23 +17,18 @@ CmpButton::CmpButton(Entity* const p)
 // Logic
 void CmpButton::update(const float& delta_time)
 {
-	const auto text = parent_->compatible_components<CmpText>().front();
-	if (text == nullptr)
-		return;
+	CmpText::update(delta_time);
 
-	const auto bounds = text->text.getGlobalBounds();
+	const auto bounds = text.getGlobalBounds();
 
 	active_ = bounds.contains(engine::mouse_position);
 	clicked_ = active_ && engine::mouse[sf::Mouse::Left];
 
 	if (active_)
-		text->text.setFillColor(sf::Color(255, 255, 255, 255));
+		text.setFillColor(sf::Color(255, 255, 255, 255));
 	else
-		text->text.setFillColor(sf::Color(127, 127, 127, 255));
+		text.setFillColor(sf::Color(127, 127, 127, 255));
 }
-
-void CmpButton::render()
-{}
 
 
 

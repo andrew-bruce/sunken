@@ -1,8 +1,8 @@
 #pragma once
 
-#include <ecm.hh>
+#include "cmp_text.hh"
 
-struct CmpButton : Component
+struct CmpButton : CmpText
 {
 protected:
 	bool active_;
@@ -11,12 +11,11 @@ protected:
 public:
 	// Class overrides
 	CmpButton() = delete;
-	explicit CmpButton(Entity* const p);
+	explicit CmpButton(Entity* const p, const std::string& string);
 	~CmpButton() = default;
 
 	// Logic
 	void update(const float& delta_time) override;
-	void render() override;
 
 	// Values
 	bool is_active() const;

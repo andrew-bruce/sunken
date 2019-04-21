@@ -15,7 +15,9 @@ CmpText::CmpText(Entity* const p, const std::string& string)
 
 // Logic
 void CmpText::update(const float& delta_time)
-{}
+{
+	text.setPosition(parent_->position());
+}
 
 void CmpText::render()
 {

@@ -25,13 +25,11 @@ void SceneMenu::load()
 		start->add_tag("start");
 		start->move_to(sf::Vector2f(0.0f, -64.0f));
 
-		start->add_component<CmpButton>();
-		auto text = start->add_component<CmpText>("Start");
+		auto button = start->add_component<CmpButton>("Start");
 
-		auto size = sf::Vector2f(text->text.getLocalBounds().width, text->text.getLocalBounds().height);
+		auto size = sf::Vector2f(button->text.getLocalBounds().width, button->text.getLocalBounds().height);
 
-		text->text.setOrigin(size / 2.0f);
-		text->text.setPosition(start->position());
+		button->text.setOrigin(size / 2.0f);
 	}
 
 	// Quit button
@@ -40,13 +38,11 @@ void SceneMenu::load()
 		quit->add_tag("quit");
 		quit->move_to(sf::Vector2f(0.0f, 64.0f));
 
-		quit->add_component<CmpButton>();
-		auto text = quit->add_component<CmpText>("Quit");
+		auto button = quit->add_component<CmpButton>("Quit");
 
-		auto size = sf::Vector2f(text->text.getLocalBounds().width, text->text.getLocalBounds().height);
+		auto size = sf::Vector2f(button->text.getLocalBounds().width, button->text.getLocalBounds().height);
 
-		text->text.setOrigin(size / 2.0f);
-		text->text.setPosition(quit->position());
+		button->text.setOrigin(size / 2.0f);
 	}
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
