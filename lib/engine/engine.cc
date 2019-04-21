@@ -238,8 +238,11 @@ namespace engine
 		{
 			std::cout << "INFO entering loading screen" << std::endl;
 			loadimg_time_ = 0.0;
+#ifdef _WIN32
+			active_scene_->load_async();
+#else
 			active_scene_->load();
-//			active_scene_->load_async();
+#endif
 			loading_ = true;
 		}
 	}
