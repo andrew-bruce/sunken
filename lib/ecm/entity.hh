@@ -98,8 +98,11 @@ public:
 
 		std::vector<T*> output;
 		for (const std::unique_ptr<Component>& c : components_)
-			if (typeid(c.get()) == typeid(T))
+		{
+			auto& t = *c.get();
+			if (typeid(t) == typeid(T))
 				output.push_back((T*)c.get());
+		}
 
 		return std::move(output);
 	}

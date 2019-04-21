@@ -4,38 +4,53 @@
 #include <engine.hh>
 
 #include "../sunken.hh"
+#include "../components/cmp_button.hh"
 #include "../components/cmp_camera.hh"
+#include "../components/cmp_shape.hh"
 #include "../components/cmp_text.hh"
-
-static CmpCamera* camera;
-static CmpText*   start;
-static CmpText*   quit;
 
 // Loading
 void SceneMenu::load()
 {
-	auto c = make_entity();
-	c->add_tag("camera");
-	camera = c->add_component<CmpCamera>();
+	// Camera
+	{
+		auto camera = make_entity();
+		camera->add_tag("camera");
+		camera->add_component<CmpCamera>();
+	}
 
-	auto s = make_entity();
-	s->add_tag("start");
-	s->move_to(sf::Vector2f(0.0f, -32.0f));
-	start = s->add_component<CmpText>("Start");
+	// Start button
+	{
+		auto start = make_entity();
+		start->add_tag("start");
+		start->move_to(sf::Vector2f(0.0f, -64.0f));
 
-	auto q = make_entity();
-	q->add_tag("quit");
-	q->move_to(sf::Vector2f(0.0f, 32.0f));
-	quit = q->add_component<CmpText>("Quit");
+		start->add_component<CmpButton>();
+		auto text = start->add_component<CmpText>("Start");
 
+		auto size = sf::Vector2f(text->text.getLocalBounds().width, text->text.getLocalBounds().height);
+
+		text->text.setOrigin(size / 2.0f);
+		text->text.setPosition(start->position());
+	}
+
+	// Quit button
+	{
+		auto quit = make_entity();
+		quit->add_tag("quit");
+		quit->move_to(sf::Vector2f(0.0f, 64.0f));
+
+		quit->add_component<CmpButton>();
+		auto text = quit->add_component<CmpText>("Quit");
+
+		auto size = sf::Vector2f(text->text.getLocalBounds().width, text->text.getLocalBounds().height);
+
+		text->text.setOrigin(size / 2.0f);
+		text->text.setPosition(quit->position());
+	}
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	Scene::loaded(true);
-}
-
-void SceneMenu::unload()
-{
-	camera = nullptr;
-	start = quit = nullptr;
-	Scene::unload();
 }
 
 
@@ -43,18 +58,47 @@ void SceneMenu::unload()
 // Logic
 void SceneMenu::update(const float& delta_time)
 {
-	if (camera != nullptr)
-		camera->zoom = engine::window_size().x;
 
-	if (start != nullptr && quit != nullptr)
-		if (engine::mouse[sf::Mouse::Left])
+	// Camera
+	{
+		auto camera = entities_.find("camera").front();
+		if (camera != nullptr)
 		{
-			if (start->bounds().contains(engine::mouse_position))
-				return engine::change_scene(&scene_game);
+			auto c = camera->compatible_components<CmpCamera>().front();
+			if (c != nullptr)
+			{
+				const auto size = engine::window_size();
+				if (size.x > size.y)
+					c->zoom = size.x;
+				else
+					c->zoom = size.y;
+			}
+		}
+	}
 
-			if (quit->bounds().contains(engine::mouse_position))
+	// Start button
+	{
+
+		auto start = entities_.find("start").front();
+		if (start != nullptr)
+		{
+			auto s = start->compatible_components<CmpButton>().front();
+			if (s != nullptr && s->clicked())
+				return engine::change_scene(&scene_game);
+		}
+	}
+
+	// Quit button
+	{
+
+		auto quit = entities_.find("quit").front();
+		if (quit != nullptr)
+		{
+			auto q = quit->compatible_components<CmpButton>().front();
+			if (q != nullptr && q->clicked())
 				return engine::window()->close();
 		}
+	}
 
 	Scene::update(delta_time);
 }

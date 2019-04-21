@@ -26,7 +26,8 @@ public:
 
 	// Replaces shape used
 	template <typename T, typename... Targs>
-	void use_shape(Targs... params) {
+	void use_shape(Targs... params)
+	{
 		shape_.reset(new T(params...));
 	}
 };

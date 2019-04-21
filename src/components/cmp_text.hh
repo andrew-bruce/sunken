@@ -6,11 +6,8 @@
 
 struct CmpText : Component
 {
-protected:
-	sf::Text    text_;
-	std::string string_;
+	sf::Text text;
 
-public:
 	// Class overrides
 	CmpText() = delete;
 	explicit CmpText(Entity* const p, const std::string& string = "");
@@ -19,8 +16,4 @@ public:
 	// Logic
 	void update(const float& delta_time) override;
 	void render() override;
-
-	// Text
-	void text(const std::string& string);
-	sf::FloatRect bounds() const;
 };
