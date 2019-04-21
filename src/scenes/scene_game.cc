@@ -17,6 +17,7 @@
 #include "../components/cmp_pickup_health.hh"
 #include "../components/cmp_health_player.hh"
 #include "../components/cmp_health_enemy.hh"
+#include "../components/cmp_movement_battleship.hh"
 
 void SceneGame::load()
 {
@@ -63,6 +64,30 @@ void SceneGame::load()
 			e->add_component<CmpMovementSubmarine>();
 			e->add_component<CmpCombatEnemy>();
 			e->add_component<CmpHealthEnemy>();
+			e->add_tag("enemy");
+		}
+	}
+
+	// Enemy battleships
+	{
+		for (const auto tile : level::find_tiles(level::Tile::Battleship))
+		{
+			const auto position = level::tile_position(tile);
+			const auto size = sf::Vector2f(35.f, 10.f);
+
+			level::Tile t = level::tile_at(position);
+
+			auto e = make_entity();
+			e->move_to(position + sf::Vector2f(0.f, 22.f));
+
+			auto s = e->add_component<CmpShape>();
+			s->use_shape<sf::RectangleShape>(size);
+			s->shape().setFillColor(sf::Color::Blue);
+
+			e->add_component<CmpMovementBattleship>();
+			e->add_component<CmpCombatEnemy>();
+			e->add_component<CmpHealthEnemy>();
+			e->add_tag("enemy");
 		}
 	}
 
