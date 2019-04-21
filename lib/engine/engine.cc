@@ -13,6 +13,7 @@ namespace engine
 	std::array<bool, sf::Keyboard::KeyCount> keyboard;
 	std::array<bool, sf::Mouse::ButtonCount> mouse;
 	sf::Vector2f                             mouse_position;
+	float                                    mouse_wheel_delta;
 
 	// Engine information
 	static std::string                       window_title_;
@@ -76,6 +77,10 @@ namespace engine
 	{
 		static sf::Event event;
 
+		// Reset deltas
+		mouse_wheel_delta = 0.0f;
+
+		// Event loop
 		while (window_->pollEvent(event))
 			if (event.type == sf::Event::Closed)
 				window_->close();
@@ -93,6 +98,9 @@ namespace engine
 
 			else if (event.type == sf::Event::EventType::MouseButtonReleased)
 				mouse[event.mouseButton.button] = false;
+
+			else if (event.type == sf::Event::EventType::MouseWheelScrolled)
+				mouse_wheel_delta = event.mouseWheelScroll.delta;
 
 		mouse_position = window_->mapPixelToCoords(sf::Mouse::getPosition(*window_));
 	}

@@ -14,6 +14,7 @@ namespace engine
 	extern std::array<bool, sf::Keyboard::KeyCount> keyboard;
 	extern std::array<bool, sf::Mouse::ButtonCount> mouse;
 	extern sf::Vector2f                             mouse_position;
+	extern float                                    mouse_wheel_delta;
 
 	// Start engine
 	void start(const std::string& title,

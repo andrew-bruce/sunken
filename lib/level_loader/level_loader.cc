@@ -14,7 +14,7 @@ namespace level
 {
 	// Level attributes
 	static bool          loaded_    = false;
-	static float         tile_size_ = 100.0f;
+	static float         tile_size_ = 0.0f;
 	static sf::Vector2ul size_      = {0, 0};
 
 	// Tile lists
