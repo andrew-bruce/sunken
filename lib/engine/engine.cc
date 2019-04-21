@@ -94,9 +94,6 @@ namespace engine
 			else if (event.type == sf::Event::EventType::MouseButtonReleased)
 				mouse[event.mouseButton.button] = false;
 
-		if (keyboard[sf::Keyboard::Escape])
-			window_->close();
-
 		mouse_position = window_->mapPixelToCoords(sf::Mouse::getPosition(*window_));
 	}
 
@@ -241,7 +238,8 @@ namespace engine
 		{
 			std::cout << "INFO entering loading screen" << std::endl;
 			loadimg_time_ = 0.0;
-			active_scene_->load_async();
+			active_scene_->load();
+//			active_scene_->load_async();
 			loading_ = true;
 		}
 	}

@@ -6,6 +6,7 @@ struct CmpMovement : Component
 {
 protected:
 	float speed_;
+
 	explicit CmpMovement(Entity* const p);
 
 public:

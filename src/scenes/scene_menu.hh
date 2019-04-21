@@ -2,11 +2,11 @@
 
 #include <scene.hh>
 
-struct SceneGame : Scene
+struct SceneMenu : Scene
 {
 	// Class overrides
-	SceneGame() = default;
-	~SceneGame() = default;
+	SceneMenu() = default;
+	~SceneMenu() = default;
 
 	void load() override;
 	void unload() override;

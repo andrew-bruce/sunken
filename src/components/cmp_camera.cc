@@ -29,8 +29,7 @@ void CmpCamera::update(const float& delta_time)
 
 void CmpCamera::render()
 {
-	float scale       = level::tile_size() * zoom;
-	sf::Vector2f size = sf::Vector2f(scale, scale);
+	sf::Vector2f size = sf::Vector2f(zoom, zoom);
 
 	// Make view fill screen
 	auto window = engine::window();
