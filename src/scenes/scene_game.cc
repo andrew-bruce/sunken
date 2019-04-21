@@ -73,15 +73,16 @@ void SceneGame::load()
 		for (const auto tile : level::find_tiles(level::Tile::Battleship))
 		{
 			const auto position = level::tile_position(tile);
-			const auto size = sf::Vector2f(35.f, 10.f);
+			const auto size = sf::Vector2f(level::tile_size() / 2.0f, level::tile_size() / 8.0f);
 
 			level::Tile t = level::tile_at(position);
 
 			auto e = make_entity();
-			e->move_to(position + sf::Vector2f(0.f, 22.f));
+			e->move_to(position + sf::Vector2f(0.f, level::tile_size() - size.y) / 2.0f);
 
 			auto s = e->add_component<CmpShape>();
 			s->use_shape<sf::RectangleShape>(size);
+			s->shape().setOrigin(size / 2.0f);
 			s->shape().setFillColor(sf::Color::Blue);
 
 			e->add_component<CmpMovementBattleship>();
