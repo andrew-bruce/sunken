@@ -92,6 +92,26 @@ void SceneGame::load()
 		}
 	}
 
+	// Enemy submarines
+	{
+		for (const auto tile : level::find_tiles(level::Tile::Objective))
+		{
+			const auto position = level::tile_position(tile);
+			const auto size = sf::Vector2f(35.f, 35.f);
+
+			auto e = make_entity();
+			e->move_to(position);
+
+			auto s = e->add_component<CmpShape>();
+			s->use_shape<sf::RectangleShape>(size);
+			s->shape().setFillColor(sf::Color::Red);
+
+			e->add_component<CmpCombatEnemy>();
+			e->add_component<CmpHealthEnemy>();
+			e->add_tag("enemy");
+		}
+	}
+
 	// Pickups
 	{
 		for (const auto t : level::find_tiles(level::Tile::Ammo))
