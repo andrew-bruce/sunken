@@ -4,8 +4,10 @@
 #include "sunken.hh"
 
 SceneGame scene_game;
+SceneMenu scene_menu;
 
 int main()
 {
-	engine::start("Sunken", 1280, 720, &scene_game);
+	srand(time(nullptr));
+	engine::start("Sunken", 1280, 720, &scene_menu);
 }

@@ -5,26 +5,26 @@
 
 namespace renderer
 {
-	// Target rendered to
-	static sf::RenderWindow* render_target;
+	// Backup window handle and render target
+	static sf::RenderWindow* render_window;
+	static sf::RenderTarget* render_target;
+
 
 	// Queue of drawables to be rendered
 	static std::queue<const sf::Drawable*> render_queue;
 
-	// Window being used
-	sf::RenderWindow* window()
-	{
-		return render_target;
-	}
-
 	// Initialise renderer with window
 	void initialise(sf::RenderWindow* window)
 	{
-		render_target = window;
+		render_window = window;
+		target();
 	}
 
-	// Update renderer
-	void update(const float& delta_time) {}
+	// Set render target
+	void target(sf::RenderTarget* target)
+	{
+		render_target = target ? target : render_window;
+	}
 
 	// Queue drawable to be rendered
 	void queue(const sf::Drawable* drawable)
@@ -48,8 +48,12 @@ namespace renderer
 			render_target->draw(*render_queue.front());
 			render_queue.pop();
 		}
+	}
 
-		render_target->display();
+	// Draw the screen
+	void draw()
+	{
+		render_window->display();
 	}
 
 	// Shutdown renderer
@@ -57,7 +61,7 @@ namespace renderer
 	{
 		while (!render_queue.empty())
 			render_queue.pop();
-		render_target = nullptr;
+		render_target = render_window = nullptr;
 	}
 };
 

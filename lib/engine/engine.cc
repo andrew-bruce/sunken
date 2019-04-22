@@ -13,6 +13,7 @@ namespace engine
 	std::array<bool, sf::Keyboard::KeyCount> keyboard;
 	std::array<bool, sf::Mouse::ButtonCount> mouse;
 	sf::Vector2f                             mouse_position;
+	float                                    mouse_wheel_delta;
 
 	// Engine information
 	static std::string                       window_title_;
@@ -57,8 +58,16 @@ namespace engine
 		t.setOrigin(t.getLocalBounds().width / 2.0f, t.getLocalBounds().height / 2.0f);
 		t.setPosition(sf::cast<float>(window_size()) * sf::Vector2f(0.5f, 0.3f));
 
+		// Set target to window
+		renderer::target(nullptr);
+
+		// Queue text and octagon
 		renderer::queue(&t);
 		renderer::queue(&octagon);
+
+		// Render and draw the frame
+		renderer::render();
+		renderer::draw();
 	}
 
 
@@ -68,29 +77,32 @@ namespace engine
 	{
 		static sf::Event event;
 
+		// Reset deltas
+		mouse_wheel_delta = 0.0f;
+
+		// Event loop
 		while (window_->pollEvent(event))
 			if (event.type == sf::Event::Closed)
 				window_->close();
 
-			else if (event.type     == sf::Event::KeyPressed
+			else if (event.type     == sf::Event::EventType::KeyPressed
 			     &&  event.key.code != sf::Keyboard::Unknown)
 				keyboard[event.key.code] = true;
 
-			else if (event.type     == sf::Event::KeyReleased
+			else if (event.type     == sf::Event::EventType::KeyReleased
 			     &&  event.key.code != sf::Keyboard::Unknown)
 				keyboard[event.key.code] = false;
 
-			else if (event.type == sf::Event::MouseButtonPressed)
+			else if (event.type == sf::Event::EventType::MouseButtonPressed)
 				mouse[event.mouseButton.button] = true;
 
-			else if (event.type == sf::Event::MouseButtonReleased)
+			else if (event.type == sf::Event::EventType::MouseButtonReleased)
 				mouse[event.mouseButton.button] = false;
 
-			else if (event.type == sf::Event::MouseMoved)
-				mouse_position = window_->mapPixelToCoords(sf::Mouse::getPosition(*window_));
+			else if (event.type == sf::Event::EventType::MouseWheelScrolled)
+				mouse_wheel_delta = event.mouseWheelScroll.delta;
 
-		if (keyboard[sf::Keyboard::Escape])
-			window_->close();
+		mouse_position = window_->mapPixelToCoords(sf::Mouse::getPosition(*window_));
 	}
 
 
@@ -166,7 +178,6 @@ namespace engine
 			loading_render();
 		else
 			active_scene_->render();
-		renderer::render();
 	}
 
 
@@ -196,8 +207,8 @@ namespace engine
 			active_scene_ = nullptr;
 		}
 
-		window_->close();
 		renderer::shutdown();
+		window_->close();
 	}
 
 
@@ -235,7 +246,11 @@ namespace engine
 		{
 			std::cout << "INFO entering loading screen" << std::endl;
 			loadimg_time_ = 0.0;
+#ifdef _WIN32
 			active_scene_->load_async();
+#else
+			active_scene_->load();
+#endif
 			loading_ = true;
 		}
 	}

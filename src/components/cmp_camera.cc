@@ -10,7 +10,7 @@ CmpCamera::CmpCamera(Entity* const p)
 : Component(p),
   buffer_  (p->position()),
   easing_  (4.0f),
-  zoom     (4.0f)
+  zoom     (engine::window_size().x)
 {}
 
 CmpCamera::~CmpCamera()
@@ -25,12 +25,15 @@ void CmpCamera::update(const float& delta_time)
 	// Interpolate between current buffer position and parent position
 	const sf::Vector2f vector = parent_->position() - buffer_;
 	buffer_ += vector * easing_ * delta_time;
+
+	const auto zoom_delta = engine::mouse_wheel_delta * level::tile_size();
+	if (zoom > zoom_delta)
+		zoom -= zoom_delta;
 }
 
 void CmpCamera::render()
 {
-	float scale       = level::tile_size() * zoom;
-	sf::Vector2f size = sf::Vector2f(scale, scale);
+	sf::Vector2f size = sf::Vector2f(zoom, zoom);
 
 	// Make view fill screen
 	auto window = engine::window();

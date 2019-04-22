@@ -6,6 +6,7 @@ struct CmpMovement : Component
 {
 protected:
 	float speed_;
+
 	explicit CmpMovement(Entity* const p);
 
 public:
@@ -21,6 +22,6 @@ public:
 	void render() override = 0;
 
 	// Whether position is a valid move
-	bool valid_move(const sf::Vector2f& movement);
+	virtual bool valid_move(const sf::Vector2f& movement);
 };
 

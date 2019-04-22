@@ -1,18 +1,23 @@
 #include "scene_game.hh"
 
-#include <level_loader.hh>
 #include <iostream>
 
+#include <renderer.hh>
+#include <level_loader.hh>
+#include <engine.hh>
+
+#include "../sunken.hh"
 #include "../components/cmp_camera.hh"
 #include "../components/cmp_combat_player.hh"
 #include "../components/cmp_movement_player.hh"
 #include "../components/cmp_shape.hh"
-#include "../components/cmp_movement_enemy.hh"
+#include "../components/cmp_movement_submarine.hh"
 #include "../components/cmp_combat_enemy.hh"
 #include "../components/cmp_pickup_ammo.hh"
 #include "../components/cmp_pickup_health.hh"
 #include "../components/cmp_health_player.hh"
 #include "../components/cmp_health_enemy.hh"
+#include "../components/cmp_movement_battleship.hh"
 
 void SceneGame::load()
 {
@@ -33,7 +38,9 @@ void SceneGame::load()
 		s->shape().setOrigin(size / 2.0f);
 		s->shape().setFillColor(sf::Color::Yellow);
 
-		p->add_component<CmpCamera>();
+		auto c = p->add_component<CmpCamera>();
+		c->zoom = level::tile_size() * 4.0f;
+
 		p->add_component<CmpCombatPlayer>();
 		p->add_component<CmpMovementPlayer>();
 		p->add_component<CmpHealthPlayer>();
@@ -54,9 +61,34 @@ void SceneGame::load()
 			s->shape().setOrigin(size / 2.0f);
 			s->shape().setFillColor(sf::Color::Blue);
 
-			e->add_component<CmpMovementEnemy>();
+			e->add_component<CmpMovementSubmarine>();
 			e->add_component<CmpCombatEnemy>();
 			e->add_component<CmpHealthEnemy>();
+			e->add_tag("enemy");
+		}
+	}
+
+	// Enemy battleships
+	{
+		for (const auto tile : level::find_tiles(level::Tile::Battleship))
+		{
+			const auto position = level::tile_position(tile);
+			const auto size = sf::Vector2f(level::tile_size() / 2.0f, level::tile_size() / 8.0f);
+
+			level::Tile t = level::tile_at(position);
+
+			auto e = make_entity();
+			e->move_to(position + sf::Vector2f(0.f, level::tile_size() - size.y) / 2.0f);
+
+			auto s = e->add_component<CmpShape>();
+			s->use_shape<sf::RectangleShape>(size);
+			s->shape().setOrigin(size / 2.0f);
+			s->shape().setFillColor(sf::Color::Blue);
+
+			e->add_component<CmpMovementBattleship>();
+			e->add_component<CmpCombatEnemy>();
+			e->add_component<CmpHealthEnemy>();
+			e->add_tag("enemy");
 		}
 	}
 
@@ -83,17 +115,34 @@ void SceneGame::load()
 		}
 	}
 
-	//	std::this_thread::sleep_for(std::chrono::milliseconds(4444));
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	loaded(true);
 }
 
+void SceneGame::unload()
+{
+	level::unload();
+	Scene::unload();
+}
+
+
+
+// Logic
 void SceneGame::update(const float& delta_time)
 {
+	if (engine::keyboard[sf::Keyboard::Escape])
+		return engine::change_scene(&scene_menu);
+
 	Scene::update(delta_time);
 }
 
 void SceneGame::render()
 {
+	renderer::target(nullptr);
+
 	level::render();
-	Scene::render();
+	entities_.render();
+
+	renderer::render();
+	renderer::draw();
 }

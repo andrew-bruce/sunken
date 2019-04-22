@@ -21,10 +21,8 @@ void CmpCombatPlayer::update(const float & delta_time)
 		// Get direction vector to mouse position
 		const sf::Vector2f vector = engine::mouse_position - parent_->position();
 		fire(sf::normalise(vector), "player_torpedo");
-
-
-		CmpCombat::update(delta_time);
 	}
+	CmpCombat::update(delta_time);
 }
 void CmpCombatPlayer::render()
 {}
