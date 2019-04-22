@@ -24,7 +24,7 @@ void CmpPickup::update(const float & delta_time)
 	// Get player
 	auto player = parent_->scene->entities().find("player").front();
 
-	// Gets player and pickup's shape component
+	// Gets player and pickup shape components
 	auto pls = player->compatible_components<CmpShape>().front();
 	auto ps = parent_->compatible_components<CmpShape>().front();
 

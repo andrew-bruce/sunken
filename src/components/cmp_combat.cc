@@ -27,8 +27,6 @@ void CmpCombat::pickup_ammo(const unsigned& ammo)
 	ammo_ += ammo;
 }
 
-
-
 // Logic
 void CmpCombat::update(const float& delta_time) {
 	if(fire_cooldown_ > 0.0f)

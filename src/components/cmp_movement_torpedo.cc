@@ -43,7 +43,7 @@ void CmpMovementTorpedo::update(const float & delta_time)
 		// Gets player
 		auto player = parent_->scene->entities().find("player").front();
 
-		// Gets it's shape component
+		// Gets player shape and health components
 		auto ps = player->compatible_components<CmpShape>().front();
 		auto ph = player->compatible_components<CmpHealthPlayer>().front();
 
