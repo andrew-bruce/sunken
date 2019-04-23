@@ -5,7 +5,7 @@
 // Class overrides
 CmpSound::CmpSound(Entity* const p, const std::string& string)
 : Component(p),
-  sound_(nullptr)
+  buffer_(nullptr)
 {
 	load(string);
 }
@@ -24,20 +24,22 @@ void CmpSound::render()
 // Loading
 void CmpSound::load(const std::string& string)
 {
-	sound_ = resources::get<sf::Sound>(string);
-	if (!sound_)
+	buffer_ = resources::get<sf::SoundBuffer>(string);
+	if (!buffer_)
 		return;
+
+	sound_.setBuffer(*buffer_);
 }
 
-bool CmpSound::loaded()
+bool CmpSound::loaded() const
 {
-	return sound_;
+	return buffer_;
 }
 
 
 
 // Sound
-sf::Sound* CmpSound::sound() const
+sf::Sound& CmpSound::sound()
 {
 	return sound_;
 }

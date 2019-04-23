@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Audio/Sound.hpp>
 
 #include <ecm.hh>
@@ -9,7 +10,8 @@
 struct CmpSound : Component
 {
 private:
-	sf::Sound* sound_;
+	sf::SoundBuffer* buffer_;
+	sf::Sound        sound_;
 
 public:
 	// Class overrides
@@ -23,8 +25,8 @@ public:
 
 	// Loading
 	void load(const std::string& string = "");
-	bool loaded();
+	bool loaded() const;
 
 	// Music
-	sf::Sound* sound() const;
+	sf::Sound& sound();
 };
