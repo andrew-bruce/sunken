@@ -27,9 +27,6 @@ void CmpSound::load(const std::string& string)
 	sound_ = resources::get<sf::Sound>(string);
 	if (!sound_)
 		return;
-
-	sound_->setAttenuation(0);
-	sound_->setLoop(true);
 }
 
 bool CmpSound::loaded()
