@@ -9,6 +9,8 @@ namespace renderer
 	static sf::RenderWindow* render_window;
 	static sf::RenderTarget* render_target;
 
+	// Target clear colour
+	static sf::Color target_clear_colour;
 
 	// Queue of drawables to be rendered
 	static std::queue<const sf::Drawable*> render_queue;
@@ -17,13 +19,20 @@ namespace renderer
 	void initialise(sf::RenderWindow* window)
 	{
 		render_window = window;
-		target();
+		target(nullptr);
 	}
 
 	// Set render target
 	void target(sf::RenderTarget* target)
 	{
 		render_target = target ? target : render_window;
+		clear_colour(sf::Color::Black);
+	}
+
+	// Set the target clear colour
+	void clear_colour(const sf::Color& colour)
+	{
+		target_clear_colour = colour;
 	}
 
 	// Queue drawable to be rendered
@@ -41,7 +50,7 @@ namespace renderer
 			return;
 		}
 
-		render_target->clear();
+		render_target->clear(target_clear_colour);
 
 		while (!render_queue.empty())
 		{
