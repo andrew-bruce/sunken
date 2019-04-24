@@ -41,19 +41,30 @@ void CmpCombat::fire(const sf::Vector2f& direction, std::string tag)
 	if (ammo_ == 0 || fire_cooldown_ > 0.0f)
 		return;
 
-	auto size = sf::Vector2f(level::tile_size(), level::tile_size()) / 32.0f;
+	auto size = sf::Vector2f(level::tile_size(), level::tile_size()) / 32.f;
 
 	auto e = parent_->scene->make_entity();
 	e->move_to(parent_->position());
+
+	auto t = e->add_component<CmpMovementTorpedo>(direction);
+	e->add_tag(tag);
+	
+	if (tag == "enemy_torpedo" || tag == "player_torpedo") 
+	{
+		t->set_speed(40.f);
+	}
+	else 
+	{
+		size = sf::Vector2f(level::tile_size(), level::tile_size()) / 24.f;
+		t->set_speed(20.f);
+	}
+
 
 	auto s = e->add_component<CmpShape>();
 	s->use_shape<sf::CircleShape>(size.x);
 	s->shape().setOrigin(size);
 	s->shape().setFillColor(sf::Color::Red);
 
-	auto t = e->add_component<CmpMovementTorpedo>(direction);
-	e->add_tag(tag);
-
 	--ammo_;
-	fire_cooldown_ = 2.0f;
+	fire_cooldown_ = 3.f;
 }

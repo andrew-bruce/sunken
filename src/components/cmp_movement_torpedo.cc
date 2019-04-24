@@ -11,8 +11,11 @@
 CmpMovementTorpedo::CmpMovementTorpedo(Entity* const p, const sf::Vector2f& direction)
 : CmpMovement(p),
   direction_(direction)
+{}
+
+void CmpMovementTorpedo::set_speed(float speed)
 {
-	speed_ = level::tile_size();
+	speed_ = speed;
 }
 
 void CmpMovementTorpedo::update(const float & delta_time)
@@ -71,6 +74,24 @@ void CmpMovementTorpedo::update(const float & delta_time)
 				eh->set_health(eh->health() - 40);
 				std::cout << "HIT ENEMY | Health: " << eh->health() << std::endl;
 			}
+		}
+	}
+
+	// Battleship bomb collision
+	else if (tag == "battleship_bomb")
+	{
+		// Gets player
+		auto player = parent_->scene->entities().find("player").front();
+
+		// Gets player shape and health components
+		auto ps = player->compatible_components<CmpShape>().front();
+		auto ph = player->compatible_components<CmpHealthPlayer>().front();
+
+		// If the enemy torpedo colides with the player
+		if (ps->shape().getGlobalBounds().intersects(ts->shape().getGlobalBounds())) {
+			parent_->delete_please();
+			ph->set_health(ph->health() - 50);
+			std::cout << "HIT PLAYER | Health: " << ph->health() << std::endl;
 		}
 	}
 }

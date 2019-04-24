@@ -18,6 +18,7 @@
 #include "../components/cmp_health_player.hh"
 #include "../components/cmp_health_enemy.hh"
 #include "../components/cmp_movement_battleship.hh"
+#include "../components/cmp_combat_battleship.hh"
 
 void SceneGame::load()
 {
@@ -86,13 +87,13 @@ void SceneGame::load()
 			s->shape().setFillColor(sf::Color::Blue);
 
 			e->add_component<CmpMovementBattleship>();
-			e->add_component<CmpCombatEnemy>();
+			e->add_component<CmpCombatBattleship>();
 			e->add_component<CmpHealthEnemy>();
 			e->add_tag("enemy");
 		}
 	}
 
-	// Enemy submarines
+	// Enemy bases
 	{
 		for (const auto tile : level::find_tiles(level::Tile::Objective))
 		{
