@@ -8,17 +8,26 @@
 
 #include "../sunken.hh"
 #include "../components/cmp_camera.hh"
-#include "../components/cmp_combat_player.hh"
-#include "../components/cmp_movement_player.hh"
-#include "../components/cmp_shape.hh"
-#include "../components/cmp_movement_submarine.hh"
 #include "../components/cmp_combat_enemy.hh"
+#include "../components/cmp_combat_player.hh"
+#include "../components/cmp_health_enemy.hh"
+#include "../components/cmp_health_player.hh"
+#include "../components/cmp_movement_battleship.hh"
+#include "../components/cmp_movement_player.hh"
+#include "../components/cmp_movement_submarine.hh"
+#include "../components/cmp_music.hh"
 #include "../components/cmp_pickup_ammo.hh"
 #include "../components/cmp_pickup_health.hh"
+
 #include "../components/cmp_health_player.hh"
 #include "../components/cmp_health_enemy.hh"
 #include "../components/cmp_movement_battleship.hh"
 #include "../components/cmp_combat_battleship.hh"
+
+#include "../components/cmp_shape.hh"
+#include "../components/cmp_sonar.hh"
+#include "../components/cmp_sound.hh"
+
 
 void SceneGame::load()
 {
@@ -56,6 +65,7 @@ void SceneGame::load()
 
 			auto e = make_entity();
 			e->move_to(position);
+			e->add_tag("submarine");
 
 			auto s = e->add_component<CmpShape>();
 			s->use_shape<sf::RectangleShape>(size);
@@ -94,7 +104,8 @@ void SceneGame::load()
 		}
 	}
 
-	// Enemy bases
+	// Objective
+
 	{
 		for (const auto tile : level::find_tiles(level::Tile::Objective))
 		{
@@ -103,6 +114,7 @@ void SceneGame::load()
 
 			auto e = make_entity();
 			e->move_to(position);
+			e->add_tag("objective");
 
 			auto s = e->add_component<CmpShape>();
 			s->use_shape<sf::RectangleShape>(size);
@@ -122,6 +134,7 @@ void SceneGame::load()
 
 			auto e = make_entity();
 			e->move_to(position);
+			e->add_tag("pickup");
 
 			e->add_component<CmpPickupAmmo>();
 		}
@@ -132,9 +145,41 @@ void SceneGame::load()
 
 			auto e = make_entity();
 			e->move_to(position);
+			e->add_tag("pickup");
 
 			e->add_component<CmpPickupHealth>();
 		}
+	}
+
+	// Music
+	{
+		auto music = make_entity();
+		music->add_tag("music");
+
+		auto m = music->add_component<CmpMusic>("unseen-horrors.ogg");
+		if (m->loaded())
+		{
+			m->music()->setVolume(25);
+			m->music()->play();
+		}
+		else
+			music->delete_please();
+	}
+
+	// Sonar entity
+	{
+		auto e = make_entity();
+		e->add_tag("sonar");
+
+		auto s = e->add_component<CmpShape>();
+		s->use_shape<sf::CircleShape>(0.0f, 64);
+		s->shape().setFillColor(sf::Color::Transparent);
+		s->shape().setOutlineThickness(1.0f);
+
+		auto p = e->add_component<CmpSound>("sonar.ogg");
+		p->sound().setVolume(50);
+
+		e->add_component<CmpSonar>();
 	}
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));

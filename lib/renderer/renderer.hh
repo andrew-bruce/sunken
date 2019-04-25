@@ -10,6 +10,9 @@ namespace renderer
 	// Set render target
 	void target(sf::RenderTarget* target = nullptr);
 
+	// Set the target clear colour
+	void clear_colour(const sf::Color& colour = sf::Color::Black);
+
 	// Queue drawable to be rendered
 	void queue(const sf::Drawable* drawable);
 

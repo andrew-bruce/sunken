@@ -20,8 +20,6 @@ namespace resources
 		return std::move(t);
 	}
 
-#ifdef SOUND
-
 	template <>
 	std::unique_ptr<sf::SoundBuffer> load(const std::string& name)
 	{
@@ -39,6 +37,4 @@ namespace resources
 			return nullptr;
 		return std::move(m);
 	}
-
-#endif
 };

@@ -1,11 +1,14 @@
 #include "scene_menu.hh"
 
+#include <cmath>
+
 #include <renderer.hh>
 #include <engine.hh>
 
 #include "../sunken.hh"
 #include "../components/cmp_button.hh"
 #include "../components/cmp_camera.hh"
+#include "../components/cmp_music.hh"
 #include "../components/cmp_shape.hh"
 #include "../components/cmp_text.hh"
 
@@ -43,6 +46,18 @@ void SceneMenu::load()
 		auto size = sf::Vector2f(button->text.getLocalBounds().width, button->text.getLocalBounds().height);
 
 		button->text.setOrigin(size / 2.0f);
+	}
+
+	// Music
+	{
+		auto music = make_entity();
+		music->add_tag("music");
+
+		auto m = music->add_component<CmpMusic>("unseen-horrors.ogg");
+		if (m->loaded())
+			m->music()->play();
+		else
+			music->delete_please();
 	}
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -102,6 +117,20 @@ void SceneMenu::update(const float& delta_time)
 void SceneMenu::render()
 {
 	renderer::target(nullptr);
+
+	const auto music = entities_.find("music").front();
+	if (music)
+	{
+		const auto m = music->compatible_components<CmpMusic>().front();
+		if (m)
+		{
+			const auto offset = m->music()->getPlayingOffset();
+			const auto s = offset.asSeconds();
+			const long ms = offset.asMilliseconds();
+			const long value = std::pow(s, ms % 2 + 2);
+			renderer::clear_colour(sf::Color(0, 0, value % 15, 255));
+		}
+	}
 
 	entities_.render();
 
