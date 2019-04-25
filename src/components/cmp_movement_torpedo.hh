@@ -11,6 +11,7 @@ public:
 	// Class overrides
 	CmpMovementTorpedo() = delete;
 	explicit CmpMovementTorpedo(Entity* const p, const sf::Vector2f& direction);
+	void set_speed(float speed);
 
 	// Logic
 	void update(const float& delta_time) override;

@@ -21,13 +21,38 @@ void CmpMovementBattleship::update(const float& delta_time)
 	// Gets player
 	auto player = parent_->scene->entities().find("player").front();
 
-	// Matches player x axis movement
+	// Booleans to store whether the battleship is going to hit another one or not
+	bool ship_collision_right = false;
+	bool ship_collision_left = false;
+
+	// Loops through other ships
+	std::vector<Entity*> other_ships = parent_->scene->entities().find("battleship");
+	for (auto bs : other_ships)
+	{
+		// Doesn't check itself
+		if (bs != parent_) {
+			// Difference between current ship and other ships x pos
+			float x_diff = bs->position().x - parent_->position().x;
+
+			// Sets left and right collision when ships come close
+			if (x_diff >= 0 && x_diff <= 100)
+				ship_collision_right = true;
+			else if (x_diff <= 0 && x_diff >= -100)
+				ship_collision_left = true;
+		}
+	}
+
+
+	// Ship only moves toward player if it's not too far away
+	float player_x_diff = player->position().x - parent_->position().x;
+
+	// Matches player x axis movement as long as another ship isn't nearby
 	sf::Vector2f movement;
-	if (player->position().x >= parent_->position().x) 
+	if (player->position().x >= parent_->position().x && !ship_collision_right && player_x_diff >= 0 && player_x_diff <= 200) 
 	{
 		movement.x = 1.f;
 	}
-	else
+	else if(player->position().x <= parent_->position().x && !ship_collision_left && player_x_diff <= 0 && player_x_diff >= -200)
 	{
 		movement.x = -1.f;
 	}

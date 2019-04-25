@@ -1,5 +1,9 @@
 #include "cmp_health.hh"
-#include<scene.hh>
+
+#include <iostream>
+#include <engine.hh>
+#include "../sunken.hh"
+
 
 
 CmpHealth::CmpHealth(Entity * p) : Component(p){}
@@ -20,7 +24,7 @@ void CmpHealth::update(const float & delta_time)
 		// Deletes enemy and makes player invisible if they die for now
 		auto player = parent_->scene->entities().find("player").front();
 		if (parent_ == player)
-			parent_->visible(false);
+			return engine::change_scene(&scene_menu);
 		else
 			parent_->delete_please();
 	}

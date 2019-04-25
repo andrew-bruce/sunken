@@ -18,9 +18,16 @@
 #include "../components/cmp_music.hh"
 #include "../components/cmp_pickup_ammo.hh"
 #include "../components/cmp_pickup_health.hh"
+
+#include "../components/cmp_health_player.hh"
+#include "../components/cmp_health_enemy.hh"
+#include "../components/cmp_movement_battleship.hh"
+#include "../components/cmp_combat_battleship.hh"
+
 #include "../components/cmp_shape.hh"
 #include "../components/cmp_sonar.hh"
 #include "../components/cmp_sound.hh"
+
 
 void SceneGame::load()
 {
@@ -83,7 +90,6 @@ void SceneGame::load()
 
 			auto e = make_entity();
 			e->move_to(position + sf::Vector2f(0.f, level::tile_size() - size.y) / 2.0f);
-			e->add_tag("battleship");
 
 			auto s = e->add_component<CmpShape>();
 			s->use_shape<sf::RectangleShape>(size);
@@ -91,13 +97,15 @@ void SceneGame::load()
 			s->shape().setFillColor(sf::Color::Blue);
 
 			e->add_component<CmpMovementBattleship>();
-			e->add_component<CmpCombatEnemy>();
+			e->add_component<CmpCombatBattleship>();
 			e->add_component<CmpHealthEnemy>();
 			e->add_tag("enemy");
+			e->add_tag("battleship");
 		}
 	}
 
 	// Objective
+
 	{
 		for (const auto tile : level::find_tiles(level::Tile::Objective))
 		{
