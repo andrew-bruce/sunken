@@ -16,13 +16,14 @@ void CmpCombatBattleship::update(const float & delta_time)
 {
 	// Get player
 	const Entity* player = parent_->scene->entities().find("player").front();
-	float x_diff = player->position().x - parent_->position().x;
-	float y_diff = player->position().y - parent_->position().y;
+	if (!player)
+		return;
 
-	std::cout << y_diff << std::endl;
+	const auto diff  = player->position() - parent_->position();
+	const auto range = level::tile_size();
 
-	if (x_diff >= -50 && x_diff <= 50 && y_diff < 150.f)
-		fire(sf::Vector2f(0.f, 1.f), "battleship_bomb");
+	if (diff.x >= -range / 2.0f && diff.x <= range / 2.0f && diff.y < range)
+		fire(sf::Vector2f(0.0f, 1.0f), "battleship_bomb");
 
 	CmpCombat::update(delta_time);
 }
