@@ -26,15 +26,11 @@ namespace resources
 	template <>
 	std::unique_ptr<sf::Texture> load(const std::string& name);
 
-#ifdef SOUND
-
 	template <>
 	std::unique_ptr<sf::SoundBuffer> load(const std::string& name);
 
 	template <>
 	std::unique_ptr<sf::Music> load(const std::string& name);
-
-#endif
 
 	template <typename T>
 	static T* get(const std::string& name)
