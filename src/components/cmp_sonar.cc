@@ -81,7 +81,8 @@ void CmpSonar::update(const float& delta_time)
 			"battleship",
 			"objective",
 			"pickup",
-			"enemy_torpedo"
+			"enemy_torpedo",
+			"battleship_bomb"
 		};
 
 		const auto entities = parent_->scene->entities().find(tags);
