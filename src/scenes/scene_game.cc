@@ -90,6 +90,7 @@ void SceneGame::load()
 			e->add_component<CmpCombatBattleship>();
 			e->add_component<CmpHealthEnemy>();
 			e->add_tag("enemy");
+			e->add_tag("battleship");
 		}
 	}
 

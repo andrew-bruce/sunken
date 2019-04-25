@@ -55,8 +55,8 @@ void CmpCombat::fire(const sf::Vector2f& direction, std::string tag)
 	}
 	else 
 	{
-		size = sf::Vector2f(level::tile_size(), level::tile_size()) / 24.f;
-		t->set_speed(20.f);
+		size = sf::Vector2f(level::tile_size(), level::tile_size()) / 16.f;
+		t->set_speed(15.f);
 	}
 
 
