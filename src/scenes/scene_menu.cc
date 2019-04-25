@@ -118,20 +118,6 @@ void SceneMenu::render()
 {
 	renderer::target(nullptr);
 
-	const auto music = entities_.find("music").front();
-	if (music)
-	{
-		const auto m = music->compatible_components<CmpMusic>().front();
-		if (m)
-		{
-			const auto offset = m->music()->getPlayingOffset();
-			const auto s = offset.asSeconds();
-			const long ms = offset.asMilliseconds();
-			const long value = std::pow(s, ms % 2 + 2);
-			renderer::clear_colour(sf::Color(0, 0, value % 15, 255));
-		}
-	}
-
 	entities_.render();
 
 	renderer::render();
