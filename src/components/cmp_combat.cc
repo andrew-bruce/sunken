@@ -46,38 +46,31 @@ void CmpCombat::fire(const sf::Vector2f& direction, std::string tag)
 	if (ammo_ == 0 || fire_cooldown_ > 0.0f)
 		return;
 
+	auto size = sf::Vector2f(level::tile_size(), level::tile_size()) / 48.f;
+
 	auto e = parent_->scene->make_entity();
 	e->move_to(parent_->position());
-	torpedo_texture.loadFromFile("res/img/torpedo.png");
-	// Set torpedo texture and scales
-
-	auto s = e->add_component<CmpSprite>();
-	s->use_sprite<sf::Sprite>();
-	s->sprite().setTexture(torpedo_texture);
-	
-	if (direction.x <= 0)
-		s->sprite().rotate(180);
-
-	// Gets size of texture divided by 10 to account for scaling
-	const auto size = sf::Vector2f(s->sprite().getTexture()->getSize().x / 10, s->sprite().getTexture()->getSize().y / 20);
-
 
 	auto t = e->add_component<CmpMovementTorpedo>(direction);
 	e->add_tag(tag);
-	
-	if (tag == "enemy_torpedo" || tag == "player_torpedo") 
+
+	if (tag == "enemy_torpedo" || tag == "player_torpedo")
 	{
 		t->set_speed(40.f);
-		s->sprite().setScale(0.03, 0.03);
 		fire_cooldown_ = 3.f;
 	}
-	else 
+	else
 	{
+		size = sf::Vector2f(level::tile_size(), level::tile_size()) / 16.f;
 		t->set_speed(15.f);
-		s->sprite().setScale(0.1f, 0.1f);
 		fire_cooldown_ = 5.f;
 	}
 
+
+	auto s = e->add_component<CmpShape>();
+	s->use_shape<sf::CircleShape>(size.x);
+	s->shape().setOrigin(size);
+	s->shape().setFillColor(sf::Color(232, 232, 232));
+
 	--ammo_;
-	
 }

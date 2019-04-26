@@ -62,6 +62,8 @@ void CmpMovementBattleship::update(const float& delta_time)
 
 	// Move player
 	move(movement);
+
+	//std::cout << parent_->position() << std::endl;
 }
 
 void CmpMovementBattleship::render()

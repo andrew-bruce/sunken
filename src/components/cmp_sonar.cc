@@ -81,6 +81,8 @@ void CmpSonar::update(const float& delta_time)
 		{
 			"objective",
 			"pickup",
+			"enemy_torpedo",
+			"battleship_bomb"
 		};
 
 		const auto entities = parent_->scene->entities().find(tags);
@@ -111,9 +113,7 @@ void CmpSonar::update(const float& delta_time)
 		static const std::vector<std::string> tags
 		{
 			"submarine",
-			"battleship",
-			"enemy_torpedo",
-			"battleship_bomb"
+			"battleship"
 		};
 
 		const auto entities = parent_->scene->entities().find(tags);

@@ -38,7 +38,7 @@ void CmpMovementTorpedo::update(const float & delta_time)
 	std::string tag = *it;
 
 	// Get sprite component of torpedo
-	auto ts = parent_->compatible_components<CmpSprite>().front();
+	auto ts = parent_->compatible_components<CmpShape>().front();
 
 	// Enemy torpedo collision
 	if (tag == "enemy_torpedo")
@@ -51,7 +51,7 @@ void CmpMovementTorpedo::update(const float & delta_time)
 		auto ph = player->compatible_components<CmpHealthPlayer>().front();
 
 		// If the enemy torpedo colides with the player
-		if (ps->sprite().getGlobalBounds().intersects(ts->sprite().getGlobalBounds())) {
+		if (ps->sprite().getGlobalBounds().intersects(ts->shape().getGlobalBounds())) {
 			parent_->delete_please();
 			ph->set_health(ph->health()-30);
 			std::cout << "HIT PLAYER | Health: " << ph->health() << std::endl;
@@ -69,7 +69,7 @@ void CmpMovementTorpedo::update(const float & delta_time)
 			auto eh = e->compatible_components<CmpHealthEnemy>().front();
 
 			// Checks collision and asjusts health
-			if (es->sprite().getGlobalBounds().intersects(ts->sprite().getGlobalBounds())) {
+			if (es->sprite().getGlobalBounds().intersects(ts->shape().getGlobalBounds())) {
 				parent_->delete_please();
 				eh->set_health(eh->health() - 40);
 				std::cout << "HIT ENEMY | Health: " << eh->health() << std::endl;
@@ -84,7 +84,7 @@ void CmpMovementTorpedo::update(const float & delta_time)
 			auto eh = o->compatible_components<CmpHealthEnemy>().front();
 
 			// Checks collision and asjusts health
-			if (es->shape().getGlobalBounds().intersects(ts->sprite().getGlobalBounds())) {
+			if (es->shape().getGlobalBounds().intersects(ts->shape().getGlobalBounds())) {
 				parent_->delete_please();
 				eh->set_health(eh->health() - 40);
 				std::cout << "HIT ENEMY BASE | Health: " << eh->health() << std::endl;
@@ -103,7 +103,7 @@ void CmpMovementTorpedo::update(const float & delta_time)
 		auto ph = player->compatible_components<CmpHealthPlayer>().front();
 
 		// If the enemy torpedo colides with the player
-		if (ps->sprite().getGlobalBounds().intersects(ts->sprite().getGlobalBounds())) {
+		if (ps->sprite().getGlobalBounds().intersects(ts->shape().getGlobalBounds())) {
 			parent_->delete_please();
 			ph->set_health(ph->health() - 50);
 			std::cout << "HIT PLAYER | Health: " << ph->health() << std::endl;

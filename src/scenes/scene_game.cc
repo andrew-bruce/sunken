@@ -55,7 +55,7 @@ void SceneGame::load()
 		s->sprite().setTexture(player_texture);
 
 		// Gets size of texture divided by 10 to account for scaling
-		const auto size = sf::Vector2f(s->sprite().getTexture()->getSize().x / 10, s->sprite().getTexture()->getSize().y / 10);		
+		const auto size = sf::Vector2f(s->sprite().getLocalBounds().width, s->sprite().getLocalBounds().height);
 
 		s->sprite().setScale(sf::Vector2f(0.1f, 0.1f));
 		s->sprite().setOrigin(size / 2.f);
@@ -85,7 +85,7 @@ void SceneGame::load()
 			s->sprite().setTexture(enemy_texture);
 
 			// Gets size of texture divided by 10 to account for scaling
-			const auto size = sf::Vector2f(s->sprite().getTexture()->getSize().x / 10, s->sprite().getTexture()->getSize().y / 10);
+			const auto size = sf::Vector2f(s->sprite().getLocalBounds().width, s->sprite().getLocalBounds().height);
 
 			s->sprite().setOrigin(size / 2.f);
 			s->sprite().setScale(sf::Vector2f(0.1f, 0.1f));
@@ -115,11 +115,13 @@ void SceneGame::load()
 			s->sprite().setTexture(battleship_texture);
 
 			// Gets size of texture divided by 10 to account for scaling
-			const auto size = sf::Vector2f(s->sprite().getTexture()->getSize().x / 10, s->sprite().getTexture()->getSize().y / 10);
+			const auto size = sf::Vector2f(s->sprite().getLocalBounds().width, s->sprite().getLocalBounds().height);
 
 			s->sprite().setOrigin(size / 2.f);
 			s->sprite().setScale(sf::Vector2f(0.1f, 0.1f));
-			e->move_to(position + sf::Vector2f(0.f, level::tile_size() - size.y) / 6.0f);
+			e->move_to(sf::Vector2f(position.x, position.y + s->sprite().getTexture()->getSize().y / 14.7f));
+
+			std::cout << s->sprite().getTexture()->getSize().y << std::endl;
 
 			e->add_component<CmpMovementBattleship>();
 			e->add_component<CmpCombatBattleship>();
