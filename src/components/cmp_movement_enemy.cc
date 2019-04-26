@@ -13,7 +13,9 @@
 CmpMovementEnemy::CmpMovementEnemy(Entity* const p)
 : CmpMovement(p),
   state_(Rotating)
-{}
+{
+	speed_ = 20.f;
+}
 
 
 

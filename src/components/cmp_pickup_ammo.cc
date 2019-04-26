@@ -1,4 +1,5 @@
 #include "cmp_pickup_ammo.hh"
+#include "cmp_sound.hh"
 
 #include <iostream>
 
@@ -33,6 +34,13 @@ void CmpPickupAmmo::update(const float & delta_time)
 	{
 		// Gets player
 		auto player = parent_->scene->entities().find("player").front();
+
+		// Set pickup sound
+		auto e = parent_->scene->make_entity();
+		auto sound = e->add_component<CmpSound>("ammo-pickup.ogg");
+		sound->sound().setVolume(20);
+		auto s = e->compatible_components<CmpSound>().front();
+		s->sound().play();
 
 		// Gets it's combat component
 		auto c = player->compatible_components<CmpCombat>().front();

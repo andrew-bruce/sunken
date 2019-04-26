@@ -10,6 +10,7 @@
 #include "cmp_movement_torpedo.hh"
 #include "cmp_shape.hh"
 #include "cmp_sprite.hh"
+#include "cmp_sound.hh";
 
 sf::Texture torpedo_texture;
 
@@ -65,7 +66,6 @@ void CmpCombat::fire(const sf::Vector2f& direction, std::string tag)
 		t->set_speed(15.f);
 		fire_cooldown_ = 5.f;
 	}
-
 
 	auto s = e->add_component<CmpShape>();
 	s->use_shape<sf::CircleShape>(size.x);
