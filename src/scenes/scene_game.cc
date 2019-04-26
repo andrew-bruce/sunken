@@ -27,6 +27,7 @@
 #include "../components/cmp_shape.hh"
 #include "../components/cmp_sonar.hh"
 #include "../components/cmp_sound.hh"
+#include "../components/cmp_text.hh"
 
 
 void SceneGame::load()
@@ -151,6 +152,17 @@ void SceneGame::load()
 		}
 	}
 
+	// HUD
+	{
+		auto e = make_entity();
+		e->add_tag("hud");
+
+		auto t = e->add_component<CmpText>();
+		t->text.setFillColor(sf::Color::White);
+		t->text.setOutlineColor(sf::Color::Black);
+		t->text.setOutlineThickness(2.0f);
+	}
+
 	// Music
 	{
 		auto music = make_entity();
@@ -199,6 +211,33 @@ void SceneGame::update(const float& delta_time)
 {
 	if (engine::keyboard[sf::Keyboard::Escape])
 		return engine::change_scene(&scene_menu);
+
+	// HUD
+	{
+		auto hud = entities_.find("hud").front();
+		auto player = entities_.find("player").front();
+		if (hud && player)
+		{
+			auto text = hud->compatible_components<CmpText>().front();
+			auto health = player->compatible_components<CmpHealthPlayer>().front();
+			auto ammo = player->compatible_components<CmpCombatPlayer>().front();
+			if (text && ammo && health)
+			{
+				std::string output = "Health: ";
+				output += to_decimal_place(0, health->health());
+				output += "\tAmmo: ";
+				output += std::to_string(ammo->ammo());
+				text->text.setString(output);
+
+				auto window = engine::window();
+				auto view = window->getView();
+				auto top_left = view.getCenter() - view.getSize() / 2.0f;
+
+				text->text.setScale(view.getSize() / window->getSize());
+				hud->move_to(top_left);
+			}
+		}
+	}
 
 	Scene::update(delta_time);
 }

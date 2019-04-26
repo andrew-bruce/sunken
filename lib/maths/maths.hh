@@ -14,10 +14,16 @@ namespace sf
 	typedef Vector2<std::size_t> Vector2ul;
 
 	// Operators
-	template <typename T>
-	Vector2<T> operator*(const Vector2<T>& left, const Vector2<T>& right)
+	template <typename T, typename U>
+	Vector2<T> operator*(const Vector2<T>& left, const Vector2<U>& right)
 	{
 		return Vector2<T>(left.x * right.x, left.y * right.y);
+	}
+
+	template <typename T, typename U>
+	Vector2<T> operator/(const Vector2<T>& left, const Vector2<U>& right)
+	{
+		return Vector2<T>(left.x / right.x, left.y / right.y);
 	}
 
 	// Cast
