@@ -25,10 +25,10 @@ void SceneMenu::load()
 	// Start button
 	{
 		auto start = make_entity();
-		start->add_tag("start");
+		start->add_tag("play");
 		start->move_to(sf::Vector2f(0.0f, -64.0f));
 
-		auto button = start->add_component<CmpButton>("Start");
+		auto button = start->add_component<CmpButton>("Play");
 
 		auto size = sf::Vector2f(button->text.getLocalBounds().width, button->text.getLocalBounds().height);
 
@@ -90,7 +90,7 @@ void SceneMenu::update(const float& delta_time)
 	// Start button
 	{
 
-		auto start = entities_.find("start").front();
+		auto start = entities_.find("play").front();
 		if (start != nullptr)
 		{
 			auto s = start->compatible_components<CmpButton>().front();
