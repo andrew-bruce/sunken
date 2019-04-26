@@ -25,29 +25,41 @@
 #include "../components/cmp_combat_battleship.hh"
 
 #include "../components/cmp_shape.hh"
+#include "../components/cmp_sprite.hh"
 #include "../components/cmp_sonar.hh"
 #include "../components/cmp_sound.hh"
 #include "../components/cmp_text.hh"
 
+sf::Texture player_texture;
+sf::Texture enemy_texture;
+sf::Texture battleship_texture;
 
 void SceneGame::load()
 {
 	level::load("res/levels/level.txt", 64.0f);
 
-	// Player
+	//Player sprite
 	{
-		const auto tiles    = level::find_tiles(level::Tile::Player);
+		const auto tiles = level::find_tiles(level::Tile::Player);
 		const auto position = level::tile_position(tiles[rand() % tiles.size()]);
-		const auto size     = sf::Vector2f(level::tile_size(), level::tile_size()) / 8.0f;
 
 		auto p = make_entity();
 		p->move_to(position);
 		p->add_tag("player");
 
-		auto s = p->add_component<CmpShape>();
-		s->use_shape<sf::RectangleShape>(size);
-		s->shape().setOrigin(size / 2.0f);
-		s->shape().setFillColor(sf::Color::Yellow);
+		
+		if (!player_texture.loadFromFile("res/img/sub-right.png"))
+			std::cout << "Sprite load failed";
+
+		auto s = p->add_component<CmpSprite>();
+		s->use_sprite<sf::Sprite>();
+		s->sprite().setTexture(player_texture);
+
+		// Gets size of texture divided by 10 to account for scaling
+		const auto size = sf::Vector2f(s->sprite().getLocalBounds().width, s->sprite().getLocalBounds().height);
+
+		s->sprite().setScale(sf::Vector2f(0.1f, 0.1f));
+		s->sprite().setOrigin(size / 2.f);
 
 		auto c = p->add_component<CmpCamera>();
 		c->zoom = level::tile_size() * 4.0f;
@@ -62,21 +74,28 @@ void SceneGame::load()
 		for (const auto tile : level::find_tiles(level::Tile::Submarine))
 		{
 			const auto position = level::tile_position(tile);
-			const auto size     = sf::Vector2f(level::tile_size(), level::tile_size()) / 8.0f;
 
 			auto e = make_entity();
 			e->move_to(position);
-			e->add_tag("submarine");
 
-			auto s = e->add_component<CmpShape>();
-			s->use_shape<sf::RectangleShape>(size);
-			s->shape().setOrigin(size / 2.0f);
-			s->shape().setFillColor(sf::Color::Blue);
+			if (!enemy_texture.loadFromFile("res/img/sub-left.png"))
+				std::cout << "Sprite load failed";
+
+			auto s = e->add_component<CmpSprite>();
+			s->use_sprite<sf::Sprite>();
+			s->sprite().setTexture(enemy_texture);
+
+			// Gets size of texture divided by 10 to account for scaling
+			const auto size = sf::Vector2f(s->sprite().getLocalBounds().width, s->sprite().getLocalBounds().height);
+
+			s->sprite().setOrigin(size / 2.f);
+			s->sprite().setScale(sf::Vector2f(0.1f, 0.1f));
 
 			e->add_component<CmpMovementSubmarine>();
 			e->add_component<CmpCombatEnemy>();
 			e->add_component<CmpHealthEnemy>();
 			e->add_tag("enemy");
+			e->add_tag("submarine");
 		}
 	}
 
@@ -85,17 +104,25 @@ void SceneGame::load()
 		for (const auto tile : level::find_tiles(level::Tile::Battleship))
 		{
 			const auto position = level::tile_position(tile);
-			const auto size = sf::Vector2f(level::tile_size() / 2.0f, level::tile_size() / 8.0f);
-
 			level::Tile t = level::tile_at(position);
 
 			auto e = make_entity();
-			e->move_to(position + sf::Vector2f(0.f, level::tile_size() - size.y) / 2.0f);
 
-			auto s = e->add_component<CmpShape>();
-			s->use_shape<sf::RectangleShape>(size);
-			s->shape().setOrigin(size / 2.0f);
-			s->shape().setFillColor(sf::Color::Blue);
+			battleship_texture.loadFromFile("res/img/ship-left.png");
+
+			auto s = e->add_component<CmpSprite>();
+
+			s->use_sprite<sf::Sprite>();
+			s->sprite().setTexture(battleship_texture);
+
+			// Gets size of texture divided by 10 to account for scaling
+			const auto size = sf::Vector2f(s->sprite().getLocalBounds().width, s->sprite().getLocalBounds().height);
+
+			s->sprite().setOrigin(size / 2.f);
+			s->sprite().setScale(sf::Vector2f(0.1f, 0.1f));
+			e->move_to(sf::Vector2f(position.x, position.y + s->sprite().getTexture()->getSize().y / 14.7f));
+
+			std::cout << s->sprite().getTexture()->getSize().y << std::endl;
 
 			e->add_component<CmpMovementBattleship>();
 			e->add_component<CmpCombatBattleship>();
@@ -106,7 +133,6 @@ void SceneGame::load()
 	}
 
 	// Objective
-
 	{
 		for (const auto tile : level::find_tiles(level::Tile::Objective))
 		{
@@ -115,15 +141,14 @@ void SceneGame::load()
 
 			auto e = make_entity();
 			e->move_to(position);
-			e->add_tag("objective");
 
 			auto s = e->add_component<CmpShape>();
 			s->use_shape<sf::RectangleShape>(size);
-			s->shape().setFillColor(sf::Color::Red);
+			s->shape().setFillColor(sf::Color(232, 232, 232));
 
 			e->add_component<CmpCombatEnemy>();
 			e->add_component<CmpHealthEnemy>();
-			e->add_tag("enemy");
+			e->add_tag("objective");
 		}
 	}
 

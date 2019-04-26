@@ -9,7 +9,9 @@
 #include <engine.hh>
 
 #include "cmp_shape.hh"
+#include "cmp_sprite.hh"
 #include "cmp_sound.hh"
+#include <iostream>
 
 #define MAX_COOLDOWN 4.0f
 #define MAX_STRENGTH 255
@@ -73,12 +75,10 @@ void CmpSonar::update(const float& delta_time)
 		}
 	}
 
-	// Update other shapes
+	// Update shapes
 	{
 		static const std::vector<std::string> tags
 		{
-			"submarine",
-			"battleship",
 			"objective",
 			"pickup",
 			"enemy_torpedo",
@@ -99,6 +99,36 @@ void CmpSonar::update(const float& delta_time)
 					auto colour = shape->shape().getFillColor();
 					colour.a = strength_;
 					shape->shape().setFillColor(colour);
+				}
+			}
+			else
+			{
+				e->visible(false);
+			}
+		}
+	}
+
+	// Update sprites
+	{
+		static const std::vector<std::string> tags
+		{
+			"submarine",
+			"battleship"
+		};
+
+		const auto entities = parent_->scene->entities().find(tags);
+		for (const auto e : entities)
+		{
+			const float distance = sf::length2(e->position() - parent_->position());
+			if (distance < std::pow(radius_, 2))
+			{
+				e->visible(true);
+
+				auto sprite = e->compatible_components<CmpSprite>().front();
+				if (sprite)
+				{
+					auto texture = sprite->sprite().getTexture();
+					sprite->sprite().setColor(sf::Color(232, 232, 232, strength_));
 				}
 			}
 			else

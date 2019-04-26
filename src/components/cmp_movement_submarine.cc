@@ -1,4 +1,7 @@
 #include "cmp_movement_submarine.hh"
+#include "cmp_sprite.hh"
+
+#include "../src/sunken.hh"
 
 #include <algorithm>
 #include <array>
@@ -17,6 +20,9 @@ CmpMovementSubmarine::CmpMovementSubmarine(Entity* const p)
 // Logic
 void CmpMovementSubmarine::update(const float& delta_time)
 {
+
+	// Gets parent sprite
+	auto s = parent_->compatible_components<CmpSprite>().front();
 
 	// Variables
 	const sf::Vector2f movement = direction_ * speed_ * delta_time;
@@ -106,6 +112,17 @@ void CmpMovementSubmarine::update(const float& delta_time)
 
 		default:
 			break;
+	}
+
+	if (direction_.x > 0) 
+	{
+		enemy_texture.loadFromFile("res/img/sub-right.png");
+		s->sprite().setTexture(enemy_texture);
+	}
+	else 
+	{
+		enemy_texture.loadFromFile("res/img/sub-left.png");
+		s->sprite().setTexture(enemy_texture);
 	}
 }
 
