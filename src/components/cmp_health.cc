@@ -20,11 +20,10 @@ void CmpHealth::set_health(float health)
 
 void CmpHealth::update(const float & delta_time)
 {
-	if (health_ <= 0) {
-		// Deletes enemy and makes player invisible if they die for now
-		auto player = parent_->scene->entities().find("player").front();
-		if (parent_ == player)
-			return engine::change_scene(&scene_menu);
+	if (health_ <= 0)
+	{
+		if (parent_->tags().find("player") != parent_->tags().end())
+			parent_->visible(false);
 		else
 			parent_->delete_please();
 	}

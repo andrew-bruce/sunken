@@ -32,7 +32,7 @@
 
 void SceneGame::load()
 {
-	level::load("res/levels/example.txt", 64.0f);
+	level::load("res/levels/level.txt", 64.0f);
 
 	// Player
 	{
@@ -166,10 +166,9 @@ void SceneGame::load()
 	// Victory
 	{
 		auto e = make_entity();
-		e->add_tag("victory");
+		e->add_tag("endcard");
 
-		auto t = e->add_component<CmpText>("Victory");
-		t->text.setOrigin(t->text.getLocalBounds().width, t->text.getLocalBounds().height);
+		auto t = e->add_component<CmpText>();
 		t->text.setFillColor(sf::Color::White);
 		t->text.setOutlineColor(sf::Color::Black);
 		t->text.setOutlineThickness(2.0f);
@@ -229,56 +228,77 @@ void SceneGame::update(const float& delta_time)
 	// HUD
 	{
 		auto hud = entities_.find("hud").front();
-		auto player = entities_.find("player").front();
-		if (hud && player)
+		if (!entities_.find("player").empty())
 		{
 			auto text = hud->compatible_components<CmpText>().front();
+
+			auto player = entities_.find("player").front();
 			auto health = player->compatible_components<CmpHealthPlayer>().front();
 			auto ammo = player->compatible_components<CmpCombatPlayer>().front();
-			if (text && ammo && health)
-			{
-				std::string output = "Health: ";
-				output += to_decimal_place(0, health->health());
-				output += "\tAmmo: ";
-				output += std::to_string(ammo->ammo());
-				text->text.setString(output);
+			
+			std::string output = "Health: ";
+			output += to_decimal_place(0, health->health());
+			output += "\tAmmo: ";
+			output += std::to_string(ammo->ammo());
+			text->text.setString(output);
 
-				auto window = engine::window();
-				auto view = window->getView();
-				auto top_left = view.getCenter() - view.getSize() / 2.0f;
+			auto window = engine::window();
+			auto view = window->getView();
+			auto top_left = view.getCenter() - view.getSize() / 2.0f;
 
-				text->text.setScale(view.getSize() / window->getSize());
-				hud->move_to(top_left);
-			}
+			text->text.setScale(view.getSize() / window->getSize());
+			hud->move_to(top_left);
 		}
 	}
 
-	// Victory
+	// End card
 	{
-		auto v = entities_.find("victory").front();
-		if (v && entities_.find("objective").empty())
+		auto window = engine::window();
+		auto view = window->getView();
+
+		// Defeat
+		if (!entities_.find("player").front()->is_visible())
 		{
 			for (auto& e : entities_.find("enemy"))
 				e->delete_please();
 
-			auto player = entities_.find("player").front();
-			if (player)
-			{
-				static float pause = 2.5f;
-				pause -= delta_time;
-				if (pause < 0.0f)
-					return engine::change_scene(&scene_menu);
 
-				auto window = engine::window();
-				auto view = window->getView();
-				
-				v->visible(true);
-				v->move_to(view.getCenter());
+			auto d = entities_.find("endcard").front();
+			d->visible(true);
 
-				auto text = v->compatible_components<CmpText>().front();
-				if (text)
-					text->text.setScale(view.getSize() / window->getSize());
-			}
+			auto t = d->compatible_components<CmpText>().front();
+			t->text.setString("Defeat");
+			t->text.setOrigin(t->text.getLocalBounds().width / 2, t->text.getLocalBounds().height / 2);
+			t->text.setScale(view.getSize() / window->getSize());
+
+			d->move_to(view.getCenter());
+
+			static float pause = 2.5f;
+			pause -= delta_time;
+			if (pause < 0.0f)
+				return engine::change_scene(&scene_menu);
+		}
+
+		// Victory
+		else if (entities_.find("objective").empty())
+		{
+			for (auto& e : entities_.find("enemy"))
+				e->delete_please();
+
+			auto v = entities_.find("endcard").front();
+			v->visible(true);
+
+			auto t = v->compatible_components<CmpText>().front();
+			t->text.setString("Victory");
+			t->text.setOrigin(t->text.getLocalBounds().width / 2, t->text.getLocalBounds().height / 2);
+			t->text.setScale(view.getSize() / window->getSize());
+
+			v->move_to(view.getCenter());
+
+			static float pause = 2.5f;
+			pause -= delta_time;
+			if (pause < 0.0f)
+				return engine::change_scene(&scene_menu);
 		}
 	}
 

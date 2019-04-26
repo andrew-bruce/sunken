@@ -21,6 +21,9 @@ bool CmpPickup::picked_up() {
 
 void CmpPickup::update(const float & delta_time)
 {
+	if (parent_->scene->entities().find("player").empty())
+		return;
+
 	// Get player
 	auto player = parent_->scene->entities().find("player").front();
 

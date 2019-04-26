@@ -14,6 +14,9 @@ CmpCombatBattleship::CmpCombatBattleship(Entity* const p)
 
 void CmpCombatBattleship::update(const float & delta_time)
 {
+	if (parent_->scene->entities().find("player").empty())
+		return;
+
 	// Get player
 	const Entity* player = parent_->scene->entities().find("player").front();
 	if (!player)

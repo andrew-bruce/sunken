@@ -15,6 +15,9 @@ CmpCombatEnemy::CmpCombatEnemy(Entity* const p)
 void CmpCombatEnemy::update(const float & delta_time)
 {
 	// Get player
+	if (parent_->scene->entities().find("player").empty())
+		return;
+
 	const Entity* player = parent_->scene->entities().find("player").front();
 
 	// Get vector between entity and player

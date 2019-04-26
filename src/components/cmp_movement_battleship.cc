@@ -18,6 +18,9 @@ CmpMovementBattleship::CmpMovementBattleship(Entity* const p)
 // Logic
 void CmpMovementBattleship::update(const float& delta_time)
 {
+	if (parent_->scene->entities().find("player").empty())
+		return;
+
 	// Gets player
 	auto player = parent_->scene->entities().find("player").front();
 
