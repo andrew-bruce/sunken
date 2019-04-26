@@ -114,15 +114,13 @@ void CmpMovementSubmarine::update(const float& delta_time)
 			break;
 	}
 
-	if (direction_.x > 0) 
+	if (direction_.x > 0)
 	{
-		enemy_texture.loadFromFile("res/img/sub-right.png");
-		s->sprite().setTexture(enemy_texture);
+		s->sprite().setScale(std::abs(s->sprite().getScale().x), s->sprite().getScale().y);
 	}
 	else 
 	{
-		enemy_texture.loadFromFile("res/img/sub-left.png");
-		s->sprite().setTexture(enemy_texture);
+		s->sprite().setScale(-std::abs(s->sprite().getScale().x), s->sprite().getScale().y);
 	}
 }
 

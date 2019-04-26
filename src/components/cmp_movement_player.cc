@@ -6,6 +6,7 @@
 #include <level_loader.hh>
 #include <engine.hh>
 #include <iostream>
+#include "resources.hh"
 
 
 // Class overrides
@@ -28,16 +29,14 @@ void CmpMovementPlayer::update(const float& delta_time)
 		--movement.y;
 	if (engine::keyboard[sf::Keyboard::A])
 	{
-		player_texture.loadFromFile("res/img/sub-left.png");
-		s->sprite().setTexture(player_texture);
+		s->sprite().setScale(-std::abs(s->sprite().getScale().x), s->sprite().getScale().y);
 		--movement.x;
 	}
 	if (engine::keyboard[sf::Keyboard::S])
 		++movement.y;
 	if (engine::keyboard[sf::Keyboard::D])
 	{
-		player_texture.loadFromFile("res/img/sub-right.png");
-		s->sprite().setTexture(player_texture);
+		s->sprite().setScale(std::abs(s->sprite().getScale().x), s->sprite().getScale().y);
 		++movement.x;
 	}
 
