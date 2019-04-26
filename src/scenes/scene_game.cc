@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include <resources.hh>
 #include <renderer.hh>
 #include <level_loader.hh>
 #include <engine.hh>
@@ -30,10 +31,6 @@
 #include "../components/cmp_sound.hh"
 #include "../components/cmp_text.hh"
 
-sf::Texture player_texture;
-sf::Texture enemy_texture;
-sf::Texture battleship_texture;
-
 void SceneGame::load()
 {
 	level::load("res/levels/level.txt", 64.0f);
@@ -47,13 +44,14 @@ void SceneGame::load()
 		p->move_to(position);
 		p->add_tag("player");
 
-		
-		if (!player_texture.loadFromFile("res/img/sub-right.png"))
-			std::cout << "Sprite load failed";
+		auto tex = resources::get<sf::Texture>("sub.png");
+
+		if (!tex)
+			throw std::runtime_error("Cannot find texture 'res/textures/sub.png'");
 
 		auto s = p->add_component<CmpSprite>();
 		s->use_sprite<sf::Sprite>();
-		s->sprite().setTexture(player_texture);
+		s->sprite().setTexture(*tex);
 
 		// Gets size of texture divided by 10 to account for scaling
 		const auto size = sf::Vector2f(s->sprite().getLocalBounds().width, s->sprite().getLocalBounds().height);
@@ -78,12 +76,14 @@ void SceneGame::load()
 			auto e = make_entity();
 			e->move_to(position);
 
-			if (!enemy_texture.loadFromFile("res/img/sub-left.png"))
-				std::cout << "Sprite load failed";
+			auto tex = resources::get<sf::Texture>("sub.png");
+
+			if (!tex)
+				throw std::runtime_error("Cannot find texture 'res/textures/sub.png'");
 
 			auto s = e->add_component<CmpSprite>();
 			s->use_sprite<sf::Sprite>();
-			s->sprite().setTexture(enemy_texture);
+			s->sprite().setTexture(*tex);
 
 			// Gets size of texture divided by 10 to account for scaling
 			const auto size = sf::Vector2f(s->sprite().getLocalBounds().width, s->sprite().getLocalBounds().height);
@@ -108,12 +108,15 @@ void SceneGame::load()
 
 			auto e = make_entity();
 
-			battleship_texture.loadFromFile("res/img/ship-left.png");
+			auto tex = resources::get<sf::Texture>("ship.png");
+
+			if (!tex)
+				throw std::runtime_error("Cannot load texture 'res/textures/ship.png'");
 
 			auto s = e->add_component<CmpSprite>();
 
 			s->use_sprite<sf::Sprite>();
-			s->sprite().setTexture(battleship_texture);
+			s->sprite().setTexture(*tex);
 
 			// Gets size of texture divided by 10 to account for scaling
 			const auto size = sf::Vector2f(s->sprite().getLocalBounds().width, s->sprite().getLocalBounds().height);
@@ -144,7 +147,7 @@ void SceneGame::load()
 
 			auto s = e->add_component<CmpShape>();
 			s->use_shape<sf::RectangleShape>(size);
-			s->shape().setFillColor(sf::Color(232, 232, 232));
+			s->shape().setFillColor(sf::Color(232, 32, 32));
 
 			e->add_component<CmpCombatEnemy>();
 			e->add_component<CmpHealthEnemy>();
