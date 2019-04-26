@@ -24,3 +24,13 @@ sf::Sprite& CmpSprite::sprite() const
 	return *sprite_;
 }
 
+sf::Texture CmpSprite::texture()
+{
+	return texture_;
+}
+
+void CmpSprite::set_texture(sf::Texture texture)
+{
+	texture_ = texture;
+}
+

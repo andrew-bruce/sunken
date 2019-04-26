@@ -1,8 +1,8 @@
 #include "cmp_movement_torpedo.hh"
-#include "cmp_shape.hh"
 #include "cmp_health_player.hh"
 #include "cmp_health_enemy.hh"
-
+#include "cmp_sprite.hh"
+#include "cmp_shape.hh"
 #include <iostream>
 
 #include <level_loader.hh>
@@ -37,8 +37,8 @@ void CmpMovementTorpedo::update(const float & delta_time)
 	std::advance(it, 0);
 	std::string tag = *it;
 
-	// Get shape component of torpedo
-	auto ts = parent_->compatible_components<CmpShape>().front();
+	// Get sprite component of torpedo
+	auto ts = parent_->compatible_components<CmpSprite>().front();
 
 	// Enemy torpedo collision
 	if (tag == "enemy_torpedo")
@@ -46,12 +46,12 @@ void CmpMovementTorpedo::update(const float & delta_time)
 		// Gets player
 		auto player = parent_->scene->entities().find("player").front();
 
-		// Gets player shape and health components
-		auto ps = player->compatible_components<CmpShape>().front();
+		// Gets player sprite and health components
+		auto ps = player->compatible_components<CmpSprite>().front();
 		auto ph = player->compatible_components<CmpHealthPlayer>().front();
 
 		// If the enemy torpedo colides with the player
-		if (ps->shape().getGlobalBounds().intersects(ts->shape().getGlobalBounds())) {
+		if (ps->sprite().getGlobalBounds().intersects(ts->sprite().getGlobalBounds())) {
 			parent_->delete_please();
 			ph->set_health(ph->health()-30);
 			std::cout << "HIT PLAYER | Health: " << ph->health() << std::endl;
@@ -64,15 +64,30 @@ void CmpMovementTorpedo::update(const float & delta_time)
 		// Loops through enemies
 		std::vector<Entity*> enemies = parent_->scene->entities().find("enemy");
 		for (auto e : enemies) {
-			// Gets shape and health components
-			auto es = e->compatible_components<CmpShape>().front();
+			// Gets sprite and health components
+			auto es = e->compatible_components<CmpSprite>().front();
 			auto eh = e->compatible_components<CmpHealthEnemy>().front();
 
 			// Checks collision and asjusts health
-			if (es->shape().getGlobalBounds().intersects(ts->shape().getGlobalBounds())) {
+			if (es->sprite().getGlobalBounds().intersects(ts->sprite().getGlobalBounds())) {
 				parent_->delete_please();
 				eh->set_health(eh->health() - 40);
 				std::cout << "HIT ENEMY | Health: " << eh->health() << std::endl;
+			}
+		}
+
+		// Loops through objectives
+		std::vector<Entity*> objectives = parent_->scene->entities().find("objective");
+		for (auto o : objectives) {
+			// Gets sprite and health components
+			auto es = o->compatible_components<CmpShape>().front();
+			auto eh = o->compatible_components<CmpHealthEnemy>().front();
+
+			// Checks collision and asjusts health
+			if (es->shape().getGlobalBounds().intersects(ts->sprite().getGlobalBounds())) {
+				parent_->delete_please();
+				eh->set_health(eh->health() - 40);
+				std::cout << "HIT ENEMY BASE | Health: " << eh->health() << std::endl;
 			}
 		}
 	}
@@ -83,12 +98,12 @@ void CmpMovementTorpedo::update(const float & delta_time)
 		// Gets player
 		auto player = parent_->scene->entities().find("player").front();
 
-		// Gets player shape and health components
-		auto ps = player->compatible_components<CmpShape>().front();
+		// Gets player sprite and health components
+		auto ps = player->compatible_components<CmpSprite>().front();
 		auto ph = player->compatible_components<CmpHealthPlayer>().front();
 
 		// If the enemy torpedo colides with the player
-		if (ps->shape().getGlobalBounds().intersects(ts->shape().getGlobalBounds())) {
+		if (ps->sprite().getGlobalBounds().intersects(ts->sprite().getGlobalBounds())) {
 			parent_->delete_please();
 			ph->set_health(ph->health() - 50);
 			std::cout << "HIT PLAYER | Health: " << ph->health() << std::endl;

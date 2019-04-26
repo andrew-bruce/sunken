@@ -1,6 +1,5 @@
 #include "cmp_movement_battleship.hh"
 
-
 #include <scene.hh>
 #include <level_loader.hh>
 #include <iostream>
@@ -19,7 +18,7 @@ CmpMovementBattleship::CmpMovementBattleship(Entity* const p)
 void CmpMovementBattleship::update(const float& delta_time)
 {
 	// Gets player
-	auto player = parent_->scene->entities().find("player").front();
+	const Entity* player = parent_->scene->entities().find("player").front();
 
 	// Booleans to store whether the battleship is going to hit another one or not
 	bool ship_collision_right = false;

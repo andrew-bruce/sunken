@@ -1,8 +1,12 @@
 #include "cmp_movement_player.hh"
+#include "cmp_sprite.hh"
 
+#include "../src/sunken.hh"
 #include <maths.hh>
 #include <level_loader.hh>
 #include <engine.hh>
+#include <iostream>
+
 
 // Class overrides
 CmpMovementPlayer::CmpMovementPlayer(Entity* const p)
@@ -11,17 +15,28 @@ CmpMovementPlayer::CmpMovementPlayer(Entity* const p)
 // Logic
 void CmpMovementPlayer::update(const float& delta_time)
 {
+	// Gets parent sprite
+	auto s = parent_->compatible_components<CmpSprite>().front();
+
 	// Input decides direction vector
 	sf::Vector2f movement(0.0f, 0.0f);
 
 	if (engine::keyboard[sf::Keyboard::W])
 		--movement.y;
 	if (engine::keyboard[sf::Keyboard::A])
+	{
+		player_texture.loadFromFile("res/img/sub-left.png");
+		s->sprite().setTexture(player_texture);
 		--movement.x;
+	}
 	if (engine::keyboard[sf::Keyboard::S])
 		++movement.y;
 	if (engine::keyboard[sf::Keyboard::D])
+	{
+		player_texture.loadFromFile("res/img/sub-right.png");
+		s->sprite().setTexture(player_texture);
 		++movement.x;
+	}
 
 	// Normalise movement vector
 	movement  = sf::normalise(movement);
