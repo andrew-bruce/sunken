@@ -163,6 +163,20 @@ void SceneGame::load()
 		t->text.setOutlineThickness(2.0f);
 	}
 
+	// Victory
+	{
+		auto e = make_entity();
+		e->add_tag("victory");
+
+		auto t = e->add_component<CmpText>("Victory");
+		t->text.setOrigin(t->text.getLocalBounds().width, t->text.getLocalBounds().height);
+		t->text.setFillColor(sf::Color::White);
+		t->text.setOutlineColor(sf::Color::Black);
+		t->text.setOutlineThickness(2.0f);
+
+		e->visible(false);
+	}
+
 	// Music
 	{
 		auto music = make_entity();
@@ -235,6 +249,35 @@ void SceneGame::update(const float& delta_time)
 
 				text->text.setScale(view.getSize() / window->getSize());
 				hud->move_to(top_left);
+			}
+		}
+	}
+
+	// Victory
+	{
+		auto v = entities_.find("victory").front();
+		if (v && entities_.find("objective").empty())
+		{
+			for (auto& e : entities_.find("enemy"))
+				e->delete_please();
+
+			auto player = entities_.find("player").front();
+			if (player)
+			{
+				static float pause = 2.5f;
+				pause -= delta_time;
+				if (pause < 0.0f)
+					return engine::change_scene(&scene_menu);
+
+				auto window = engine::window();
+				auto view = window->getView();
+				
+				v->visible(true);
+				v->move_to(view.getCenter());
+
+				auto text = v->compatible_components<CmpText>().front();
+				if (text)
+					text->text.setScale(view.getSize() / window->getSize());
 			}
 		}
 	}
