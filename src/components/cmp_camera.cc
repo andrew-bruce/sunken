@@ -27,8 +27,12 @@ void CmpCamera::update(const float& delta_time)
 	buffer_ += vector * easing_ * delta_time;
 
 	const auto zoom_delta = engine::mouse_wheel_delta * level::tile_size();
-	if (zoom > zoom_delta)
-		zoom -= zoom_delta;
+	zoom -= zoom_delta;
+
+	if (zoom < zoom_delta)
+		zoom = zoom_delta;
+	if (level::loaded() && zoom > level::tile_size() * 8.0f)
+		zoom = level::tile_size() * 8.0f;
 }
 
 void CmpCamera::render()
