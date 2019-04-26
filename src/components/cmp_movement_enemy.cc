@@ -1,4 +1,6 @@
 #include "cmp_movement_enemy.hh"
+#include "cmp_sprite.hh"
+#include "../src/sunken.hh"
 
 #include <algorithm>
 #include <array>
@@ -6,7 +8,7 @@
 #include <level_loader.hh>
 #include <array>
 #include <algorithm>
-
+#include <iostream>
 // Class overrides
 CmpMovementEnemy::CmpMovementEnemy(Entity* const p)
 : CmpMovement(p),
@@ -18,6 +20,9 @@ CmpMovementEnemy::CmpMovementEnemy(Entity* const p)
 // Logic
 void CmpMovementEnemy::update(const float& delta_time)
 {
+	// Gets parent sprite
+	auto s = parent_->compatible_components<CmpSprite>().front();
+
 	static const std::array<sf::Vector2i, 4> directions {{{1, 0}, {0, 1}, {0, -1}, {-1, 0}}};
 
 	// Variables

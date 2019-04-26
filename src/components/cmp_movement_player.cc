@@ -5,7 +5,6 @@
 #include <maths.hh>
 #include <level_loader.hh>
 #include <engine.hh>
-#include <iostream>
 
 
 // Class overrides
