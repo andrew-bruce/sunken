@@ -9,5 +9,7 @@ SceneMenu scene_menu;
 int main()
 {
 	srand(time(nullptr));
-	engine::start("Sunken", 1280, 720, &scene_menu);
+	auto video_mode = sf::VideoMode::getDesktopMode();
+	auto size = sf::Vector2f(video_mode.width, video_mode.height) * 0.8f;
+	engine::start("Sunken", size.x, size.y, &scene_menu);
 }

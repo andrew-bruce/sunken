@@ -1,12 +1,13 @@
 #include "cmp_pickup_health.hh"
-#include "cmp_health_player.hh"
-#include "cmp_sound.hh"
-#include "cmp_shape.hh"
 
 #include <iostream>
 
 #include <level_loader.hh>
 #include <scene.hh>
+
+#include "cmp_health_player.hh"
+#include "cmp_sound_temp.hh"
+#include "cmp_shape.hh"
 
 CmpPickupHealth::CmpPickupHealth(Entity* const p)
 : CmpPickup(p),
@@ -29,10 +30,9 @@ void CmpPickupHealth::update(const float & delta_time)
 
 		// Set pickup sound
 		auto e = parent_->scene->make_entity();
-		auto sound = e->add_component<CmpSound>("health-pickup.ogg");
+		auto sound = e->add_component<CmpSoundTemp>("health-pickup.ogg");
 		sound->sound().setVolume(20);
-		auto s = e->compatible_components<CmpSound>().front();
-		s->sound().play();
+		sound->sound().play();
 
 		// Gets it's health component
 		auto h = player->compatible_components<CmpHealth>().front();
