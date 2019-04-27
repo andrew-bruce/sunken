@@ -10,6 +10,7 @@ private:
 	sf::Color colour_;
 	float distance_;
 	bool picked_up_ = false;
+	float cooldown_;
 
 public:
 	// Class overrides
@@ -18,6 +19,7 @@ public:
 
 	void pickup();
 	bool picked_up();
+	float cooldown();
 
 	// Logic (Pure virtual)
 	void update(const float& delta_time) override;

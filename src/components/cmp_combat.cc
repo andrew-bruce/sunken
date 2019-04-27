@@ -63,7 +63,7 @@ void CmpCombat::fire(const sf::Vector2f& direction, std::string tag)
 	else if (tag == "objective_torpedo") 
 	{
 		t->set_speed(50.f);
-		fire_cooldown_ = 2.f;
+		fire_cooldown_ = 2.5f;
 	}
 	else
 	{

@@ -1,4 +1,5 @@
 #include "cmp_sonar.hh"
+#include "cmp_pickup.hh"
 
 #include <string>
 #include <vector>
@@ -81,7 +82,8 @@ void CmpSonar::update(const float& delta_time)
 		{
 			"pickup",
 			"enemy_torpedo",
-			"battleship_bomb"
+			"battleship_bomb",
+			"objective_torpedo"
 		};
 
 		const auto entities = parent_->scene->entities().find(tags);
@@ -103,6 +105,20 @@ void CmpSonar::update(const float& delta_time)
 			else
 			{
 				e->visible(false);
+			}
+
+			// Handles respawning of pickups
+			std::set<std::string>::iterator it = e->tags().begin();
+			std::advance(it, 0);
+			std::string tag = *it;
+
+			if (tag == "pickup")
+			{
+				auto p = e->compatible_components<CmpPickup>().front();
+				if (p->cooldown() > 0.f)
+				{
+					e->visible(false);
+				}
 			}
 		}
 	}
