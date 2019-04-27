@@ -1,8 +1,6 @@
 # Game Design Document
 Andrew Bruce and Scott Davidson
 
-[![Build status](https://ci.appveyor.com/api/projects/status/kjop6vl5bp3f2eue?svg=true)](https://ci.appveyor.com/project/abruce1711/sunken/branch/engine-implentation)
-
 # Document History
 
 
