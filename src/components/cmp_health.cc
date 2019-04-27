@@ -1,8 +1,8 @@
 #include "cmp_health.hh"
-#include "cmp_sound.hh"
 
-#include <iostream>
 #include <engine.hh>
+
+#include "cmp_sound_temp.hh"
 #include "../sunken.hh"
 
 
@@ -12,7 +12,7 @@ CmpHealth::CmpHealth(Entity * p, float health) : Component(p)
 	health_ = health;
 }
 
-float CmpHealth::health()
+float CmpHealth::health() const
 {
 	return health_;
 }
@@ -34,9 +34,9 @@ void CmpHealth::update(const float & delta_time)
 
 			// Plays explosion on distruction of enemy
 			auto e = parent_->scene->make_entity();
-			auto sound = e->add_component<CmpSound>("distruction.ogg");
+			auto sound = e->add_component<CmpSoundTemp>("distruction.ogg");
 			sound->sound().setVolume(20);
-			auto s = e->compatible_components<CmpSound>().front();
+			auto s = e->compatible_components<CmpSoundTemp>().front();
 			s->sound().play();
 		}
 	}

@@ -12,7 +12,7 @@ public:
 	explicit CmpHealth(Entity* p, float health);
 
 	// combat logic
-	float health();
+	float health() const;
 	void set_health(float health);
 
 	// Logic (Pure virtual)
