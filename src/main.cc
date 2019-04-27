@@ -5,6 +5,7 @@
 
 SceneGame scene_game;
 SceneMenu scene_menu;
+SceneInstructions scene_instructions;
 
 int main()
 {

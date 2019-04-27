@@ -35,6 +35,19 @@ void SceneMenu::load()
 		button->text.setOrigin(size / 2.0f);
 	}
 
+	// Controls button
+	{
+		auto controls = make_entity();
+		controls->add_tag("controls");
+		controls->move_to(sf::Vector2f(0.0f, 0.0f));
+
+		auto button = controls->add_component<CmpButton>("Controls");
+
+		auto size = sf::Vector2f(button->text.getLocalBounds().width, button->text.getLocalBounds().height);
+
+		button->text.setOrigin(size / 2.0f);
+	}
+
 	// Quit button
 	{
 		auto quit = make_entity();
@@ -96,6 +109,18 @@ void SceneMenu::update(const float& delta_time)
 			auto s = start->compatible_components<CmpButton>().front();
 			if (s != nullptr && s->clicked())
 				return engine::change_scene(&scene_game);
+		}
+	}
+
+	// Controls button
+	{
+
+		auto controls = entities_.find("controls").front();
+		if (controls != nullptr)
+		{
+			auto c = controls->compatible_components<CmpButton>().front();
+			if (c != nullptr && c->clicked())
+				return engine::change_scene(&scene_instructions);
 		}
 	}
 
