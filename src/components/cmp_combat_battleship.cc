@@ -25,7 +25,7 @@ void CmpCombatBattleship::update(const float & delta_time)
 	const auto diff  = player->position() - parent_->position();
 	const auto range = level::tile_size();
 
-	if (diff.x >= -range / 2.0f && diff.x <= range / 2.0f && diff.y < range)
+	if (diff.x >= -range / 2.0f && diff.x <= range / 2.0f && diff.y < range * 2.5f)
 		fire(sf::Vector2f(0.0f, 1.0f), "battleship_bomb");
 
 	CmpCombat::update(delta_time);
