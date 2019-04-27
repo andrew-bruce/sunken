@@ -1,14 +1,15 @@
 #include "cmp_movement_enemy.hh"
-#include "cmp_sprite.hh"
-#include "../src/sunken.hh"
 
 #include <algorithm>
 #include <array>
 #include <cstdlib>
-#include <level_loader.hh>
-#include <array>
-#include <algorithm>
 #include <iostream>
+
+#include <level_loader.hh>
+
+#include "cmp_sprite.hh"
+#include "../sunken.hh"
+
 // Class overrides
 CmpMovementEnemy::CmpMovementEnemy(Entity* const p)
 : CmpMovement(p),

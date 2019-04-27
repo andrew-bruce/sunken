@@ -1,13 +1,15 @@
 #include "cmp_movement_torpedo.hh"
+
+#include <iostream>
+
+#include <level_loader.hh>
+#include <scene.hh>
+
 #include "cmp_health_player.hh"
 #include "cmp_health_enemy.hh"
 #include "cmp_sprite.hh"
 #include "cmp_shape.hh"
 #include "cmp_sound.hh"
-#include <iostream>
-
-#include <level_loader.hh>
-#include <scene.hh>
 
 CmpMovementTorpedo::CmpMovementTorpedo(Entity* const p, const sf::Vector2f& direction)
 : CmpMovement(p),
@@ -68,7 +70,7 @@ void CmpMovementTorpedo::update(const float & delta_time)
 			parent_->delete_please();
 			ph->set_health(ph->health()-30);
 		}
-	} 
+	}
 
 	// Player torpedo collision
 	else if (tag == "player_torpedo")

@@ -89,7 +89,6 @@ void SceneMenu::update(const float& delta_time)
 
 	// Start button
 	{
-
 		auto start = entities_.find("play").front();
 		if (start != nullptr)
 		{
@@ -101,7 +100,6 @@ void SceneMenu::update(const float& delta_time)
 
 	// Quit button
 	{
-
 		auto quit = entities_.find("quit").front();
 		if (quit != nullptr)
 		{
@@ -109,6 +107,12 @@ void SceneMenu::update(const float& delta_time)
 			if (q != nullptr && q->clicked())
 				return engine::window()->close();
 		}
+	}
+
+	// Escape button
+	{
+		if (engine::keyboard[sf::Keyboard::Escape])
+			return engine::window()->close();
 	}
 
 	Scene::update(delta_time);

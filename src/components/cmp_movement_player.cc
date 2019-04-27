@@ -1,17 +1,18 @@
 #include "cmp_movement_player.hh"
-#include "cmp_sprite.hh"
 
-#include "../src/sunken.hh"
+#include <iostream>
+
 #include <maths.hh>
+#include <resources.hh>
 #include <level_loader.hh>
 #include <engine.hh>
-#include <iostream>
-#include "resources.hh"
 
+#include "cmp_sprite.hh"
+#include "../sunken.hh"
 
 // Class overrides
 CmpMovementPlayer::CmpMovementPlayer(Entity* const p)
-	: CmpMovement(p) 
+	: CmpMovement(p)
 {
 	speed_ = 20.f;
 }
