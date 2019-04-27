@@ -1,8 +1,6 @@
 # Game Design Document
 Andrew Bruce and Scott Davidson
 
-https://ci.appveyor.com/api/projects/status/kjop6vl5bp3f2eue?svg=true
-
 # Document History
 
 
