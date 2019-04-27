@@ -10,9 +10,6 @@
 #include "cmp_movement_torpedo.hh"
 #include "cmp_shape.hh"
 #include "cmp_sprite.hh"
-#include "cmp_sound.hh";
-
-sf::Texture torpedo_texture;
 
 // Class overrides
 CmpCombat::CmpCombat(Entity* const p)
@@ -60,7 +57,7 @@ void CmpCombat::fire(const sf::Vector2f& direction, std::string tag)
 		t->set_speed(40.f);
 		fire_cooldown_ = 3.f;
 	}
-	else if (tag == "objective_torpedo") 
+	else if (tag == "objective_torpedo")
 	{
 		t->set_speed(50.f);
 		fire_cooldown_ = 2.5f;

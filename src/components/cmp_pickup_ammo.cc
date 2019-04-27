@@ -1,5 +1,4 @@
 #include "cmp_pickup_ammo.hh"
-#include "cmp_sound.hh"
 
 #include <iostream>
 
@@ -10,6 +9,7 @@
 
 #include "cmp_combat.hh"
 #include "cmp_shape.hh"
+#include "cmp_sound_temp.hh"
 
 // Class overrides
 CmpPickupAmmo::CmpPickupAmmo(Entity * const p)
@@ -37,10 +37,9 @@ void CmpPickupAmmo::update(const float & delta_time)
 
 		// Set pickup sound
 		auto e = parent_->scene->make_entity();
-		auto sound = e->add_component<CmpSound>("ammo-pickup.ogg");
+		auto sound = e->add_component<CmpSoundTemp>("ammo-pickup.ogg");
 		sound->sound().setVolume(20);
-		auto s = e->compatible_components<CmpSound>().front();
-		s->sound().play();
+		sound->sound().play();
 
 		// Gets it's combat component
 		auto c = player->compatible_components<CmpCombat>().front();

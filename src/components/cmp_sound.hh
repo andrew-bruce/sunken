@@ -9,7 +9,7 @@
 
 struct CmpSound : Component
 {
-private:
+protected:
 	sf::SoundBuffer* buffer_;
 	sf::Sound        sound_;
 

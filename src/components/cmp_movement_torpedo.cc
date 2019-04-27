@@ -1,13 +1,15 @@
 #include "cmp_movement_torpedo.hh"
-#include "cmp_health_player.hh"
-#include "cmp_health_enemy.hh"
-#include "cmp_sprite.hh"
-#include "cmp_shape.hh"
-#include "cmp_sound.hh"
+
 #include <iostream>
 
 #include <level_loader.hh>
 #include <scene.hh>
+
+#include "cmp_health_player.hh"
+#include "cmp_health_enemy.hh"
+#include "cmp_sprite.hh"
+#include "cmp_shape.hh"
+#include "cmp_sound_temp.hh"
 
 CmpMovementTorpedo::CmpMovementTorpedo(Entity* const p, const sf::Vector2f& direction)
 : CmpMovement(p),
@@ -57,18 +59,18 @@ void CmpMovementTorpedo::update(const float & delta_time)
 		auto ph = player->compatible_components<CmpHealth>().front();
 
 		// If the enemy torpedo colides with the player
-		if (ps->sprite().getGlobalBounds().intersects(ts->shape().getGlobalBounds())) {
-
-			// Attaches sound to item torpedo hits and sounds
-			auto sound = player->add_component<CmpSound>("torpedo-impact.ogg");
+		if (ps->sprite().getGlobalBounds().intersects(ts->shape().getGlobalBounds()))
+		{
+			// Creates temp sound
+			auto e = parent_->scene->make_entity();
+			auto sound = e->add_component<CmpSoundTemp>("torpedo-impact.ogg");
 			sound->sound().setVolume(20);
-			auto s = player->compatible_components<CmpSound>().front();
-			s->sound().play();
+			sound->sound().play();
 
 			parent_->delete_please();
 			ph->set_health(ph->health()-30);
 		}
-	} 
+	}
 
 	// Player torpedo collision
 	else if (tag == "player_torpedo")
@@ -81,13 +83,13 @@ void CmpMovementTorpedo::update(const float & delta_time)
 			auto eh = e->compatible_components<CmpHealth>().front();
 
 			// Checks collision and asjusts health
-			if (es->sprite().getGlobalBounds().intersects(ts->shape().getGlobalBounds())) {
-
-				// Attaches sound to item torpedo hits and sounds
-				auto sound = e->add_component<CmpSound>("torpedo-impact.ogg");
+			if (es->sprite().getGlobalBounds().intersects(ts->shape().getGlobalBounds()))
+			{
+				// Creates temp sound
+				auto e = parent_->scene->make_entity();
+				auto sound = e->add_component<CmpSoundTemp>("torpedo-impact.ogg");
 				sound->sound().setVolume(20);
-				auto s = e->compatible_components<CmpSound>().front();
-				s->sound().play();
+				sound->sound().play();
 
 				parent_->delete_please();
 				eh->set_health(eh->health() - 40);
@@ -106,13 +108,13 @@ void CmpMovementTorpedo::update(const float & delta_time)
 		auto ph = player->compatible_components<CmpHealth>().front();
 
 		// If the enemy torpedo colides with the player
-		if (ps->sprite().getGlobalBounds().intersects(ts->shape().getGlobalBounds())) {
-
-			// Attaches sound to item torpedo hits and sounds
-			auto sound = player->add_component<CmpSound>("torpedo-impact.ogg");
+		if (ps->sprite().getGlobalBounds().intersects(ts->shape().getGlobalBounds()))
+		{
+			// Creates temp sound
+			auto e = parent_->scene->make_entity();
+			auto sound = e->add_component<CmpSoundTemp>("torpedo-impact.ogg");
 			sound->sound().setVolume(20);
-			auto s = player->compatible_components<CmpSound>().front();
-			s->sound().play();
+			sound->sound().play();
 
 			parent_->delete_please();
 			ph->set_health(ph->health() - 50);

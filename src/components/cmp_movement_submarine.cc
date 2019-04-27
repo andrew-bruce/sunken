@@ -1,12 +1,12 @@
 #include "cmp_movement_submarine.hh"
-#include "cmp_sprite.hh"
-
-#include "../src/sunken.hh"
 
 #include <algorithm>
 #include <array>
 
 #include <level_loader.hh>
+
+#include "cmp_sprite.hh"
+#include "../sunken.hh"
 
 // Class overrides
 CmpMovementSubmarine::CmpMovementSubmarine(Entity* const p)
