@@ -35,7 +35,7 @@ void CmpPickupHealth::update(const float & delta_time)
 		s->sound().play();
 
 		// Gets it's health component
-		auto h = player->compatible_components<CmpHealthPlayer>().front();
+		auto h = player->compatible_components<CmpHealth>().front();
 
 		// Increase health
 		if (h->health() <= 70)

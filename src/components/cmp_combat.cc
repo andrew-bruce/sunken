@@ -60,8 +60,14 @@ void CmpCombat::fire(const sf::Vector2f& direction, std::string tag)
 		t->set_speed(40.f);
 		fire_cooldown_ = 3.f;
 	}
+	else if (tag == "objective_torpedo") 
+	{
+		t->set_speed(50.f);
+		fire_cooldown_ = 2.f;
+	}
 	else
 	{
+		// battleship bomb
 		size = sf::Vector2f(level::tile_size(), level::tile_size()) / 16.f;
 		t->set_speed(15.f);
 		fire_cooldown_ = 5.f;

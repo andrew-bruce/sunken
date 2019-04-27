@@ -7,7 +7,10 @@
 
 
 
-CmpHealth::CmpHealth(Entity * p) : Component(p){}
+CmpHealth::CmpHealth(Entity * p, float health) : Component(p)
+{
+	health_ = health;
+}
 
 float CmpHealth::health()
 {
@@ -38,3 +41,5 @@ void CmpHealth::update(const float & delta_time)
 		}
 	}
 }
+
+void CmpHealth::render(){}

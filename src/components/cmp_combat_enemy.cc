@@ -19,6 +19,7 @@ void CmpCombatEnemy::update(const float & delta_time)
 		return;
 
 	const Entity* player = parent_->scene->entities().find("player").front();
+	const Entity* objective = parent_->scene->entities().find("objective").front();
 
 	// Get vector between entity and player
 	const sf::Vector2f vector = player->position() - parent_->position();
@@ -27,8 +28,16 @@ void CmpCombatEnemy::update(const float & delta_time)
 	float distance = sf::length2(vector);
 
 	// If the player is close enough, fire in their direction (squared length of 200)
-	if (distance <= 4000)
-		fire(sf::normalise(vector), "enemy_torpedo");
+	if(parent_ == objective) 
+	{
+		if(distance <= 20000)
+			fire(sf::normalise(vector), "objective_torpedo");
+	}
+	else
+	{
+		if(distance <= 4000)
+			fire(sf::normalise(vector), "enemy_torpedo");
+	}
 
 	CmpCombat::update(delta_time);
 }

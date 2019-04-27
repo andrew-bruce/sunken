@@ -64,7 +64,7 @@ void SceneGame::load()
 
 		p->add_component<CmpCombatPlayer>();
 		p->add_component<CmpMovementPlayer>();
-		p->add_component<CmpHealthPlayer>();
+		p->add_component<CmpHealth>(100.f);
 	}
 
 	// Enemy submarines
@@ -93,7 +93,7 @@ void SceneGame::load()
 
 			e->add_component<CmpMovementSubmarine>();
 			e->add_component<CmpCombatEnemy>();
-			e->add_component<CmpHealthEnemy>();
+			e->add_component<CmpHealth>(100.f);
 			e->add_tag("enemy");
 			e->add_tag("submarine");
 		}
@@ -125,11 +125,9 @@ void SceneGame::load()
 			s->sprite().setScale(sf::Vector2f(0.1f, 0.1f));
 			e->move_to(sf::Vector2f(position.x, position.y + s->sprite().getTexture()->getSize().y / 14.7f));
 
-			std::cout << s->sprite().getTexture()->getSize().y << std::endl;
-
 			e->add_component<CmpMovementBattleship>();
 			e->add_component<CmpCombatBattleship>();
-			e->add_component<CmpHealthEnemy>();
+			e->add_component<CmpHealth>(120.f);
 			e->add_tag("enemy");
 			e->add_tag("battleship");
 		}
@@ -140,17 +138,30 @@ void SceneGame::load()
 		for (const auto tile : level::find_tiles(level::Tile::Objective))
 		{
 			const auto position = level::tile_position(tile);
-			const auto size = sf::Vector2f(35.f, 35.f);
 
 			auto e = make_entity();
 			e->move_to(position);
 
-			auto s = e->add_component<CmpShape>();
-			s->use_shape<sf::RectangleShape>(size);
-			s->shape().setFillColor(sf::Color(232, 32, 32));
+			auto tex = resources::get<sf::Texture>("base.png");
+
+			if (!tex)
+				throw std::runtime_error("Cannot load texture 'res/textures/ship.png'");
+
+			auto s = e->add_component<CmpSprite>();
+
+			s->use_sprite<sf::Sprite>();
+			s->sprite().setTexture(*tex);
+
+			// Gets size of texture divided by 10 to account for scaling
+			const auto size = sf::Vector2f(s->sprite().getLocalBounds().width, s->sprite().getLocalBounds().height);
+
+			s->sprite().setOrigin(size / 2.f);
+			s->sprite().setScale(sf::Vector2f(0.1f, 0.1f));
+			e->move_to(sf::Vector2f(position.x, position.y + s->sprite().getTexture()->getSize().y / 19.f));
 
 			e->add_component<CmpCombatEnemy>();
-			e->add_component<CmpHealthEnemy>();
+			e->add_component<CmpHealth>(150.f);
+			e->add_tag("enemy");
 			e->add_tag("objective");
 		}
 	}
@@ -230,7 +241,7 @@ void SceneGame::load()
 		s->shape().setOutlineThickness(1.0f);
 
 		auto p = e->add_component<CmpSound>("sonar.ogg");
-		p->sound().setVolume(50);
+		p->sound().setVolume(30);
 
 		e->add_component<CmpSonar>();
 	}
@@ -261,7 +272,7 @@ void SceneGame::update(const float& delta_time)
 			auto text = hud->compatible_components<CmpText>().front();
 
 			auto player = entities_.find("player").front();
-			auto health = player->compatible_components<CmpHealthPlayer>().front();
+			auto health = player->compatible_components<CmpHealth>().front();
 			auto ammo = player->compatible_components<CmpCombatPlayer>().front();
 			
 			std::string output = "Health: ";

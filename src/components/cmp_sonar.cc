@@ -79,7 +79,6 @@ void CmpSonar::update(const float& delta_time)
 	{
 		static const std::vector<std::string> tags
 		{
-			"objective",
 			"pickup",
 			"enemy_torpedo",
 			"battleship_bomb"
@@ -112,6 +111,7 @@ void CmpSonar::update(const float& delta_time)
 	{
 		static const std::vector<std::string> tags
 		{
+			"objective",
 			"submarine",
 			"battleship"
 		};
